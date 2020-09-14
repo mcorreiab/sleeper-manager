@@ -1,3 +1,13 @@
 micronaut:
   application:
     name: sleepermanager
+
+external:
+  api:
+    sleeper:
+      user:
+        root: https://api.sleeper.app/v1/user
+        getByUsername: /{username}
+      league:
+        root: https://api.sleeper.app/v1/user/{userId}
+        getLeagues: /leagues/nfl/2020
