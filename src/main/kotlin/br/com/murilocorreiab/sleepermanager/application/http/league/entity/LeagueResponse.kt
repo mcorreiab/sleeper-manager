@@ -1,7 +1,9 @@
 package br.com.murilocorreiab.sleepermanager.application.http.league.entity
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 data class LeagueResponse(
         val name: String,
-        val leagueId: Long,
-        val totalRosters: Int
+        @JsonProperty("league_id") val leagueId: Long,
+        @JsonProperty("total_rosters") val totalRosters: Int
 )

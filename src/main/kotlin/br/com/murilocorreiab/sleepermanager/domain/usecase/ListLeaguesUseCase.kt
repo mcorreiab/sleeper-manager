@@ -5,7 +5,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ListLeaguesUseCase @Inject constructor(private val leagueGateway: LeagueGateway) {
+class ListLeaguesUseCase(private val leagueGateway: LeagueGateway) {
     fun findUserLeagues(username: String) = leagueGateway.findUserLeagues(username)
-
 }

@@ -9,5 +9,5 @@ external:
         root: https://api.sleeper.app/v1/user
         getByUsername: /{username}
       league:
-        root: https://api.sleeper.app/v1/user/{userId}
-        getLeagues: /leagues/nfl/2020
+        root: https://api.sleeper.app/v1/user
+        getLeagues: /{userId}/leagues/nfl/2020

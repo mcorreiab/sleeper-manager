@@ -5,7 +5,7 @@ import org.mapstruct.Mapper
 import org.mapstruct.Mapping
 import org.mapstruct.Mappings
 
-@Mapper
+@Mapper(componentModel = "jsr330")
 interface LeagueMapper {
 
     @Mappings(value = [

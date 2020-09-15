@@ -7,7 +7,6 @@ import io.micronaut.test.annotation.MockBean
 import io.mockk.every
 import io.mockk.mockkClass
 import io.mockk.verify
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import javax.inject.Inject
