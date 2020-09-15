@@ -29,21 +29,18 @@ class LeagueGatewayHttpClientTest {
     @Inject
     private lateinit var leagueClient: LeagueClient
 
-    @Inject
-    private lateinit var leagueMapper: LeagueMapper
-
     @Test
     fun `should retrieve data with success`() {
         //Given
         val username = "username"
         val userResponse = UserResponseProducer().build()
         val leagueResponse = LeagueResponseProducer().build()
-        val league = LeagueProducer().build()
+        val league = LeagueProducer(name = leagueResponse.name, size = leagueResponse.totalRosters,
+                id = leagueResponse.leagueId).build()
 
         //When
         every { userClient.getByUsername(username) }.returns(Single.just(userResponse))
         every { leagueClient.getByUserId(userResponse.userId) }.returns(Flowable.just(leagueResponse))
-        every { leagueMapper.convertToDomain(leagueResponse) }.returns(league)
         val actual = target.findUserLeagues(username)
 
         //Then
@@ -51,7 +48,6 @@ class LeagueGatewayHttpClientTest {
         verify(exactly = 1) {
             userClient.getByUsername(username)
             leagueClient.getByUserId(userResponse.userId)
-            leagueMapper.convertToDomain(leagueResponse)
         }
     }
 
@@ -60,7 +56,4 @@ class LeagueGatewayHttpClientTest {
 
     @MockBean(LeagueClient::class)
     fun leagueClient() = mockkClass(LeagueClient::class)
-
-    @MockBean(LeagueMapper::class)
-    fun leagueMapper() = mockkClass(LeagueMapper::class)
 }
