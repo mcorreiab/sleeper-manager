@@ -3,6 +3,7 @@ after_success:
   - bash <(curl -s https://codecov.io/bash)
 addons:
   sonarcloud:
+    organization: murilocorreiab
     token:
       secure: "M5nx2n4Yn7ZGoCbJBwTfWKPtv5Uz8Jp0d/GUL/TKpykQTPdBK4OH8xznrus7GTviR52cdHckAO5Lw5WZjpaAHDZ+hTltoSYgukaX5tykpPfM/6L33E5UNg00ML5yY7cEu1kG3AtSfuf/8MKBwTaQoczasvVA32Ei+u1Iv+sRWY/c4Wtxc+NLq3usuC0YsZfl4q7AliV1wB8gxZGSWZhG6HDVIsp4muAx5vmLkOSbr33dwDrIBzEgsSMQuZYlyTEB3Nbyw3/pHHMPCRXHk2zbfMhlB8dchOxcZwuO8Dr6/j7abiK2fJko493BO/vQ1cmphwDfBt95RhAEVh1ZFbsUiJHDJt2+AlccY6kbr4A7aBNcplmcdXg3RSbSduzIbp6zrhr3UrmLIfn7rlOjuCWiUEOlrlePLPDMNQVwzjLjJKB7zLF83oCuBxz4ZqzHsMXexqjZ8d5HCIYKEMOKdaPf161KIQAq8HB2aP0VU5CDcQQohG3SJWB1hcv/RT+L7UER5PRdOwxqUHOlXTwItDLeMSp+YZW6lvszQWfHSCppxQSqWwbQiaJUE6Ppixmr3+bE7xX2TS4TyJcaYHlcnzyqBmf2zBggW1PJN9hHrWF7+vNO2fsCXt6I76YPKe645NWTVl/l5lCU2KSA+o7caIbe6FZ9KIprwejRv9MMVwcG+ao="
 script:
