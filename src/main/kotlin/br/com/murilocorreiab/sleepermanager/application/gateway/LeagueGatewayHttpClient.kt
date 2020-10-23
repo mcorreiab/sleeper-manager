@@ -9,8 +9,10 @@ import org.mapstruct.factory.Mappers
 import javax.inject.Singleton
 
 @Singleton
-class LeagueGatewayHttpClient(private val userClient: UserClient,
-                              private val leagueClient: LeagueClient) : LeagueGateway {
+class LeagueGatewayHttpClient(
+    private val userClient: UserClient,
+    private val leagueClient: LeagueClient
+) : LeagueGateway {
 
     private val leagueMapper = Mappers.getMapper(LeagueMapper::class.java)
 

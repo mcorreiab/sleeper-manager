@@ -1,7 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.domain.usecase
 
 import br.com.murilocorreiab.sleepermanager.domain.gateway.LeagueGateway
-import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton

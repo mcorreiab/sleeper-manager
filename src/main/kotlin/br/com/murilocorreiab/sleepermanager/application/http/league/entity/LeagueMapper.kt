@@ -8,9 +8,11 @@ import org.mapstruct.Mappings
 @Mapper(componentModel = "jsr330")
 interface LeagueMapper {
 
-    @Mappings(value = [
-        Mapping(source = "leagueId", target = "id"),
-        Mapping(source = "totalRosters", target = "size")]
+    @Mappings(
+        value = [
+            Mapping(source = "leagueId", target = "id"),
+            Mapping(source = "totalRosters", target = "size")
+        ]
     )
     fun convertToDomain(leagueResponse: LeagueResponse): League
 }

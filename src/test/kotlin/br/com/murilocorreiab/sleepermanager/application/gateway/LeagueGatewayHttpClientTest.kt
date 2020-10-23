@@ -1,7 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.application.gateway
 
 import br.com.murilocorreiab.sleepermanager.application.http.league.LeagueClient
-import br.com.murilocorreiab.sleepermanager.application.http.league.entity.LeagueMapper
 import br.com.murilocorreiab.sleepermanager.application.http.league.entity.LeagueResponseProducer
 import br.com.murilocorreiab.sleepermanager.application.http.user.UserClient
 import br.com.murilocorreiab.sleepermanager.application.http.user.entity.UserResponseProducer
@@ -31,19 +30,22 @@ class LeagueGatewayHttpClientTest {
 
     @Test
     fun `should retrieve data with success`() {
-        //Given
+        // Given
         val username = "username"
         val userResponse = UserResponseProducer().build()
         val leagueResponse = LeagueResponseProducer().build()
-        val league = LeagueProducer(name = leagueResponse.name, size = leagueResponse.totalRosters,
-                id = leagueResponse.leagueId).build()
+        val league = LeagueProducer(
+            name = leagueResponse.name,
+            size = leagueResponse.totalRosters,
+            id = leagueResponse.leagueId
+        ).build()
 
-        //When
+        // When
         every { userClient.getByUsername(username) }.returns(Single.just(userResponse))
         every { leagueClient.getByUserId(userResponse.userId) }.returns(Flowable.just(leagueResponse))
         val actual = target.findUserLeagues(username)
 
-        //Then
+        // Then
         assertEquals(arrayListOf(league), actual)
         verify(exactly = 1) {
             userClient.getByUsername(username)

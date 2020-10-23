@@ -22,18 +22,18 @@ class ListLeaguesUseCaseTest {
 
     @Test
     fun `should list leagues with success`() {
-        //Given
+        // Given
         val username = "username"
         val id = 120L
         val name = "name"
         val size = 12
         val leagues = listOf(LeagueProducer(id = id, name = name, size = size).build())
 
-        //When
+        // When
         every { leagueGateway.findUserLeagues(username) }.returns(leagues)
         val actual = target.findUserLeagues(username)
 
-        //Then
+        // Then
         assertEquals(leagues, actual)
         verify(exactly = 1) { leagueGateway.findUserLeagues(username) }
     }

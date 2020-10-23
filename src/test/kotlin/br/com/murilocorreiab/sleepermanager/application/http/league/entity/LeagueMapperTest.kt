@@ -12,40 +12,40 @@ class LeagueMapperTest {
 
     @Test
     fun `should map league name with success`() {
-        //Given
+        // Given
         val leagueName = "leagueName"
         val leagueResponse = LeagueResponseProducer(name = leagueName).build()
 
-        //When
+        // When
         val actual = target.convertToDomain(leagueResponse)
 
-        //Then
+        // Then
         assertEquals(leagueName, actual.name)
     }
 
     @Test
     fun `should map league size with success`() {
-        //Given
+        // Given
         val leagueSize = 16
         val leagueResponse = LeagueResponseProducer(totalRosters = leagueSize).build()
 
-        //When
+        // When
         val actual = target.convertToDomain(leagueResponse)
 
-        //Then
+        // Then
         assertEquals(leagueSize, actual.size)
     }
 
     @Test
     fun `should map league id with success`() {
-        //Given
+        // Given
         val leagueId = 38402L
         val leagueResponse = LeagueResponseProducer(leagueId = leagueId).build()
 
-        //When
+        // When
         val actual = target.convertToDomain(leagueResponse)
 
-        //Then
+        // Then
         assertEquals(leagueId, actual.id)
     }
 }
