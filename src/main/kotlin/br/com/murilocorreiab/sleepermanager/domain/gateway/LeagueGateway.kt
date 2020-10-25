@@ -1,7 +1,8 @@
 package br.com.murilocorreiab.sleepermanager.domain.gateway
 
 import br.com.murilocorreiab.sleepermanager.domain.entity.League
+import kotlinx.coroutines.flow.Flow
 
 interface LeagueGateway {
-    fun findUserLeagues(username: String): List<League>
+    suspend fun findUserLeagues(username: String): Flow<League>
 }

@@ -2,11 +2,13 @@ package br.com.murilocorreiab.sleepermanager.domain.usecase
 
 import br.com.murilocorreiab.sleepermanager.domain.entity.LeagueProducer
 import br.com.murilocorreiab.sleepermanager.domain.gateway.LeagueGateway
-import io.micronaut.test.annotation.MicronautTest
 import io.micronaut.test.annotation.MockBean
-import io.mockk.every
+import io.micronaut.test.extensions.junit5.annotation.MicronautTest
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockkClass
-import io.mockk.verify
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import javax.inject.Inject
@@ -21,21 +23,21 @@ class ListLeaguesUseCaseTest {
     private lateinit var leagueGateway: LeagueGateway
 
     @Test
-    fun `should list leagues with success`() {
+    fun `should list leagues with success`() = runBlocking {
         // Given
         val username = "username"
         val id = 120L
         val name = "name"
         val size = 12
-        val leagues = listOf(LeagueProducer(id = id, name = name, size = size).build())
+        val leagues = flowOf(LeagueProducer(id = id, name = name, size = size).build())
 
         // When
-        every { leagueGateway.findUserLeagues(username) }.returns(leagues)
+        coEvery { leagueGateway.findUserLeagues(username) }.returns(leagues)
         val actual = target.findUserLeagues(username)
 
         // Then
         assertEquals(leagues, actual)
-        verify(exactly = 1) { leagueGateway.findUserLeagues(username) }
+        coVerify(exactly = 1) { leagueGateway.findUserLeagues(username) }
     }
 
     @MockBean(LeagueGateway::class)

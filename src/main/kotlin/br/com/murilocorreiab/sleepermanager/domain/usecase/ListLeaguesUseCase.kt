@@ -5,5 +5,5 @@ import javax.inject.Singleton
 
 @Singleton
 class ListLeaguesUseCase(private val leagueGateway: LeagueGateway) {
-    fun findUserLeagues(username: String) = leagueGateway.findUserLeagues(username)
+    suspend fun findUserLeagues(username: String) = leagueGateway.findUserLeagues(username)
 }

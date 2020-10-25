@@ -4,13 +4,14 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.http.league.entity.Leag
 import br.com.murilocorreiab.sleepermanager.dataprovider.http.user.UserClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.http.user.entity.UserResponseProducer
 import br.com.murilocorreiab.sleepermanager.domain.entity.LeagueProducer
-import io.micronaut.test.annotation.MicronautTest
 import io.micronaut.test.annotation.MockBean
+import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.every
 import io.mockk.mockkClass
 import io.mockk.verify
-import io.reactivex.Flowable
-import io.reactivex.Single
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import javax.inject.Inject
@@ -28,7 +29,7 @@ class LeagueGatewayHttpClientTest {
     private lateinit var leagueClient: LeagueClient
 
     @Test
-    fun `should retrieve data with success`() {
+    fun `should retrieve data with success`() = runBlocking {
         // Given
         val username = "username"
         val userResponse = UserResponseProducer().build()
@@ -40,12 +41,15 @@ class LeagueGatewayHttpClientTest {
         ).build()
 
         // When
-        every { userClient.getByUsername(username) }.returns(Single.just(userResponse))
-        every { leagueClient.getByUserId(userResponse.userId) }.returns(Flowable.just(leagueResponse))
+        every { userClient.getByUsername(username) }.returns(userResponse)
+        every { leagueClient.getByUserId(userResponse.userId) }.returns(flowOf(leagueResponse))
         val actual = target.findUserLeagues(username)
 
         // Then
-        assertEquals(arrayListOf(league), actual)
+        actual.collect {
+            assertEquals(league, it)
+        }
+
         verify(exactly = 1) {
             userClient.getByUsername(username)
             leagueClient.getByUserId(userResponse.userId)

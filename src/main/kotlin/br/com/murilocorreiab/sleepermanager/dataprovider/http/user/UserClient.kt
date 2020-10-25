@@ -4,11 +4,10 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.http.user.entity.UserRe
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.PathVariable
 import io.micronaut.http.client.annotation.Client
-import io.reactivex.Single
 
 @Client("\${external.api.sleeper.user.root}")
 interface UserClient {
 
     @Get("\${external.api.sleeper.user.getByUsername}")
-    fun getByUsername(@PathVariable username: String): Single<UserResponse>
+    fun getByUsername(@PathVariable username: String): UserResponse
 }

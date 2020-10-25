@@ -39,6 +39,7 @@ dependencies {
     implementation("io.micronaut:micronaut-http-server-netty")
     implementation("io.micronaut:micronaut-http-client")
     implementation("org.mapstruct:mapstruct:$mapStructVersion")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
     developmentOnly("io.micronaut:micronaut-runtime-osx:$micronautVersion")
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -79,14 +80,14 @@ allOpen {
 }
 compileKotlin {
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
         //Will retain parameter names for Java reflection
         javaParameters = true
     }
 }
 compileTestKotlin {
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
         javaParameters = true
     }
 }
