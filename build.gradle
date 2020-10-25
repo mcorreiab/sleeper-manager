@@ -72,7 +72,7 @@ jacocoTestReport {
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion('1.8')
+    sourceCompatibility = JavaVersion.toVersion('11')
 }
 
 allOpen {
