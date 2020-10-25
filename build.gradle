@@ -5,8 +5,6 @@ plugins {
     id "com.github.johnrengelman.shadow" version "6.0.0"
     id "application"
     id "jacoco"
-    id "io.gitlab.arturbosch.detekt" version"1.14.0"
-    id "org.sonarqube" version "3.0"
     id "org.jlleitschuh.gradle.ktlint" version "9.4.1"
 }
 
@@ -116,18 +114,3 @@ tasks.withType(JavaExec) {
         )
     }
 }
-
-detekt {
-    failFast = true // fail build on any finding
-    buildUponDefaultConfig = true // preconfigure defaults
-
-    reports {
-        html.enabled = true // observe findings in your browser with structure and code snippets
-        xml.enabled = true // checkstyle like format mainly for integrations like Jenkins
-        txt.enabled = true // similar to the console output, contains issue signature to manually edit baseline files
-    }
-}
-
-
-// Groovy dsl
-tasks.detekt.jvmTarget = "1.8"

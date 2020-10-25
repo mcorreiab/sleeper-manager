@@ -1,6 +1,6 @@
-package br.com.murilocorreiab.sleepermanager.application.http.league
+package br.com.murilocorreiab.sleepermanager.dataprovider.http.league
 
-import br.com.murilocorreiab.sleepermanager.application.http.league.entity.LeagueResponse
+import br.com.murilocorreiab.sleepermanager.dataprovider.http.league.entity.LeagueResponse
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.PathVariable
 import io.micronaut.http.client.annotation.Client

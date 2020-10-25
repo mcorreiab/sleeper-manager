@@ -1,4 +1,4 @@
-package br.com.murilocorreiab.sleepermanager.application.http.user.entity
+package br.com.murilocorreiab.sleepermanager.dataprovider.http.user.entity
 
 data class UserResponseProducer(
     var username: String = "username",

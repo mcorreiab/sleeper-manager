@@ -1,6 +1,6 @@
-package br.com.murilocorreiab.sleepermanager.application.http.user
+package br.com.murilocorreiab.sleepermanager.dataprovider.http.user
 
-import br.com.murilocorreiab.sleepermanager.application.http.user.entity.UserResponse
+import br.com.murilocorreiab.sleepermanager.dataprovider.http.user.entity.UserResponse
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.PathVariable
 import io.micronaut.http.client.annotation.Client

@@ -1,4 +1,4 @@
-package br.com.murilocorreiab.sleepermanager.application.entrypoint
+package br.com.murilocorreiab.sleepermanager.entrypoint
 
 import br.com.murilocorreiab.sleepermanager.domain.entity.League
 import br.com.murilocorreiab.sleepermanager.domain.usecase.ListLeaguesUseCase

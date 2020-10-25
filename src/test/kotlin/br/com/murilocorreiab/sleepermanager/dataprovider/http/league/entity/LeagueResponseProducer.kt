@@ -1,4 +1,4 @@
-package br.com.murilocorreiab.sleepermanager.application.http.league.entity
+package br.com.murilocorreiab.sleepermanager.dataprovider.http.league.entity
 
 data class LeagueResponseProducer(
     val name: String = "name",

@@ -1,9 +1,8 @@
-package br.com.murilocorreiab.sleepermanager.application.gateway
+package br.com.murilocorreiab.sleepermanager.dataprovider.http.league
 
-import br.com.murilocorreiab.sleepermanager.application.http.league.LeagueClient
-import br.com.murilocorreiab.sleepermanager.application.http.league.entity.LeagueResponseProducer
-import br.com.murilocorreiab.sleepermanager.application.http.user.UserClient
-import br.com.murilocorreiab.sleepermanager.application.http.user.entity.UserResponseProducer
+import br.com.murilocorreiab.sleepermanager.dataprovider.http.league.entity.LeagueResponseProducer
+import br.com.murilocorreiab.sleepermanager.dataprovider.http.user.UserClient
+import br.com.murilocorreiab.sleepermanager.dataprovider.http.user.entity.UserResponseProducer
 import br.com.murilocorreiab.sleepermanager.domain.entity.LeagueProducer
 import io.micronaut.test.annotation.MicronautTest
 import io.micronaut.test.annotation.MockBean

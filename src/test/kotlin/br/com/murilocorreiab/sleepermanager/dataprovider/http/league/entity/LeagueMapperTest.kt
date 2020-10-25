@@ -1,4 +1,4 @@
-package br.com.murilocorreiab.sleepermanager.application.http.league.entity
+package br.com.murilocorreiab.sleepermanager.dataprovider.http.league.entity
 
 import io.micronaut.test.annotation.MicronautTest
 import org.junit.jupiter.api.Assertions.assertEquals

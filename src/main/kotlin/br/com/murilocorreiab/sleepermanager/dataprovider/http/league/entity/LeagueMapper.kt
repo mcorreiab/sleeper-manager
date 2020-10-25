@@ -1,4 +1,4 @@
-package br.com.murilocorreiab.sleepermanager.application.http.league.entity
+package br.com.murilocorreiab.sleepermanager.dataprovider.http.league.entity
 
 import br.com.murilocorreiab.sleepermanager.domain.entity.League
 import org.mapstruct.Mapper
