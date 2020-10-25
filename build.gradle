@@ -72,7 +72,7 @@ jacocoTestReport {
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion('11')
+    sourceCompatibility = JavaVersion.toVersion('1.8')
 }
 
 allOpen {
@@ -80,14 +80,14 @@ allOpen {
 }
 compileKotlin {
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '1.8'
         //Will retain parameter names for Java reflection
         javaParameters = true
     }
 }
 compileTestKotlin {
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '1.8'
         javaParameters = true
     }
 }
