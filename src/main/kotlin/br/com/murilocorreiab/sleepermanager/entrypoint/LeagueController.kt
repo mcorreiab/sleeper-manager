@@ -1,7 +1,7 @@
 package br.com.murilocorreiab.sleepermanager.entrypoint
 
-import br.com.murilocorreiab.sleepermanager.domain.entity.League
-import br.com.murilocorreiab.sleepermanager.domain.usecase.ListLeaguesUseCase
+import br.com.murilocorreiab.sleepermanager.domain.league.ListLeaguesUseCase
+import br.com.murilocorreiab.sleepermanager.domain.league.entity.League
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.PathVariable
