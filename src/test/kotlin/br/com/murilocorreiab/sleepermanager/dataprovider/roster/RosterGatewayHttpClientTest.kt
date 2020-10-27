@@ -15,6 +15,7 @@ import io.mockk.mockkClass
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -51,8 +52,9 @@ class RosterGatewayHttpClientTest {
         val leagueResponse = LeagueResponseProducer().build()
         val rosterResponse = RosterResponseProducer(
             starters = listOf(starterPlayerId),
-            players = listOf(benchPlayerId),
+            players = listOf(starterPlayerId, benchPlayerId),
             leagueId = leagueResponse.leagueId,
+            ownerId = userResponse.userId
         ).build()
         val rosterOfAnotherPlayer = RosterResponseProducer(ownerId = "otherPlayer").build()
         val starterPlayerResponse =
@@ -73,6 +75,7 @@ class RosterGatewayHttpClientTest {
         val actual = rosterGatewayHttpClient.findUserRostersInLeagues(username)
 
         // Then
+        assertTrue(actual.toList().isNotEmpty())
         actual.collect {
             assertEquals(rosterResponse.rosterId, it.id)
             assertEquals(leagueResponse.leagueId, it.league.id)

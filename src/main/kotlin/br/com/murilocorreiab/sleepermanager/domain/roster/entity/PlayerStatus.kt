@@ -4,6 +4,6 @@ enum class PlayerStatus(private val status: String) {
     ACTIVE("active"), OUT("out"), IR("ir");
 
     companion object {
-        fun parsePlayerStatus(status: String) = values().first { status == it.status }
+        fun parsePlayerStatus(status: String) = values().first { status.toLowerCase() == it.status }
     }
 }
