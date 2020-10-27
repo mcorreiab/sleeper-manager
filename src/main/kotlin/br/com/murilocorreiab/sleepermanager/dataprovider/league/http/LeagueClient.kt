@@ -6,9 +6,9 @@ import io.micronaut.http.annotation.PathVariable
 import io.micronaut.http.client.annotation.Client
 import kotlinx.coroutines.flow.Flow
 
-@Client("\${external.api.sleeper.league.root}")
+@Client("\${external.api.sleeper.user.root}")
 interface LeagueClient {
 
-    @Get("\${external.api.sleeper.league.getLeagues}")
-    fun getByUserId(@PathVariable userId: Long): Flow<LeagueResponse>
+    @Get("\${external.api.sleeper.user.getLeagues}")
+    fun getByUserId(@PathVariable userId: String): Flow<LeagueResponse>
 }

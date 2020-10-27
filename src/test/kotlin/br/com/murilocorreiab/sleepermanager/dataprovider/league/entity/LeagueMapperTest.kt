@@ -40,7 +40,7 @@ class LeagueMapperTest {
     @Test
     fun `should map league id with success`() {
         // Given
-        val leagueId = 38402L
+        val leagueId = "38402"
         val leagueResponse = LeagueResponseProducer(leagueId = leagueId).build()
 
         // When

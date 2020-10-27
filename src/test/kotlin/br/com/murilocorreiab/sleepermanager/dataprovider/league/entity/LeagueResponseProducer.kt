@@ -4,7 +4,7 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.Leag
 
 data class LeagueResponseProducer(
     val name: String = "name",
-    val leagueId: Long = 231,
+    val leagueId: String = "231",
     val totalRosters: Int = 12
 ) {
     fun build() = LeagueResponse(name, leagueId, totalRosters)

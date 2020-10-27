@@ -8,6 +8,6 @@ external:
       user:
         root: https://api.sleeper.app/v1/user
         getByUsername: /{username}
-      league:
-        root: https://api.sleeper.app/v1/user
         getLeagues: /{userId}/leagues/nfl/2020
+      roster: https://api.sleeper.app/v1/league/<league_id>/rosters
+      player: https://api.sleeper.app/v1/players/nfl
