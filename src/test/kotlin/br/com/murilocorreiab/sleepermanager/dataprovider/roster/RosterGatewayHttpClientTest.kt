@@ -43,7 +43,7 @@ class RosterGatewayHttpClientTest {
     @FlowPreview
     @Test
     fun `should get rosters for user with success`() = runBlocking {
-        //Given
+        // Given
         val username = "username"
         val starterPlayerId = "starterPlayerId"
         val benchPlayerId = "benchPlayerId"
@@ -72,7 +72,7 @@ class RosterGatewayHttpClientTest {
 
         val actual = rosterGatewayHttpClient.findUserRostersInLeagues(username)
 
-        //Then
+        // Then
         actual.collect {
             assertEquals(rosterResponse.rosterId, it.id)
             assertEquals(leagueResponse.leagueId, it.league.id)

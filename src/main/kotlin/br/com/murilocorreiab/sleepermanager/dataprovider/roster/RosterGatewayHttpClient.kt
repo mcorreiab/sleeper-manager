@@ -22,8 +22,10 @@ import javax.inject.Singleton
 
 @Singleton
 class RosterGatewayHttpClient(
-    private val userClient: UserClient, private val leagueClient: LeagueClient,
-    private val rosterClient: RosterClient, private val playerClient: PlayerClient
+    private val userClient: UserClient,
+    private val leagueClient: LeagueClient,
+    private val rosterClient: RosterClient,
+    private val playerClient: PlayerClient
 ) : RosterGateway {
     @FlowPreview
     override suspend fun findUserRostersInLeagues(username: String): Flow<Roster> {
@@ -46,7 +48,8 @@ class RosterGatewayHttpClient(
             }
 
     private fun mapRoster(
-        roster: RosterResponse, userId: String,
+        roster: RosterResponse,
+        userId: String,
         players: List<Player>,
         leagueResponse: LeagueResponse
     ): Roster = Roster(
