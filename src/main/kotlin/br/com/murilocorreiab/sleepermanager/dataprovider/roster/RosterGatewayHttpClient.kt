@@ -6,10 +6,10 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.Leag
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.PlayerClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.RosterClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.PlayerResponse
+import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.PlayerResponseMapper
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponse
 import br.com.murilocorreiab.sleepermanager.domain.league.entity.League
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Player
-import br.com.murilocorreiab.sleepermanager.domain.roster.entity.PlayerStatus
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Roster
 import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway
 import kotlinx.coroutines.FlowPreview
@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
+import org.mapstruct.factory.Mappers
 import javax.inject.Singleton
 
 @Singleton
@@ -25,8 +26,11 @@ class RosterGatewayHttpClient(
     private val userClient: UserClient,
     private val leagueClient: LeagueClient,
     private val rosterClient: RosterClient,
-    private val playerClient: PlayerClient
+    private val playerClient: PlayerClient,
 ) : RosterGateway {
+
+    private val playerResponseMapper = Mappers.getMapper(PlayerResponseMapper::class.java)
+
     @FlowPreview
     override suspend fun findUserRostersInLeagues(username: String): Flow<Roster> {
         val userResponse = userClient.getByUsername(username)
@@ -64,13 +68,6 @@ class RosterGatewayHttpClient(
     )
 
     private fun mapPlayers(roster: RosterResponse, allPlayers: List<PlayerResponse>): List<Player> =
-        roster.players.map { playerId ->
-            val player = allPlayers.first { player -> player.playerId == playerId }
-            Player(
-                id = playerId,
-                name = "${player.firstName} ${player.lastName}",
-                PlayerStatus.parsePlayerStatus(player.injuryStatus),
-                isStarter = roster.starters.contains(playerId)
-            )
-        }
+        allPlayers.filter { roster.players.contains(it.playerId) }
+            .map { playerResponseMapper.toDomain(it, roster.starters) }
 }
