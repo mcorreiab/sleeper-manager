@@ -53,7 +53,6 @@ class RosterGatewayHttpClientTest {
         val rosterResponse = RosterResponseProducer(
             starters = listOf(starterPlayerId),
             players = listOf(starterPlayerId, benchPlayerId),
-            leagueId = leagueResponse.leagueId,
             ownerId = userResponse.userId
         ).build()
         val rosterOfAnotherPlayer = RosterResponseProducer(ownerId = "otherPlayer").build()
