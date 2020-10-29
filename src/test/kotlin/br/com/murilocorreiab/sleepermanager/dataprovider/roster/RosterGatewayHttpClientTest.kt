@@ -8,7 +8,7 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity.PlayerRes
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity.RosterResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.PlayerClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.RosterClient
-import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponse
+import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.PlayerResponse
 import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.every
@@ -59,12 +59,17 @@ class RosterGatewayHttpClientTest {
         PlayerResponseProducer(playerId = starterPlayerId, firstName = starterPlayerId).build()
     private val benchPlayerResponse =
         PlayerResponseProducer(playerId = benchPlayerId, firstName = benchPlayerId).build()
+    private val playerOutOfTheRosterResponse = PlayerResponseProducer(playerId = "outOfTheRoster").build()
 
     @FlowPreview
     @Test
     fun `should get rosters for user with success`() = runBlocking {
         // When
-        val players = flowOf(rosterResponse, rosterOfAnotherPlayer)
+        val players = flowOf(
+            starterPlayerResponse,
+            benchPlayerResponse,
+            playerOutOfTheRosterResponse
+        )
         arrangeToDoFullFlow(players)
 
         val actual = target.findUserRostersInLeagues(username)
@@ -92,11 +97,16 @@ class RosterGatewayHttpClientTest {
         assertTrue(actual.toList().isEmpty())
     }
 
-    private fun arrangeToDoFullFlow(players: Flow<RosterResponse>) {
+    private fun arrangeToDoFullFlow(players: Flow<PlayerResponse>) {
         every { userClient.getByUsername(username) }.returns(userResponse)
         every { leagueClient.getByUserId(userResponse.userId) }.returns(flowOf(leagueResponse))
-        every { rosterClient.getRostersOfALeague(leagueResponse.leagueId) }.returns(players)
-        every { playerClient.getAllPlayers() }.returns(flowOf(starterPlayerResponse, benchPlayerResponse))
+        every { rosterClient.getRostersOfALeague(leagueResponse.leagueId) }.returns(
+            flowOf(
+                rosterResponse,
+                rosterOfAnotherPlayer
+            )
+        )
+        every { playerClient.getAllPlayers() }.returns(players)
     }
 
     @MockBean(UserClient::class)

@@ -16,7 +16,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.toList
 import org.mapstruct.factory.Mappers
 import javax.inject.Singleton
@@ -45,12 +45,16 @@ class RosterGatewayHttpClient(
         leagueResponse: LeagueResponse,
         userId: String,
         allPlayers: List<PlayerResponse>
-    ): Flow<Roster> =
-        rosterClient.getRostersOfALeague(leagueResponse.leagueId).filter { roster -> roster.ownerId == userId }
-            .map { roster ->
-                val players = mapPlayers(roster, allPlayers)
-                rosterResponseMapper.toDomain(roster, leagueResponse, players)
-            }
+    ): Flow<Roster> = rosterClient.getRostersOfALeague(leagueResponse.leagueId).filter { it.ownerId == userId }
+        .mapNotNull { mapRosters(it, allPlayers, leagueResponse) }
+
+    private fun mapRosters(
+        roster: RosterResponse,
+        allPlayers: List<PlayerResponse>,
+        leagueResponse: LeagueResponse
+    ) = mapPlayers(roster, allPlayers).let {
+        if (it.isNotEmpty()) rosterResponseMapper.toDomain(roster, leagueResponse, it) else null
+    }
 
     private fun mapPlayers(roster: RosterResponse, allPlayers: List<PlayerResponse>): List<Player> =
         allPlayers.filter { roster.players.contains(it.playerId) }
