@@ -47,7 +47,6 @@ class PlayerResponseMapperTest {
 
     @Test
     fun `should map a list of players with success`() {
-        val actualList = target.toDomain(listOf(playerResponse), starters)
-        assertTrue(actualList.isNotEmpty())
+        assertTrue(target.toDomain(listOf(playerResponse), starters).isNotEmpty())
     }
 }

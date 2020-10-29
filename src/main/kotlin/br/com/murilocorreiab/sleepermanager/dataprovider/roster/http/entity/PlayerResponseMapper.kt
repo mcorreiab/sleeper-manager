@@ -9,7 +9,7 @@ import org.mapstruct.Mappings
 import org.mapstruct.Named
 
 @Mapper
-interface PlayerResponseMapper {
+abstract class PlayerResponseMapper {
 
     @Mappings(
         value = [
@@ -22,17 +22,13 @@ interface PlayerResponseMapper {
             Mapping(target = "injuryStatus", source = "injuryStatus", qualifiedByName = ["toInjuryStatus"])
         ]
     )
-    fun toDomain(playerResponse: PlayerResponse, @Context starters: List<String>): Player
+    abstract fun toDomain(playerResponse: PlayerResponse, @Context starters: List<String>): Player
 
-    fun toDomain(playerResponse: List<PlayerResponse>, @Context starters: List<String>): List<Player>
+    abstract fun toDomain(playerResponse: List<PlayerResponse>, @Context starters: List<String>): List<Player>
 
-    companion object {
-        @Named("toIsStarter")
-        @JvmStatic
-        fun toIsStarter(playerId: String, @Context starters: List<String>): Boolean = starters.contains(playerId)
+    @Named("toIsStarter")
+    fun toIsStarter(playerId: String, @Context starters: List<String>): Boolean = starters.contains(playerId)
 
-        @Named("toInjuryStatus")
-        @JvmStatic
-        fun toInjuryStatus(injuryStatus: String) = PlayerStatus.parsePlayerStatus(injuryStatus)
-    }
+    @Named("toInjuryStatus")
+    fun toInjuryStatus(injuryStatus: String) = PlayerStatus.parsePlayerStatus(injuryStatus)
 }
