@@ -15,7 +15,7 @@ class PlayerResponseMapperTest {
     private val starterId = "starterId"
     private val target = Mappers.getMapper(PlayerResponseMapper::class.java)
     private val playerResponse =
-        PlayerResponseProducer(playerId = starterId, injuryStatus = PlayerStatus.IR.name).build()
+        PlayerResponseProducer(playerId = starterId, injuryStatus = PlayerStatus.IR.status).build()
     private val starters = listOf(starterId)
     private val actual = target.toDomain(playerResponse, starters)
     private val benchPlayer = target.toDomain(PlayerResponseProducer(playerId = "otherPlayer").build(), starters)
@@ -27,12 +27,12 @@ class PlayerResponseMapperTest {
 
     @Test
     fun `should map name with success`() {
-        assertEquals("${playerResponse.firstName} ${playerResponse.lastName}", actual.name)
+        assertEquals(playerResponse.fullName, actual.name)
     }
 
     @Test
     fun `should map injury status with success`() {
-        assertEquals(PlayerStatus.IR, actual.injuryStatus)
+        assertEquals(PlayerStatus.IR.status, actual.injuryStatus)
     }
 
     @Test
@@ -48,5 +48,22 @@ class PlayerResponseMapperTest {
     @Test
     fun `should map a list of players with success`() {
         assertTrue(target.toDomain(listOf(playerResponse), starters).isNotEmpty())
+    }
+
+    @Test
+    fun `if injury status is missing should map to active`() {
+        val playerWithoutInjury = PlayerResponseProducer(playerId = starterId, injuryStatus = null).build()
+        val actualWithoutInjury = target.toDomain(playerWithoutInjury, starters)
+        assertEquals(PlayerStatus.ACTIVE.status, actualWithoutInjury.injuryStatus)
+    }
+
+    @Test
+    fun `if full name is missing should map to first name + last name`() {
+        val playerWithoutFullName = PlayerResponseProducer(playerId = starterId, fullName = null).build()
+        val actualWithoutFullName = target.toDomain(playerWithoutFullName, starters)
+        assertEquals(
+            "${playerWithoutFullName.firstName} ${playerWithoutFullName.lastName}",
+            actualWithoutFullName.name
+        )
     }
 }

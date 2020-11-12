@@ -13,17 +13,17 @@ import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.every
 import io.mockk.mockkClass
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import javax.inject.Inject
 
 @MicronautTest
@@ -56,16 +56,17 @@ class RosterGatewayHttpClientTest {
     ).build()
     private val rosterOfAnotherPlayer = RosterResponseProducer(ownerId = "otherPlayer").build()
     private val starterPlayerResponse =
-        PlayerResponseProducer(playerId = starterPlayerId, firstName = starterPlayerId).build()
+        PlayerResponseProducer(playerId = starterPlayerId, fullName = starterPlayerId).build()
     private val benchPlayerResponse =
-        PlayerResponseProducer(playerId = benchPlayerId, firstName = benchPlayerId).build()
+        PlayerResponseProducer(playerId = benchPlayerId, fullName = benchPlayerId).build()
     private val playerOutOfTheRosterResponse = PlayerResponseProducer(playerId = "outOfTheRoster").build()
 
     @FlowPreview
+    @ExperimentalCoroutinesApi
     @Test
-    fun `should get rosters for user with success`() = runBlocking {
+    fun `should get rosters for user with success`() = runBlockingTest {
         // When
-        val players = flowOf(
+        val players = listOf(
             starterPlayerResponse,
             benchPlayerResponse,
             playerOutOfTheRosterResponse
@@ -85,11 +86,12 @@ class RosterGatewayHttpClientTest {
         }
     }
 
+    @ExperimentalCoroutinesApi
     @FlowPreview
     @Test
-    fun `if roster has no official players return empty flow`() = runBlocking {
+    fun `if roster has no official players return empty flow`() = runBlockingTest {
         // When
-        arrangeToDoFullFlow(emptyFlow())
+        arrangeToDoFullFlow(emptyList())
 
         val actual = target.findUserRostersInLeagues(username)
 
@@ -97,16 +99,17 @@ class RosterGatewayHttpClientTest {
         assertTrue(actual.toList().isEmpty())
     }
 
-    private fun arrangeToDoFullFlow(players: Flow<PlayerResponse>) {
-        every { userClient.getByUsername(username) }.returns(userResponse)
-        every { leagueClient.getByUserId(userResponse.userId) }.returns(flowOf(leagueResponse))
+    private fun arrangeToDoFullFlow(players: List<PlayerResponse>) {
+        every { userClient.getByUsername(username) }.returns(Mono.just(userResponse))
+        every { leagueClient.getByUserId(userResponse.userId) }.returns(Flux.just(leagueResponse))
         every { rosterClient.getRostersOfALeague(leagueResponse.leagueId) }.returns(
-            flowOf(
+            Flux.just(
                 rosterResponse,
                 rosterOfAnotherPlayer
             )
         )
-        every { playerClient.getAllPlayers() }.returns(players)
+        val playersById = players.associateBy({ it.playerId }, { it })
+        every { playerClient.getAllPlayers() }.returns(playersById)
     }
 
     @MockBean(UserClient::class)

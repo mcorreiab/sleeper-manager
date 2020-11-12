@@ -1,0 +1,13 @@
+micronaut:
+  http:
+    client:
+      read-timeout: 5s
+
+wiremock:
+  server:
+    port: ${random.port}
+
+external:
+  api:
+    sleeper:
+      base: http://localhost:${wiremock.server.port}

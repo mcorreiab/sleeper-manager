@@ -1,11 +1,11 @@
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.4.10"
-    id "org.jetbrains.kotlin.kapt" version "1.4.10"
-    id "org.jetbrains.kotlin.plugin.allopen" version "1.4.10"
+    id "org.jetbrains.kotlin.jvm" version "$kotlinVersion"
+    id "org.jetbrains.kotlin.kapt" version "$kotlinVersion"
+    id "org.jetbrains.kotlin.plugin.allopen" version "$kotlinVersion"
     id "com.github.johnrengelman.shadow" version "6.0.0"
     id "application"
     id "jacoco"
-    id "org.jlleitschuh.gradle.ktlint" version "9.4.1"
+    id "org.jlleitschuh.gradle.ktlint" version "$ktlintVersion"
 }
 
 version "0.1"
@@ -26,7 +26,9 @@ dependencies {
     kapt("io.micronaut:micronaut-inject-java")
     kapt("io.micronaut:micronaut-validation")
     kapt("io.micronaut:micronaut-graal")
-    kapt("org.mapstruct:mapstruct-processor:$mapStructVersion")
+    kapt("org.mapstruct:mapstruct-processor:$mapStructVersion") {
+        because("To allow mapstruct to run in kotlin processor")
+    }
     compileOnly(platform("io.micronaut:micronaut-bom:$micronautVersion"))
     compileOnly("org.graalvm.nativeimage:svm")
     implementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
@@ -38,8 +40,21 @@ dependencies {
     implementation("io.micronaut:micronaut-runtime")
     implementation("io.micronaut:micronaut-http-server-netty")
     implementation("io.micronaut:micronaut-http-client")
-    implementation("org.mapstruct:mapstruct:$mapStructVersion")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
+    implementation("org.mapstruct:mapstruct:$mapStructVersion") {
+        because("To map objects in a clear way")
+    }
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion") {
+        because("To use kotlin coroutines when running asynchronous code")
+    }
+    implementation("io.projectreactor:reactor-core:$reactorVersion") {
+        because("To use reactor types in http clients return, since flow is experimental")
+    }
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:$kotlinxCoroutinesReactiveVersion") {
+        because("To convert reactor types to coroutines")
+    }
+    implementation("io.micronaut.reactor:micronaut-reactor:$micronautReactorVersion") {
+        because("It's necessary to use reactor in micronaut 2.x.x")
+    }
     developmentOnly("io.micronaut:micronaut-runtime-osx:$micronautVersion")
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -48,8 +63,17 @@ dependencies {
     testImplementation(enforcedPlatform("io.micronaut:micronaut-bom:$micronautVersion"))
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("io.micronaut.test:micronaut-test-junit5")
-    testImplementation("io.mockk:mockk:1.9.3")
+    testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxCoroutinesVersion") {
+        because("To use coroutines in unit tests")
+    }
+    testImplementation("io.projectreactor:reactor-test:$reactorVersion") {
+        because("To use reactor types in http clients return, since flow is experimental")
+    }
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation("com.github.tomakehurst:wiremock-jre8:$wiremockVersion") {
+        because("Mock clients responses in integration tests")
+    }
 }
 
 test.classpath += configurations.developmentOnly
@@ -109,9 +133,9 @@ tasks.withType(JavaExec) {
     jvmArgs('-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote')
     if (gradle.startParameter.continuous) {
         systemProperties(
-            'micronaut.io.watch.restart':'true',
-            'micronaut.io.watch.enabled':'true',
-            "micronaut.io.watch.paths":"src/main"
+                'micronaut.io.watch.restart': 'true',
+                'micronaut.io.watch.enabled': 'true',
+                "micronaut.io.watch.paths": "src/main"
         )
     }
 }

@@ -4,11 +4,11 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.Rost
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.PathVariable
 import io.micronaut.http.client.annotation.Client
-import kotlinx.coroutines.flow.Flow
+import reactor.core.publisher.Flux
 
-@Client("\${external.api.sleeper.user.roster}")
+@Client
 interface RosterClient {
 
-    @Get
-    fun getRostersOfALeague(@PathVariable leagueId: String): Flow<RosterResponse>
+    @Get("\${external.api.sleeper.roster}")
+    fun getRostersOfALeague(@PathVariable leagueId: String): Flux<RosterResponse>
 }

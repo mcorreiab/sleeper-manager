@@ -5,9 +5,10 @@ micronaut:
 external:
   api:
     sleeper:
+      base: https://api.sleeper.app/v1
       user:
-        root: https://api.sleeper.app/v1/user
+        root: ${external.api.sleeper.base}/user
         getByUsername: /{username}
         getLeagues: /{userId}/leagues/nfl/2020
-      roster: https://api.sleeper.app/v1/league/<league_id>/rosters
-      player: https://api.sleeper.app/v1/players/nfl
+      roster: ${external.api.sleeper.base}/league/{leagueId}/rosters
+      player: ${external.api.sleeper.base}/players/nfl

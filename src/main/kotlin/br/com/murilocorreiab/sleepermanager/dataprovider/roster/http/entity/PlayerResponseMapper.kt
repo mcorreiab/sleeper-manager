@@ -1,7 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity
 
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Player
-import br.com.murilocorreiab.sleepermanager.domain.roster.entity.PlayerStatus
 import org.mapstruct.Context
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
@@ -15,11 +14,16 @@ abstract class PlayerResponseMapper {
         value = [
             Mapping(
                 target = "name",
-                expression = "java(playerResponse.getFirstName() + \" \" + playerResponse.getLastName())"
+                expression = "java(mapName(playerResponse.getFullName()," + " playerResponse.getFirstName()," +
+                    " playerResponse.getLastName()))"
             ),
             Mapping(target = "isStarter", source = "playerId", qualifiedByName = ["toIsStarter"]),
             Mapping(target = "id", source = "playerId"),
-            Mapping(target = "injuryStatus", source = "injuryStatus", qualifiedByName = ["toInjuryStatus"])
+            Mapping(
+                target = "injuryStatus",
+                source = "injuryStatus",
+                defaultValue = "Active"
+            )
         ]
     )
     abstract fun toDomain(playerResponse: PlayerResponse, @Context starters: List<String>): Player
@@ -29,6 +33,5 @@ abstract class PlayerResponseMapper {
     @Named("toIsStarter")
     fun toIsStarter(playerId: String, @Context starters: List<String>): Boolean = starters.contains(playerId)
 
-    @Named("toInjuryStatus")
-    fun toInjuryStatus(injuryStatus: String) = PlayerStatus.parsePlayerStatus(injuryStatus)
+    fun mapName(fullName: String?, firstName: String, lastName: String) = fullName ?: "$firstName $lastName"
 }

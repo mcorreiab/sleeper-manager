@@ -6,5 +6,5 @@ data class RosterResponse(
     @JsonProperty("roster_id") val rosterId: String,
     val starters: List<String>,
     val players: List<String>,
-    @JsonProperty("owner_id") val ownerId: String
+    @JsonProperty("owner_id") val ownerId: String?
 )

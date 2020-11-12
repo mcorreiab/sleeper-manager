@@ -12,7 +12,7 @@ class RosterService(private val rosterGateway: RosterGateway) {
     suspend fun checkForUnavailablePlayers(username: String): Flow<Roster> =
         rosterGateway.findUserRostersInLeagues(username).mapNotNull {
             val unavailableStarters =
-                it.players.filter { player -> player.isStarter && player.injuryStatus != PlayerStatus.ACTIVE }
+                it.players.filter { player -> player.isStarter && player.injuryStatus != PlayerStatus.ACTIVE.status }
             if (unavailableStarters.isNotEmpty()) it.copy(players = unavailableStarters) else null
         }
 }

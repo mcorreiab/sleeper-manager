@@ -8,9 +8,10 @@ import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.coEvery
 import io.mockk.mockkClass
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import javax.inject.Inject
@@ -24,15 +25,17 @@ class RosterServiceTest {
     @Inject
     private lateinit var rosterGateway: RosterGateway
 
+    @ExperimentalCoroutinesApi
     @Test
-    fun `should return all doubtful players in starter lineup with success`() = runBlocking {
+    fun `should return all doubtful players in starter lineup with success`() = runBlockingTest {
         // Given
         val username = "username"
         val expectedRosterId = "roster1"
-        val availablePlayer = PlayerProducer(id = "player1", name = "available", PlayerStatus.ACTIVE).build()
-        val outPlayer = PlayerProducer(id = "player2", name = "out", PlayerStatus.OUT).build()
-        val irPlayer = PlayerProducer(id = "player3", name = "ir", PlayerStatus.IR).build()
-        val outPlayerInBench = PlayerProducer(id = "player4", name = "out", PlayerStatus.OUT, isStarter = false).build()
+        val availablePlayer = PlayerProducer(id = "player1", name = "available", PlayerStatus.ACTIVE.status).build()
+        val outPlayer = PlayerProducer(id = "player2", name = "out", PlayerStatus.OUT.status).build()
+        val irPlayer = PlayerProducer(id = "player3", name = "ir", PlayerStatus.OUT.status).build()
+        val outPlayerInBench =
+            PlayerProducer(id = "player4", name = "out", PlayerStatus.OUT.status, isStarter = false).build()
         val roster =
             RosterProducer(
                 id = expectedRosterId,
