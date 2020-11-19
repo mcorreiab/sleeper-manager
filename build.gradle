@@ -139,3 +139,6 @@ tasks.withType(JavaExec) {
         )
     }
 }
+
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
