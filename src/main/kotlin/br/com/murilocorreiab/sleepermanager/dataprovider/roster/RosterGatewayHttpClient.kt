@@ -39,16 +39,16 @@ class RosterGatewayHttpClient(
 
     @FlowPreview
     override suspend fun findUserRostersInLeagues(username: String): Flow<Roster> = coroutineScope {
-        val leaguesWithRosters = async { mapUserRostersByLeague(username) }
+        val rostersByLeague = async { getUserRostersByLeague(username) }
 
         val allPlayers = async { playerClient.getAllPlayers() }
 
-        leaguesWithRosters.await().flatMapConcat {
+        rostersByLeague.await().flatMapConcat {
             it.second.mapNotNull { roster -> mapRosters(roster, allPlayers.await(), it.first) }
         }
     }
 
-    private suspend fun mapUserRostersByLeague(username: String): Flow<Pair<LeagueResponse, Flow<RosterResponse>>> {
+    private suspend fun getUserRostersByLeague(username: String): Flow<Pair<LeagueResponse, Flow<RosterResponse>>> {
         val userResponse = userClient.getByUsername(username).awaitFirst()
         val userLeagues = leagueClient.getByUserId(userResponse.userId).asFlow()
         return userLeagues.map { getUserRostersInLeague(it, userResponse) }
@@ -74,4 +74,8 @@ class RosterGatewayHttpClient(
         roster.players.mapNotNull {
             allPlayers[it]?.let { player -> playerResponseMapper.toDomain(player, roster.starters) }
         }
+
+    override suspend fun findAllRosteredPlayersInUserLeagues(username: String): Flow<Player> {
+        TODO("Not yet implemented")
+    }
 }
