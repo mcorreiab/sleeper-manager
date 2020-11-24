@@ -1,6 +1,9 @@
 micronaut:
   application:
     name: sleepermanager
+  http:
+    client:
+      read-timeout: 30s
 
 external:
   api:

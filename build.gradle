@@ -6,14 +6,24 @@ plugins {
     id "application"
     id "jacoco"
     id "org.jlleitschuh.gradle.ktlint" version "$ktlintVersion"
+    id "io.micronaut.application" version "$micronautPluginVersion"
 }
 
 version "0.1"
-group "br.com.murilocorreiab"
+group "br.com.murilocorreiab.sleeepermanager"
 
 repositories {
     mavenCentral()
     jcenter()
+}
+
+micronaut {
+    runtime "netty"
+    testRuntime "junit5"
+    processing {
+        incremental true
+        annotations "br.com.murilocorreiab.sleeepermanager.*"
+    }
 }
 
 configurations {
@@ -22,23 +32,16 @@ configurations {
 }
 
 dependencies {
-    kapt(platform("io.micronaut:micronaut-bom:$micronautVersion"))
-    kapt("io.micronaut:micronaut-inject-java")
-    kapt("io.micronaut:micronaut-validation")
-    kapt("io.micronaut:micronaut-graal")
     kapt("org.mapstruct:mapstruct-processor:$mapStructVersion") {
         because("To allow mapstruct to run in kotlin processor")
     }
-    compileOnly(platform("io.micronaut:micronaut-bom:$micronautVersion"))
     compileOnly("org.graalvm.nativeimage:svm")
-    implementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
-    implementation("io.micronaut:micronaut-inject")
     implementation("io.micronaut:micronaut-validation")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
     implementation("io.micronaut:micronaut-runtime")
-    implementation("io.micronaut:micronaut-http-server-netty")
+    implementation("javax.annotation:javax.annotation-api")
     implementation("io.micronaut:micronaut-http-client")
     implementation("org.mapstruct:mapstruct:$mapStructVersion") {
         because("To map objects in a clear way")
@@ -52,17 +55,13 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:$kotlinxCoroutinesReactiveVersion") {
         because("To convert reactor types to coroutines")
     }
-    implementation("io.micronaut.reactor:micronaut-reactor:$micronautReactorVersion") {
+    implementation("io.micronaut.reactor:micronaut-reactor") {
         because("It's necessary to use reactor in micronaut 2.x.x")
     }
+    implementation("io.micronaut.xml:micronaut-jackson-xml")
     developmentOnly("io.micronaut:micronaut-runtime-osx:$micronautVersion")
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
-    kaptTest(enforcedPlatform("io.micronaut:micronaut-bom:$micronautVersion"))
-    kaptTest("io.micronaut:micronaut-inject-java")
-    testImplementation(enforcedPlatform("io.micronaut:micronaut-bom:$micronautVersion"))
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("io.micronaut.test:micronaut-test-junit5")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxCoroutinesVersion") {
         because("To use coroutines in unit tests")
@@ -70,7 +69,6 @@ dependencies {
     testImplementation("io.projectreactor:reactor-test:$reactorVersion") {
         because("To use reactor types in http clients return, since flow is experimental")
     }
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("com.github.tomakehurst:wiremock-jre8:$wiremockVersion") {
         because("Mock clients responses in integration tests")
     }
