@@ -1,7 +1,7 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity
 
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.PlayerResponseMapper
-import br.com.murilocorreiab.sleepermanager.domain.roster.entity.PlayerStatus
+import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse

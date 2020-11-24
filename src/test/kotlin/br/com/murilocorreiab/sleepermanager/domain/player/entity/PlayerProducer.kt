@@ -1,4 +1,4 @@
-package br.com.murilocorreiab.sleepermanager.domain.roster.entity
+package br.com.murilocorreiab.sleepermanager.domain.player.entity
 
 data class PlayerProducer(
     val id: String = "playerId",

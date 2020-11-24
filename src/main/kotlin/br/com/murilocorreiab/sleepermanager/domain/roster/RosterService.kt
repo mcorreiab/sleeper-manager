@@ -1,6 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.domain.roster
 
-import br.com.murilocorreiab.sleepermanager.domain.roster.entity.PlayerStatus
+import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Roster
 import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway
 import kotlinx.coroutines.flow.Flow

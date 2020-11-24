@@ -1,6 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity
 
-import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Player
+import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
 import org.mapstruct.Context
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping

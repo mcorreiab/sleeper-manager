@@ -1,7 +1,7 @@
 package br.com.murilocorreiab.sleepermanager.domain.roster
 
-import br.com.murilocorreiab.sleepermanager.domain.roster.entity.PlayerProducer
-import br.com.murilocorreiab.sleepermanager.domain.roster.entity.PlayerStatus
+import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
+import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.RosterProducer
 import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway
 import io.micronaut.test.annotation.MockBean
