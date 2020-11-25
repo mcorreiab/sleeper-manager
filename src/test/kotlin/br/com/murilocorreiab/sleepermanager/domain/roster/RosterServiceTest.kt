@@ -7,7 +7,7 @@ import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway
 import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.coEvery
-import io.mockk.mockkClass
+import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOf
@@ -22,8 +22,8 @@ class RosterServiceTest {
     @Inject
     private lateinit var target: RosterService
 
-    @Inject
-    private lateinit var rosterGateway: RosterGateway
+    @get:MockBean(RosterGateway::class)
+    val rosterGateway = mockk<RosterGateway>()
 
     @ExperimentalCoroutinesApi
     @Test
@@ -52,7 +52,4 @@ class RosterServiceTest {
         // Then
         actual.collect { assertEquals(expected, it) }
     }
-
-    @MockBean(RosterGateway::class)
-    fun rosterGateway() = mockkClass(RosterGateway::class)
 }

@@ -12,7 +12,7 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.RosterClien
 import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.every
-import io.mockk.mockkClass
+import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
@@ -32,17 +32,17 @@ class RosterGatewayHttpClientTest {
     @Inject
     private lateinit var target: RosterGatewayHttpClient
 
-    @Inject
-    private lateinit var userClient: UserClient
+    @get:MockBean(UserClient::class)
+    val userClient = mockk<UserClient>()
 
-    @Inject
-    private lateinit var leagueClient: LeagueClient
+    @get:MockBean(LeagueClient::class)
+    val leagueClient = mockk<LeagueClient>()
 
-    @Inject
-    private lateinit var rosterClient: RosterClient
+    @get:MockBean(RosterClient::class)
+    val rosterClient = mockk<RosterClient>()
 
-    @Inject
-    private lateinit var playerClient: PlayerClient
+    @get:MockBean(PlayerClient::class)
+    val playerClient = mockk<PlayerClient>()
 
     private val username = "username"
     private val starterPlayerId = "starterPlayerId"
@@ -111,16 +111,4 @@ class RosterGatewayHttpClientTest {
         val playersById = players.associateBy({ it.playerId }, { it })
         every { playerClient.getAllPlayers() }.returns(playersById)
     }
-
-    @MockBean(UserClient::class)
-    fun userClient() = mockkClass(UserClient::class)
-
-    @MockBean(LeagueClient::class)
-    fun leagueClient() = mockkClass(LeagueClient::class)
-
-    @MockBean(RosterClient::class)
-    fun rosterClient() = mockkClass(RosterClient::class)
-
-    @MockBean(PlayerClient::class)
-    fun playerClient() = mockkClass(PlayerClient::class)
 }

@@ -3,8 +3,8 @@ package br.com.murilocorreiab.sleepermanager.dataprovider.player
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerResponse
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerResponseMapper
-import br.com.murilocorreiab.sleepermanager.domain.player.gateway.PlayerGateway
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
+import br.com.murilocorreiab.sleepermanager.domain.player.gateway.PlayerGateway
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import org.mapstruct.factory.Mappers
