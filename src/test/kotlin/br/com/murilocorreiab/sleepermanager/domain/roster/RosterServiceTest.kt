@@ -35,7 +35,7 @@ class RosterServiceTest {
         val outPlayer = PlayerProducer(id = "player2", name = "out", PlayerStatus.OUT.status).build()
         val irPlayer = PlayerProducer(id = "player3", name = "ir", PlayerStatus.OUT.status).build()
         val outPlayerInBench =
-            PlayerProducer(id = "player4", name = "out", PlayerStatus.OUT.status, isStarter = false).build()
+            PlayerProducer(id = "player4", name = "out", PlayerStatus.OUT.status, starter = false).build()
         val roster =
             RosterProducer(
                 id = expectedRosterId,

@@ -4,11 +4,11 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.league.entity.LeagueRes
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.entity.UserResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.LeagueClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.UserClient
-import br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity.PlayerResponseProducer
+import br.com.murilocorreiab.sleepermanager.dataprovider.player.entity.PlayerResponseProducer
+import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerClient
+import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerResponse
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity.RosterResponseProducer
-import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.PlayerClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.RosterClient
-import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.PlayerResponse
 import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.every
@@ -81,8 +81,8 @@ class RosterGatewayHttpClientTest {
             assertEquals(rosterResponse.rosterId, it.id)
             assertEquals(leagueResponse.leagueId, it.league.id)
             assertEquals(userResponse.userId, it.ownerId)
-            assertTrue(it.players.first { player -> player.id == starterPlayerId }.isStarter)
-            assertFalse(it.players.first { player -> player.id == benchPlayerId }.isStarter)
+            assertTrue(it.players.first { player -> player.id == starterPlayerId }.starter)
+            assertFalse(it.players.first { player -> player.id == benchPlayerId }.starter)
         }
     }
 

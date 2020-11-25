@@ -4,10 +4,10 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.LeagueClien
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.UserClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponse
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.UserResponse
-import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.PlayerClient
+import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerClient
+import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerResponse
+import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerResponseMapper
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.RosterClient
-import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.PlayerResponse
-import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.PlayerResponseMapper
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponse
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponseMapper
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
@@ -72,7 +72,11 @@ class RosterGatewayHttpClient(
 
     private fun mapPlayers(roster: RosterResponse, allPlayers: Map<String, PlayerResponse>): List<Player> =
         roster.players.mapNotNull {
-            allPlayers[it]?.let { player -> playerResponseMapper.toDomain(player, roster.starters) }
+            allPlayers[it]?.let { player ->
+                val domainPlayer = playerResponseMapper.toDomain(player)
+                domainPlayer.starter = roster.starters.contains(player.playerId)
+                domainPlayer
+            }
         }
 
     override suspend fun findAllRosteredPlayersInUserLeagues(username: String): Flow<Player> {

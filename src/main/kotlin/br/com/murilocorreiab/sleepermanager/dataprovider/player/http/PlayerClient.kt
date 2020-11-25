@@ -1,6 +1,5 @@
-package br.com.murilocorreiab.sleepermanager.dataprovider.roster.http
+package br.com.murilocorreiab.sleepermanager.dataprovider.player.http
 
-import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.PlayerResponse
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.client.annotation.Client
 

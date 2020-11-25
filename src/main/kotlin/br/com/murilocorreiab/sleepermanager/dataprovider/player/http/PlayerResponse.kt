@@ -1,4 +1,4 @@
-package br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity
+package br.com.murilocorreiab.sleepermanager.dataprovider.player.http
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

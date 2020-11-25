@@ -1,6 +1,7 @@
 package br.com.murilocorreiab.sleepermanager.domain.player
 
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
+import br.com.murilocorreiab.sleepermanager.domain.player.gateway.PlayerGateway
 import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway
 import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
