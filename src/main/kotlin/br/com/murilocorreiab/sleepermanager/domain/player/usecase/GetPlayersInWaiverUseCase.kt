@@ -1,4 +1,4 @@
-package br.com.murilocorreiab.sleepermanager.domain.player
+package br.com.murilocorreiab.sleepermanager.domain.player.usecase
 
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
 import br.com.murilocorreiab.sleepermanager.domain.player.gateway.PlayerGateway
@@ -11,8 +11,9 @@ import kotlinx.coroutines.flow.filter
 import javax.inject.Singleton
 
 @Singleton
-class PlayerService(private val rosterGateway: RosterGateway, private val playerGateway: PlayerGateway) {
-    suspend fun getPlayersInWaiver(username: String, playersToCheck: List<String>): Flow<Player> = coroutineScope {
+class GetPlayersInWaiverUseCase(private val rosterGateway: RosterGateway, private val playerGateway: PlayerGateway) :
+    GetPlayersInWaiver {
+    override suspend fun get(username: String, playersToCheck: List<String>): Flow<Player> = coroutineScope {
         val rosteredPlayers = async {
             rosterGateway.findAllRosteredPlayersInUserLeagues(username)
         }

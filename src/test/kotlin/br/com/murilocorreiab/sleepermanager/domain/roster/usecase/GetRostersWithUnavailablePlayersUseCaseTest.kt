@@ -1,4 +1,4 @@
-package br.com.murilocorreiab.sleepermanager.domain.roster
+package br.com.murilocorreiab.sleepermanager.domain.roster.usecase
 
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
@@ -17,10 +17,10 @@ import org.junit.jupiter.api.Test
 import javax.inject.Inject
 
 @MicronautTest
-class RosterServiceTest {
+class GetRostersWithUnavailablePlayersUseCaseTest {
 
     @Inject
-    private lateinit var target: RosterService
+    private lateinit var target: GetRostersWithUnavailablePlayersUseCase
 
     @get:MockBean(RosterGateway::class)
     val rosterGateway = mockk<RosterGateway>()
@@ -47,7 +47,7 @@ class RosterServiceTest {
 
         // When
         coEvery { rosterGateway.findUserRostersInLeagues(username) }.returns(flowOf(roster, rosterWithOnlyActivePlayer))
-        val actual = target.checkForUnavailablePlayers(username)
+        val actual = target.get(username)
 
         // Then
         actual.collect { assertEquals(expected, it) }

@@ -1,4 +1,4 @@
-package br.com.murilocorreiab.sleepermanager.domain.player
+package br.com.murilocorreiab.sleepermanager.domain.player.usecase
 
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
 import br.com.murilocorreiab.sleepermanager.domain.player.gateway.PlayerGateway
@@ -16,10 +16,10 @@ import org.junit.jupiter.api.Test
 import javax.inject.Inject
 
 @MicronautTest
-class PlayerServiceTest {
+class GetPlayersInWaiverUseCaseTest {
 
     @Inject
-    lateinit var target: PlayerService
+    lateinit var target: GetPlayersInWaiverUseCase
 
     @get:MockBean(RosterGateway::class)
     val rosterGateway = mockk<RosterGateway>()
@@ -41,7 +41,7 @@ class PlayerServiceTest {
         // When
         coEvery { rosterGateway.findAllRosteredPlayersInUserLeagues(username) }.returns(flowOf(playerInRoster))
         coEvery { playerGateway.getPlayersInformation(playersToCheck) }.returns(flowOf(playerInWaiver, playerInRoster))
-        val actual = target.getPlayersInWaiver(username, playersToCheck).toList()
+        val actual = target.get(username, playersToCheck).toList()
 
         // Then
         assertEquals(1, actual.size)

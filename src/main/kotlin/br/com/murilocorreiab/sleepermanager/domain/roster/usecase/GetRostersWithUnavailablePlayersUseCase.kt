@@ -1,4 +1,4 @@
-package br.com.murilocorreiab.sleepermanager.domain.roster
+package br.com.murilocorreiab.sleepermanager.domain.roster.usecase
 
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Roster
@@ -8,8 +8,9 @@ import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Singleton
 
 @Singleton
-class RosterService(private val rosterGateway: RosterGateway) {
-    suspend fun checkForUnavailablePlayers(username: String): Flow<Roster> =
+class GetRostersWithUnavailablePlayersUseCase(private val rosterGateway: RosterGateway) :
+    GetRostersWithUnavailablePlayers {
+    override suspend fun get(username: String): Flow<Roster> =
         rosterGateway.findUserRostersInLeagues(username).mapNotNull {
             val unavailableStarters =
                 it.players.filter { player -> player.starter && player.injuryStatus != PlayerStatus.ACTIVE.status }
