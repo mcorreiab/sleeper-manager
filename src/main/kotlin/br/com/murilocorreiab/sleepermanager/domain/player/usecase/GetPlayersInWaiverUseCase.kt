@@ -13,18 +13,21 @@ import javax.inject.Singleton
 @Singleton
 class GetPlayersInWaiverUseCase(private val rosterGateway: RosterGateway, private val playerGateway: PlayerGateway) :
     GetPlayersInWaiver {
-    override suspend fun get(username: String, playersToCheck: List<String>): Flow<Player> = coroutineScope {
+    override suspend fun get(username: String, players: List<String>): Flow<Player> = coroutineScope {
         val rosteredPlayers = async {
             rosterGateway.findAllRosteredPlayersInUserLeagues(username)
         }
 
-        val playersInformation = async {
-            playerGateway.getPlayersInformation(playersToCheck)
+        val playersToCheck = async {
+            playerGateway.getPlayersInformation(players)
         }
 
-        playersInformation.await()
-            .filter { player ->
-                rosteredPlayers.await().count { rosteredPlayer -> rosteredPlayer.id == player.id } == 0
-            }
+        playersToCheck.await()
+            .filter { checkIfPlayerIsRostered(rosteredPlayers.await(), it) }
     }
+
+    private suspend fun checkIfPlayerIsRostered(
+        rosteredPlayers: Flow<Player>,
+        player: Player
+    ) = rosteredPlayers.count { it.id == player.id } == 0
 }

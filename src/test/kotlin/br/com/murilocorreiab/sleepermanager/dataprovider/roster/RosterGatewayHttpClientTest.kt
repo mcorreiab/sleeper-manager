@@ -2,28 +2,24 @@ package br.com.murilocorreiab.sleepermanager.dataprovider.roster
 
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.entity.LeagueResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.entity.UserResponseProducer
-import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.LeagueClient
-import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.UserClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.entity.PlayerResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerClient
-import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerResponse
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity.RosterResponseProducer
-import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.RosterClient
 import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import reactor.core.publisher.Flux
-import reactor.core.publisher.Mono
 import javax.inject.Inject
 
 @MicronautTest
@@ -32,46 +28,41 @@ class RosterGatewayHttpClientTest {
     @Inject
     private lateinit var target: RosterGatewayHttpClient
 
-    @get:MockBean(UserClient::class)
-    val userClient = mockk<UserClient>()
-
-    @get:MockBean(LeagueClient::class)
-    val leagueClient = mockk<LeagueClient>()
-
-    @get:MockBean(RosterClient::class)
-    val rosterClient = mockk<RosterClient>()
-
     @get:MockBean(PlayerClient::class)
     val playerClient = mockk<PlayerClient>()
 
-    private val username = "username"
-    private val starterPlayerId = "starterPlayerId"
-    private val benchPlayerId = "benchPlayerId"
-    private val userResponse = UserResponseProducer().build()
-    private val leagueResponse = LeagueResponseProducer().build()
-    private val rosterResponse = RosterResponseProducer(
-        starters = listOf(starterPlayerId),
-        players = listOf(starterPlayerId, benchPlayerId),
-        ownerId = userResponse.userId
-    ).build()
-    private val rosterOfAnotherPlayer = RosterResponseProducer(ownerId = "otherPlayer").build()
-    private val starterPlayerResponse =
-        PlayerResponseProducer(playerId = starterPlayerId, fullName = starterPlayerId).build()
-    private val benchPlayerResponse =
-        PlayerResponseProducer(playerId = benchPlayerId, fullName = benchPlayerId).build()
-    private val playerOutOfTheRosterResponse = PlayerResponseProducer(playerId = "outOfTheRoster").build()
+    @get:MockBean(GetRostersInUserLeagues::class)
+    val getRostersInUserLeagues = mockk<GetRostersInUserLeagues>()
 
     @FlowPreview
     @ExperimentalCoroutinesApi
     @Test
     fun `should get rosters for user with success`() = runBlockingTest {
+        // Given
+        val username = "username"
+        val starterPlayerId = "starterPlayerId"
+        val benchPlayerId = "benchPlayerId"
+        val userResponse = UserResponseProducer().build()
+        val leagueResponse = LeagueResponseProducer().build()
+        val rosterResponse = RosterResponseProducer(
+            starters = listOf(starterPlayerId),
+            players = listOf(starterPlayerId, benchPlayerId),
+            ownerId = userResponse.userId
+        ).build()
+        val playersById = listOf(
+            PlayerResponseProducer(playerId = starterPlayerId, fullName = starterPlayerId).build(),
+            PlayerResponseProducer(playerId = benchPlayerId, fullName = benchPlayerId).build(),
+            PlayerResponseProducer(playerId = "outOfTheRoster").build()
+        ).associateBy({ it.playerId }, { it })
+
         // When
-        val players = listOf(
-            starterPlayerResponse,
-            benchPlayerResponse,
-            playerOutOfTheRosterResponse
+        coEvery { getRostersInUserLeagues.getUserRosters(username) } returns flowOf(
+            Pair(
+                leagueResponse,
+                flowOf(rosterResponse)
+            )
         )
-        arrangeToDoFullFlow(players)
+        every { playerClient.getAllPlayers() }.returns(playersById)
 
         val actual = target.findUserRostersInLeagues(username)
 
@@ -90,25 +81,23 @@ class RosterGatewayHttpClientTest {
     @FlowPreview
     @Test
     fun `if roster has no official players return empty flow`() = runBlockingTest {
+        // Given
+        val username = "username"
+        val leagueResponse = LeagueResponseProducer().build()
+        val rosterResponse = RosterResponseProducer().build()
+
         // When
-        arrangeToDoFullFlow(emptyList())
+        coEvery { getRostersInUserLeagues.getUserRosters(username) } returns flowOf(
+            Pair(
+                leagueResponse,
+                flowOf(rosterResponse)
+            )
+        )
+        every { playerClient.getAllPlayers() }.returns(emptyMap())
 
         val actual = target.findUserRostersInLeagues(username)
 
         // Then
         assertTrue(actual.toList().isEmpty())
-    }
-
-    private fun arrangeToDoFullFlow(players: List<PlayerResponse>) {
-        every { userClient.getByUsername(username) }.returns(Mono.just(userResponse))
-        every { leagueClient.getByUserId(userResponse.userId) }.returns(Flux.just(leagueResponse))
-        every { rosterClient.getRostersOfALeague(leagueResponse.leagueId) }.returns(
-            Flux.just(
-                rosterResponse,
-                rosterOfAnotherPlayer
-            )
-        )
-        val playersById = players.associateBy({ it.playerId }, { it })
-        every { playerClient.getAllPlayers() }.returns(playersById)
     }
 }
