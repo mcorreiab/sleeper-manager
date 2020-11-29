@@ -62,7 +62,7 @@ class RosterGatewayHttpClientTest {
                 flowOf(rosterResponse)
             )
         )
-        every { playerClient.getAllPlayers() }.returns(playersById)
+        every { playerClient.getAllPlayers() } returns playersById
 
         val actual = target.findUserRostersInLeagues(username)
 
@@ -93,11 +93,34 @@ class RosterGatewayHttpClientTest {
                 flowOf(rosterResponse)
             )
         )
-        every { playerClient.getAllPlayers() }.returns(emptyMap())
+        every { playerClient.getAllPlayers() } returns emptyMap()
 
         val actual = target.findUserRostersInLeagues(username)
 
         // Then
         assertTrue(actual.toList().isEmpty())
+    }
+
+    @FlowPreview
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `should get all rostered players with success`() = runBlockingTest {
+        // Given
+        val userName = "username"
+        val rosteredPlayerId = "rosteredPlayerId"
+        val roster = RosterResponseProducer(players = listOf(rosteredPlayerId)).build()
+        val league = LeagueResponseProducer().build()
+
+        // When
+        coEvery { getRostersInUserLeagues.getAllRosters(userName) } returns flowOf(league to flowOf(roster))
+        every { playerClient.getAllPlayers() } returns
+            mapOf(rosteredPlayerId to PlayerResponseProducer(playerId = rosteredPlayerId).build())
+        val actual = target.findAllRosteredPlayersInUserLeagues(userName).toList()
+
+        // Then
+        val rosteredPlayers = actual[0].second.toList()
+        assertEquals(1, actual.size)
+        assertEquals(1, rosteredPlayers.size)
+        assertEquals(rosteredPlayerId, rosteredPlayers[0].id)
     }
 }
