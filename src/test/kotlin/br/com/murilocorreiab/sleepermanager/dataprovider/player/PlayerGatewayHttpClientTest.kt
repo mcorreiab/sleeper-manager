@@ -26,24 +26,28 @@ class PlayerGatewayHttpClientTest {
     @Test
     fun `should recover all informed players with success`() = runBlockingTest {
         // Given
-        val playerPartialName = "Aaron"
+        val firstNameToSearch = "Aaron"
+        val secondNameToSearch = "Nelson"
         val player1 = PlayerResponseProducer(playerId = "1", fullName = "Aaron Rodgers").build()
         val player2 = PlayerResponseProducer(playerId = "2", fullName = "Aaron Jones").build()
         val player3 = PlayerResponseProducer(playerId = "3", fullName = "Davante Adams").build()
+        val player4 = PlayerResponseProducer(playerId = "4", fullName = "Jordy Nelson").build()
 
         // When
         every { playerClient.getAllPlayers() }.returns(
             mapOf(
                 player1.playerId to player1,
                 player2.playerId to player2,
-                player3.playerId to player3
+                player3.playerId to player3,
+                player4.playerId to player4
             )
         )
-        val actual = target.getPlayersInformation(listOf(playerPartialName)).toList()
+        val actual = target.getPlayersInformation(listOf(firstNameToSearch, secondNameToSearch)).toList()
 
         // Then
-        assertEquals(2, actual.size)
+        assertEquals(3, actual.size)
         assertEquals(player1.playerId, actual[0].id)
         assertEquals(player2.playerId, actual[1].id)
+        assertEquals(player4.playerId, actual[2].id)
     }
 }
