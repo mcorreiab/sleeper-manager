@@ -9,7 +9,6 @@ import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import javax.inject.Inject
@@ -23,7 +22,6 @@ class PlayerEntrypointTest {
     @Inject
     private lateinit var wireMock: Wiremock
 
-    @ExperimentalCoroutinesApi
     @Test
     fun `should get players in waiver with success`() {
         // Given
@@ -66,17 +64,29 @@ class PlayerEntrypointTest {
                 )
         )
 
-        val playersInWaiver = playerClient.getPlayersInWaiverByLeague(userName, playersToSearch)
+        val response = playerClient.getPlayersInWaiverByLeague(userName, playersToSearch)
 
         // Then
-        assertEquals(HttpStatus.OK, playersInWaiver.status)
+        assertEquals(HttpStatus.OK, response.status)
 
-        val body = playersInWaiver.body() ?: throw Exception("Should had returned a player")
+        val body = response.body() ?: throw Exception("Should had returned a player")
         val playerFoundWaiver = body[0]
         val leagues = playerFoundWaiver.leagues
         assertEquals(1, body.size)
         assertEquals("4199", playerFoundWaiver.player.id)
         assertEquals(1, leagues.size)
         assertEquals("602534189945909248", leagues[0].id)
+    }
+
+    @Test
+    fun `if no player is passed as param return 404`() {
+        // Given
+        val userName = "username"
+
+        // When
+        val response = playerClient.getPlayersInWaiverByLeague(userName, null)
+
+        // Then
+        assertEquals(HttpStatus.NOT_FOUND, response.status)
     }
 }

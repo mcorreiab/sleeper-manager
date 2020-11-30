@@ -2,6 +2,7 @@ package br.com.murilocorreiab.sleepermanager.entrypoint
 
 import br.com.murilocorreiab.sleepermanager.domain.player.usecase.GetPlayersInWaiver
 import br.com.murilocorreiab.sleepermanager.entrypoint.model.PlayersWaiverResponse
+import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.PathVariable
@@ -18,10 +19,11 @@ class PlayerEntrypoint(private val getPlayersInWaiver: GetPlayersInWaiver) {
     fun getPlayersInWaiverByLeague(
         @PathVariable username: String,
         @QueryValue players: String?
-    ): Flow<PlayersWaiverResponse> = runBlocking {
-        val playersToSearch = players?.split(",") ?: emptyList()
-        getPlayersInWaiver.get(username, playersToSearch).map { (player, leagues) ->
-            PlayersWaiverResponse(player, leagues.toList())
-        }
+    ): HttpResponse<Flow<PlayersWaiverResponse>> = runBlocking {
+        players?.split(",")?.let {
+            getPlayersInWaiver.get(username, it).map { (player, leagues) ->
+                PlayersWaiverResponse(player, leagues.toList())
+            }.let { response -> HttpResponse.ok(response) }
+        } ?: HttpResponse.notFound()
     }
 }

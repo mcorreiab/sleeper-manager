@@ -29,7 +29,8 @@ class PlayerGatewayHttpClientTest {
         val firstNameToSearch = "Aaron"
         val secondNameToSearch = "Nelson"
         val player1 = PlayerResponseProducer(playerId = "1", fullName = "Aaron Rodgers").build()
-        val player2 = PlayerResponseProducer(playerId = "2", fullName = "Aaron Jones").build()
+        val player2 =
+            PlayerResponseProducer(playerId = "2", fullName = null, firstName = "Aaron", lastName = "Jones").build()
         val player3 = PlayerResponseProducer(playerId = "3", fullName = "Davante Adams").build()
         val player4 = PlayerResponseProducer(playerId = "4", fullName = "Jordy Nelson").build()
 

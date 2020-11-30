@@ -13,6 +13,6 @@ interface PlayerClient {
     @Get("/user/{username}/waiver{?players}")
     fun getPlayersInWaiverByLeague(
         @PathVariable username: String,
-        @QueryValue players: String
+        @QueryValue players: String?
     ): HttpResponse<List<PlayersWaiverResponse>>
 }
