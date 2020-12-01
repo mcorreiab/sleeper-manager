@@ -89,4 +89,16 @@ class PlayerEntrypointTest {
         // Then
         assertEquals(HttpStatus.NOT_FOUND, response.status)
     }
+
+    @Test
+    fun `if player list is empty return 404`() {
+        // Given
+        val userName = "username"
+
+        // When
+        val response = playerClient.getPlayersInWaiverByLeague(userName, "")
+
+        // Then
+        assertEquals(HttpStatus.NOT_FOUND, response.status)
+    }
 }

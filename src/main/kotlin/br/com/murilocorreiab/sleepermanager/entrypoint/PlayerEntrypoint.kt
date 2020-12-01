@@ -20,10 +20,18 @@ class PlayerEntrypoint(private val getPlayersInWaiver: GetPlayersInWaiver) {
         @PathVariable username: String,
         @QueryValue players: String?
     ): HttpResponse<Flow<PlayersWaiverResponse>> = runBlocking {
-        players?.split(",")?.let {
-            getPlayersInWaiver.get(username, it).map { (player, leagues) ->
-                PlayersWaiverResponse(player, leagues.toList())
-            }.let { response -> HttpResponse.ok(response) }
+        players?.let {
+            val namesToSearch = getNamesToSearch(it)
+            if (namesToSearch.isNotEmpty()) {
+                getPlayersInWaiver.get(username, namesToSearch).map { (player, leagues) ->
+                    PlayersWaiverResponse(player, leagues.toList())
+                }.let { response -> HttpResponse.ok(response) }
+            } else {
+                HttpResponse.notFound()
+            }
         } ?: HttpResponse.notFound()
     }
+
+    private fun getNamesToSearch(playersQuery: String): List<String> =
+        playersQuery.split(",").filter { it.isNotBlank() }
 }
