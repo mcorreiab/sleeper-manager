@@ -36,6 +36,8 @@ dependencies {
         because("To allow mapstruct to run in kotlin processor")
     }
     compileOnly("org.graalvm.nativeimage:svm")
+    kapt("io.micronaut.openapi:micronaut-openapi")
+    implementation("io.swagger.core.v3:swagger-annotations")
     implementation("io.micronaut:micronaut-validation")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
@@ -63,7 +65,7 @@ dependencies {
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
     testImplementation("io.mockk:mockk:$mockkVersion")
-    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxCoroutinesVersion") {
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxCoroutinesVersion") {
         because("To use coroutines in unit tests")
     }
     testImplementation("io.projectreactor:reactor-test:$reactorVersion") {
@@ -72,10 +74,6 @@ dependencies {
     testImplementation("com.github.tomakehurst:wiremock-jre8:$wiremockVersion") {
         because("Mock clients responses in integration tests")
     }
-    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("io.micronaut.test:micronaut-test-junit5:$micronautVersion")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
 }
 
 test.classpath += configurations.developmentOnly

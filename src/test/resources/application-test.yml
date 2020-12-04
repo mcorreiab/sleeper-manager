@@ -2,6 +2,9 @@ micronaut:
   http:
     client:
       read-timeout: 5s
+  server:
+    port: ${random.port}
+    host: localhost
 
 wiremock:
   server:
