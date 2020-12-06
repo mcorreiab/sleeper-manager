@@ -7,9 +7,12 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.count
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 import javax.inject.Inject
 
@@ -50,5 +53,20 @@ class GetPlayersGatewayHttpClientTest {
         assertEquals(player1.playerId, actual[0].id)
         assertEquals(player2.playerId, actual[1].id)
         assertEquals(player4.playerId, actual[2].id)
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `should get all players with success`() = runBlockingTest {
+        // Given
+        val player = PlayerResponseProducer().build()
+
+        // When
+        every { playerClient.getAllPlayers() } returns mapOf(player.playerId to player)
+        val actual = target.getAllPlayers()
+
+        // Then
+        assertEquals(1, actual.count())
+        assertNotNull(actual.first { it.id == player.playerId })
     }
 }

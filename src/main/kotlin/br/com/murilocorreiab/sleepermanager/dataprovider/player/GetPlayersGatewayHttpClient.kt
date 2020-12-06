@@ -29,7 +29,7 @@ class GetPlayersGatewayHttpClient(private val playerClient: PlayerClient) : GetP
         name.contains(it, true)
     }
 
-    override suspend fun getAllPlayers(): Flow<Player> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getAllPlayers(): Flow<Player> = flowOf(*playerClient.getAllPlayers().values.map {
+        playerMapper.toDomain(it)
+    }.toTypedArray())
 }
