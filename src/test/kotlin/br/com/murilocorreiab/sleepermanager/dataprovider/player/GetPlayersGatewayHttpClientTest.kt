@@ -14,10 +14,10 @@ import org.junit.jupiter.api.Test
 import javax.inject.Inject
 
 @MicronautTest
-class PlayerGatewayHttpClientTest {
+class GetPlayersGatewayHttpClientTest {
 
     @Inject
-    private lateinit var target: PlayerGatewayHttpClient
+    private lateinit var target: GetPlayersGatewayHttpClient
 
     @get:MockBean(PlayerClient::class)
     val playerClient = mockk<PlayerClient>()

@@ -2,7 +2,7 @@ package br.com.murilocorreiab.sleepermanager.domain.player.usecase
 
 import br.com.murilocorreiab.sleepermanager.domain.league.entity.League
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
-import br.com.murilocorreiab.sleepermanager.domain.player.gateway.PlayerGateway
+import br.com.murilocorreiab.sleepermanager.domain.player.gateway.GetPlayersGateway
 import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -14,7 +14,10 @@ import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Singleton
 
 @Singleton
-class GetPlayersInWaiverUseCase(private val rosterGateway: RosterGateway, private val playerGateway: PlayerGateway) :
+class GetPlayersInWaiverUseCase(
+    private val rosterGateway: RosterGateway,
+    private val getPlayersGateway: GetPlayersGateway
+) :
     GetPlayersInWaiver {
     override suspend fun get(username: String, players: List<String>): Flow<Pair<Player, Flow<League>>> =
         coroutineScope {
@@ -23,7 +26,7 @@ class GetPlayersInWaiverUseCase(private val rosterGateway: RosterGateway, privat
             }
 
             val playersToCheck = async {
-                playerGateway.getPlayersInformation(players)
+                getPlayersGateway.getPlayersInformation(players)
             }
 
             playersToCheck.await().mapNotNull {

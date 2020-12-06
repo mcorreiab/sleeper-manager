@@ -2,7 +2,7 @@ package br.com.murilocorreiab.sleepermanager.domain.player.usecase
 
 import br.com.murilocorreiab.sleepermanager.domain.league.entity.LeagueProducer
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
-import br.com.murilocorreiab.sleepermanager.domain.player.gateway.PlayerGateway
+import br.com.murilocorreiab.sleepermanager.domain.player.gateway.GetPlayersGateway
 import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway
 import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
@@ -25,8 +25,8 @@ class GetPlayersInWaiverUseCaseTest {
     @get:MockBean(RosterGateway::class)
     val rosterGateway = mockk<RosterGateway>()
 
-    @get:MockBean(PlayerGateway::class)
-    val playerGateway = mockk<PlayerGateway>()
+    @get:MockBean(GetPlayersGateway::class)
+    val playerGateway = mockk<GetPlayersGateway>()
 
     @ExperimentalCoroutinesApi
     @Test
