@@ -16,6 +16,9 @@ micronaut:
     host: 0.0.0.0
     thread-selection: auto
 
+mongodb:
+  uri: mongodb://username:password@localhost:27017/databaseName
+
 external:
   api:
     sleeper:

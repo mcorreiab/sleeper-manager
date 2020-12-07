@@ -4,5 +4,5 @@ import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
 import kotlinx.coroutines.flow.Flow
 
 interface ModifyPlayerGateway {
-    fun updatePlayers(players: Flow<Player>)
+    suspend fun updatePlayers(players: Flow<Player>): Flow<Player>
 }

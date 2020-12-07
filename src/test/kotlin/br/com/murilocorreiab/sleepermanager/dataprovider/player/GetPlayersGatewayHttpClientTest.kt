@@ -1,7 +1,7 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.player
 
-import br.com.murilocorreiab.sleepermanager.dataprovider.player.entity.PlayerResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerClient
+import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.entity.PlayerResponseProducer
 import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.every

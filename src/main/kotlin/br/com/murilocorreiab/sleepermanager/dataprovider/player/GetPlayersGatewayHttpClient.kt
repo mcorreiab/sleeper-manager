@@ -29,7 +29,9 @@ class GetPlayersGatewayHttpClient(private val playerClient: PlayerClient) : GetP
         name.contains(it, true)
     }
 
-    override suspend fun getAllPlayers(): Flow<Player> = flowOf(*playerClient.getAllPlayers().values.map {
-        playerMapper.toDomain(it)
-    }.toTypedArray())
+    override suspend fun getAllPlayers(): Flow<Player> = flowOf(
+        *playerClient.getAllPlayers().values.map {
+            playerMapper.toDomain(it)
+        }.toTypedArray()
+    )
 }

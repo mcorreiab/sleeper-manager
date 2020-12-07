@@ -1,4 +1,4 @@
-package br.com.murilocorreiab.sleepermanager.dataprovider.player.entity
+package br.com.murilocorreiab.sleepermanager.dataprovider.player.http.entity
 
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerResponseMapper
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus

@@ -9,6 +9,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Test
@@ -34,7 +35,7 @@ class UpdatePlayerUseCaseTest {
 
         // When
         coEvery { playerGateway.getAllPlayers() } returns playersToUpdate
-        coEvery { modifyPlayerGateway.updatePlayers(playersToUpdate) } returns Unit
+        coEvery { modifyPlayerGateway.updatePlayers(playersToUpdate) } returns emptyFlow()
         target.updatePlayers()
 
         // Then

@@ -2,6 +2,7 @@ plugins {
     id "org.jetbrains.kotlin.jvm" version "$kotlinVersion"
     id "org.jetbrains.kotlin.kapt" version "$kotlinVersion"
     id "org.jetbrains.kotlin.plugin.allopen" version "$kotlinVersion"
+    id("org.jetbrains.kotlin.plugin.noarg") version "$kotlinVersion"
     id "com.github.johnrengelman.shadow" version "6.0.0"
     id "application"
     id "jacoco"
@@ -37,6 +38,7 @@ dependencies {
     }
     compileOnly("org.graalvm.nativeimage:svm")
     kapt("io.micronaut.openapi:micronaut-openapi")
+    kapt("io.micronaut.data:micronaut-data-processor")
     implementation("io.swagger.core.v3:swagger-annotations")
     implementation("io.micronaut:micronaut-validation")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
@@ -45,6 +47,7 @@ dependencies {
     implementation("io.micronaut:micronaut-runtime")
     implementation("javax.annotation:javax.annotation-api")
     implementation("io.micronaut:micronaut-http-client")
+    implementation("org.jetbrains.kotlin:kotlin-noarg")
     implementation("org.mapstruct:mapstruct:$mapStructVersion") {
         because("To map objects in a clear way")
     }
@@ -61,6 +64,12 @@ dependencies {
         because("It's necessary to use reactor in micronaut 2.x.x")
     }
     implementation("io.micronaut.xml:micronaut-jackson-xml")
+    implementation("io.micronaut.sql:micronaut-jdbc-hikari") {
+        because("To persist data in sql database")
+    }
+    implementation("io.micronaut.data:micronaut-data-hibernate-jpa") {
+        because("To persist data in sql database")
+    }
     developmentOnly("io.micronaut:micronaut-runtime-osx:$micronautVersion")
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -73,6 +82,9 @@ dependencies {
     }
     testImplementation("com.github.tomakehurst:wiremock-jre8:$wiremockVersion") {
         because("Mock clients responses in integration tests")
+    }
+    testImplementation("com.h2database:h2:${h2DatabaseVersion}") {
+        because("To use in memory sql database in test scope")
     }
 }
 
@@ -126,6 +138,10 @@ kapt {
 
 shadowJar {
     mergeServiceFiles()
+}
+
+noArg {
+    annotation("javax.persistence.Entity")
 }
 
 tasks.withType(JavaExec) {

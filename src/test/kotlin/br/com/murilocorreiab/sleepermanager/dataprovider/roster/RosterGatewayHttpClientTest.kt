@@ -2,8 +2,8 @@ package br.com.murilocorreiab.sleepermanager.dataprovider.roster
 
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.entity.LeagueResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.entity.UserResponseProducer
-import br.com.murilocorreiab.sleepermanager.dataprovider.player.entity.PlayerResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerClient
+import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.entity.PlayerResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity.RosterResponseProducer
 import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
