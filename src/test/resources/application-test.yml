@@ -26,8 +26,6 @@ datasources:
 
 jpa:
   default:
-    entity-scan:
-      packages: br.com.murilocorreiab.sleepermanager
     properties:
       hibernate:
         hbm2ddl:

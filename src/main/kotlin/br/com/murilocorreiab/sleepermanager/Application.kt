@@ -14,7 +14,8 @@ import io.swagger.v3.oas.annotations.info.Info
 )
 class Application {
     fun start(args: Array<String>) {
-        build().args(*args).packages("br.com.murilocorreia.sleepermanager").start()
+        build().args(*args).defaultEnvironments("dev")
+            .packages("br.com.murilocorreia.sleepermanager").start()
     }
 }
 

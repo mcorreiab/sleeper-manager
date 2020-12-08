@@ -26,3 +26,18 @@ external:
         getLeagues: /{userId}/leagues/nfl/2020
       roster: ${external.api.sleeper.base}/league/{leagueId}/rosters
       player: ${external.api.sleeper.base}/players/nfl
+
+datasources:
+  default:
+    url: ${DATABASE_URL}
+    driverClassName: org.postgresql.Driver
+    dialect: POSTGRES
+
+jpa:
+  default:
+    entity-scan:
+      packages: br.com.murilocorreiab.sleepermanager
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: validate
