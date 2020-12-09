@@ -5,9 +5,8 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.entity.Player
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
 import br.com.murilocorreiab.sleepermanager.domain.player.gateway.ModifyPlayerGateway
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.reactive.asFlow
 import org.mapstruct.factory.Mappers
 import javax.inject.Singleton
 
@@ -18,6 +17,6 @@ class ModifyPlayerGatewayDatabase(private val playerRepository: PlayerRepository
     override suspend fun updatePlayers(players: Flow<Player>): Flow<Player> {
         val playersToSave = playerDbMapper.fromDomain(players.toList())
         playerRepository.deleteAll()
-        return playerRepository.saveAll(playersToSave).asFlow().map { playerDbMapper.toDomain(it) }
+        return flowOf(*playerRepository.saveAll(playersToSave).map { playerDbMapper.toDomain(it) }.toTypedArray())
     }
 }

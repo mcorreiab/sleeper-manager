@@ -1,6 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.entrypoint
 
-import br.com.murilocorreiab.sleepermanager.entrypoint.client.PlayerClient
+import br.com.murilocorreiab.sleepermanager.entrypoint.client.PlayerInWaiverClient
 import br.com.murilocorreiab.sleepermanager.util.Wiremock
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.github.tomakehurst.wiremock.client.WireMock.get
@@ -14,10 +14,10 @@ import org.junit.jupiter.api.Test
 import javax.inject.Inject
 
 @MicronautTest
-class PlayerEntrypointTest {
+class PlayerInWaiverEntrypointTest {
 
     @Inject
-    private lateinit var playerClient: PlayerClient
+    private lateinit var playerInWaiverClient: PlayerInWaiverClient
 
     @Inject
     private lateinit var wireMock: Wiremock
@@ -64,7 +64,7 @@ class PlayerEntrypointTest {
                 )
         )
 
-        val response = playerClient.getPlayersInWaiverByLeague(userName, playersToSearch)
+        val response = playerInWaiverClient.getPlayersInWaiverByLeague(userName, playersToSearch)
 
         // Then
         assertEquals(HttpStatus.OK, response.status)
@@ -84,7 +84,7 @@ class PlayerEntrypointTest {
         val userName = "username"
 
         // When
-        val response = playerClient.getPlayersInWaiverByLeague(userName, null)
+        val response = playerInWaiverClient.getPlayersInWaiverByLeague(userName, null)
 
         // Then
         assertEquals(HttpStatus.NOT_FOUND, response.status)
@@ -96,7 +96,7 @@ class PlayerEntrypointTest {
         val userName = "username"
 
         // When
-        val response = playerClient.getPlayersInWaiverByLeague(userName, "")
+        val response = playerInWaiverClient.getPlayersInWaiverByLeague(userName, "")
 
         // Then
         assertEquals(HttpStatus.NOT_FOUND, response.status)

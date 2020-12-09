@@ -8,8 +8,8 @@ import javax.inject.Singleton
 class UpdatePlayerUseCase(
     private val getPlayersGateway: GetPlayersGateway,
     private val modifyPlayerGateway: ModifyPlayerGateway
-) {
-    suspend fun updatePlayers() = getPlayersGateway.getAllPlayers().let {
+) : UpdatePlayer {
+    override suspend fun updatePlayers() = getPlayersGateway.getAllPlayers().let {
         modifyPlayerGateway.updatePlayers(it)
     }
 }

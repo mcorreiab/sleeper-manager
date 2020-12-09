@@ -8,7 +8,7 @@ import io.micronaut.http.annotation.QueryValue
 import io.micronaut.http.client.annotation.Client
 
 @Client("/players")
-interface PlayerClient {
+interface PlayerInWaiverClient {
 
     @Get("/user/{username}/waiver{?players}")
     fun getPlayersInWaiverByLeague(

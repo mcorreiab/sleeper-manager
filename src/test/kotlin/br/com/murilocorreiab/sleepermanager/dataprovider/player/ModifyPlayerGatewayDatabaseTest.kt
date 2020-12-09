@@ -5,8 +5,8 @@ import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import javax.inject.Inject
 
@@ -26,8 +26,7 @@ class ModifyPlayerGatewayDatabaseTest {
             target.updatePlayers(flowOf(playerToSave)).toList()
         }
 
-        runBlocking {
-            playerRepository.findById(playerToSave.id).awaitFirst()
-        }
+        val player = playerRepository.findById(playerToSave.id)
+        assertTrue(player.isPresent)
     }
 }

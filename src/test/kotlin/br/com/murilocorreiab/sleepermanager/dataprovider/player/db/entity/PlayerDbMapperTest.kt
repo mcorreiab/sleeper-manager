@@ -21,7 +21,7 @@ class PlayerDbMapperTest {
         val name = "name"
         val starter = false
         val player = Player(id = playerId, injuryStatus = injuryStatus, name = name, starter = starter)
-        val expected = PlayerDb(id = playerId, injuryStatus = injuryStatus, name = name, starter = starter)
+        val expected = PlayerDb(id = playerId, injuryStatus = injuryStatus, name = name)
 
         // When
         val actual = target.fromDomain(player)
@@ -49,7 +49,7 @@ class PlayerDbMapperTest {
         val injuryStatus = "injuryStatus"
         val name = "name"
         val starter = false
-        val player = PlayerDb(id = playerId, injuryStatus = injuryStatus, name = name, starter = starter)
+        val player = PlayerDb(id = playerId, injuryStatus = injuryStatus, name = name)
         val expected = Player(id = playerId, injuryStatus = injuryStatus, name = name, starter = starter)
 
         // When

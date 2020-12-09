@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 
 @Controller("/players")
-class PlayerEntrypoint(private val getPlayersInWaiver: GetPlayersInWaiver) {
+class PlayerInWaiverEntrypoint(private val getPlayersInWaiver: GetPlayersInWaiver) {
 
     @Operation(
         summary = "Get Players in waiver",
