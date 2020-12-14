@@ -113,11 +113,12 @@ class RosterGatewayHttpClientTest {
         // Given
         val userName = "username"
         val rosteredPlayerId = "rosteredPlayerId"
-        val roster = RosterResponseProducer(players = listOf(rosteredPlayerId)).build()
+        val roster1 = RosterResponseProducer(rosterId = "roster1", players = listOf(rosteredPlayerId)).build()
+        val roster2 = roster1.copy(rosterId = "roster2")
         val league = LeagueResponseProducer().build()
 
         // When
-        coEvery { getRostersInUserLeagues.getAllRosters(userName) } returns flowOf(league to flowOf(roster))
+        coEvery { getRostersInUserLeagues.getAllRosters(userName) } returns flowOf(league to flowOf(roster1, roster2))
         every { playerRepository.findByIdInList(listOf(rosteredPlayerId)) } returns
             listOf(PlayerDbProducer(id = rosteredPlayerId).build())
         val actual = target.findAllRosteredPlayersInUserLeagues(userName).toList()
