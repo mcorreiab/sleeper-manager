@@ -7,5 +7,4 @@ import io.micronaut.data.repository.CrudRepository
 @Repository
 interface PlayerRepository : CrudRepository<PlayerDb, String> {
     fun findByNameIlike(name: String): List<PlayerDb>
-    fun findByIdInList(ids: List<String>): List<PlayerDb>
 }
