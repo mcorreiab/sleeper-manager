@@ -5,4 +5,7 @@ import io.micronaut.data.annotation.Repository
 import io.micronaut.data.repository.CrudRepository
 
 @Repository
-interface PlayerRepository : CrudRepository<PlayerDb, String>
+interface PlayerRepository : CrudRepository<PlayerDb, String> {
+    fun findByNameIlike(name: String): List<PlayerDb>
+    fun findByIdInList(ids: List<String>): List<PlayerDb>
+}

@@ -2,6 +2,8 @@ package br.com.murilocorreiab.sleepermanager.dataprovider.roster
 
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.entity.LeagueResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.entity.UserResponseProducer
+import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.PlayerRepository
+import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.entity.PlayerDbProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.entity.PlayerResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity.RosterResponseProducer
@@ -33,6 +35,9 @@ class RosterGatewayHttpClientTest {
 
     @get:MockBean(GetRostersInUserLeagues::class)
     val getRostersInUserLeagues = mockk<GetRostersInUserLeagues>()
+
+    @get:MockBean(PlayerRepository::class)
+    val playerRepository = mockk<PlayerRepository>()
 
     @FlowPreview
     @ExperimentalCoroutinesApi
@@ -113,8 +118,8 @@ class RosterGatewayHttpClientTest {
 
         // When
         coEvery { getRostersInUserLeagues.getAllRosters(userName) } returns flowOf(league to flowOf(roster))
-        every { playerClient.getAllPlayers() } returns
-            mapOf(rosteredPlayerId to PlayerResponseProducer(playerId = rosteredPlayerId).build())
+        every { playerRepository.findByIdInList(listOf(rosteredPlayerId)) } returns
+            listOf(PlayerDbProducer(id = rosteredPlayerId).build())
         val actual = target.findAllRosteredPlayersInUserLeagues(userName).toList()
 
         // Then

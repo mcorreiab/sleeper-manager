@@ -1,5 +1,7 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.player
 
+import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.PlayerRepository
+import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.entity.PlayerDbProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.entity.PlayerResponseProducer
 import io.micronaut.test.annotation.MockBean
@@ -22,6 +24,9 @@ class GetPlayersGatewayHttpClientTest {
     @Inject
     private lateinit var target: GetPlayersGatewayHttpClient
 
+    @get:MockBean(PlayerRepository::class)
+    val playerRepository = mockk<PlayerRepository>()
+
     @get:MockBean(PlayerClient::class)
     val playerClient = mockk<PlayerClient>()
 
@@ -31,28 +36,30 @@ class GetPlayersGatewayHttpClientTest {
         // Given
         val firstNameToSearch = "Aaron"
         val secondNameToSearch = "Nelson"
-        val player1 = PlayerResponseProducer(playerId = "1", fullName = "Aaron Rodgers").build()
-        val player2 =
-            PlayerResponseProducer(playerId = "2", fullName = null, firstName = "Aaron", lastName = "Jones").build()
-        val player3 = PlayerResponseProducer(playerId = "3", fullName = "Davante Adams").build()
-        val player4 = PlayerResponseProducer(playerId = "4", fullName = "Jordy Nelson").build()
+        val player1 = PlayerDbProducer(id = "1", name = "Aaron Rodgers").build()
+        val player2 = PlayerDbProducer(id = "2", name = "Aaron Jones").build()
+        val player3 = PlayerDbProducer(id = "3", name = "Aaron Nelson").build()
+        val player4 = PlayerDbProducer(id = "4", name = "Jordy Nelson").build()
 
         // When
-        every { playerClient.getAllPlayers() }.returns(
-            mapOf(
-                player1.playerId to player1,
-                player2.playerId to player2,
-                player3.playerId to player3,
-                player4.playerId to player4
-            )
+        every { playerRepository.findByNameIlike("%$firstNameToSearch%") } returns listOf(
+            player1,
+            player2,
+            player3
         )
+        every { playerRepository.findByNameIlike("%$secondNameToSearch%") } returns listOf(
+            player3,
+            player4
+        )
+
         val actual = target.getPlayersInformation(listOf(firstNameToSearch, secondNameToSearch)).toList()
 
         // Then
-        assertEquals(3, actual.size)
-        assertEquals(player1.playerId, actual[0].id)
-        assertEquals(player2.playerId, actual[1].id)
-        assertEquals(player4.playerId, actual[2].id)
+        assertEquals(4, actual.size)
+        assertEquals(player1.id, actual[0].id)
+        assertEquals(player2.id, actual[1].id)
+        assertEquals(player3.id, actual[2].id)
+        assertEquals(player4.id, actual[3].id)
     }
 
     @ExperimentalCoroutinesApi

@@ -1,7 +1,8 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.player
 
+import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.PlayerRepository
+import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.entity.PlayerDbMapper
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerClient
-import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerResponse
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerResponseMapper
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
 import br.com.murilocorreiab.sleepermanager.domain.player.gateway.GetPlayersGateway
@@ -11,23 +12,22 @@ import org.mapstruct.factory.Mappers
 import javax.inject.Singleton
 
 @Singleton
-class GetPlayersGatewayHttpClient(private val playerClient: PlayerClient) : GetPlayersGateway {
+class GetPlayersGatewayHttpClient(
+    private val playerClient: PlayerClient,
+    private val playerRepository: PlayerRepository
+) : GetPlayersGateway {
     private val playerMapper = Mappers.getMapper(PlayerResponseMapper::class.java)
-    override suspend fun getPlayersInformation(players: List<String>): Flow<Player> {
-        val allPlayers = playerClient.getAllPlayers()
-        val foundPlayers = allPlayers.values.filter {
-            filterPlayersByName(players, it)
-        }.map { playerMapper.toDomain(it) }
-        return flowOf(*foundPlayers.toTypedArray())
-    }
-
-    private fun filterPlayersByName(
-        players: List<String>,
-        playerResponse: PlayerResponse
-    ) = players.any {
-        val name = playerResponse.fullName ?: "${playerResponse.firstName} ${playerResponse.lastName}"
-        name.contains(it, true)
-    }
+    private val playerDbMapper = Mappers.getMapper(PlayerDbMapper::class.java)
+    override suspend fun getPlayersInformation(players: List<String>): Flow<Player> =
+        players.map {
+            playerRepository.findByNameIlike("%$it%")
+        }.reduce { allPlayers, foundPlayers ->
+            allPlayers + foundPlayers.filter { !allPlayers.contains(it) }
+        }.map {
+            playerDbMapper.toDomain(it)
+        }.let {
+            flowOf(*it.toTypedArray())
+        }
 
     override suspend fun getAllPlayers(): Flow<Player> = flowOf(
         *playerClient.getAllPlayers().values.map {

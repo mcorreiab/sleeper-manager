@@ -1,5 +1,7 @@
 package br.com.murilocorreiab.sleepermanager.entrypoint
 
+import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.PlayerRepository
+import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.entity.PlayerDbProducer
 import br.com.murilocorreiab.sleepermanager.entrypoint.client.PlayerInWaiverClient
 import br.com.murilocorreiab.sleepermanager.util.Wiremock
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
@@ -10,6 +12,7 @@ import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import javax.inject.Inject
 
@@ -20,7 +23,20 @@ class PlayerInWaiverEntrypointTest {
     private lateinit var playerInWaiverClient: PlayerInWaiverClient
 
     @Inject
+    private lateinit var playerRepository: PlayerRepository
+
+    @Inject
     private lateinit var wireMock: Wiremock
+
+    @BeforeEach
+    fun populateDatabase() {
+        playerRepository.deleteAll()
+        val player1 = PlayerDbProducer(id = "96", name = "Aaron Rodgers").build()
+        val player2 = PlayerDbProducer(id = "2133", name = "Davante Adams").build()
+        val player3 = PlayerDbProducer(id = "4866", name = "Saquon Barkley").build()
+        val player4 = PlayerDbProducer(id = "4199", name = "Aaron Jones").build()
+        playerRepository.saveAll(listOf(player1, player2, player3, player4))
+    }
 
     @Test
     fun `should get players in waiver with success`() {
@@ -51,16 +67,6 @@ class PlayerInWaiverEntrypointTest {
                 .willReturn(
                     aResponse().withHeader("content-type", MediaType.APPLICATION_JSON)
                         .withBodyFile("roster_response.json")
-                )
-        )
-
-        stubFor(
-            get(urlEqualTo("/players/nfl"))
-                .willReturn(
-                    aResponse().withHeader(
-                        "content-type",
-                        MediaType.APPLICATION_JSON
-                    ).withBodyFile("players_response.json")
                 )
         )
 
