@@ -3,7 +3,6 @@ package br.com.murilocorreiab.sleepermanager.dataprovider.roster
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueMapper
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponse
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.PlayerRepository
-import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.entity.PlayerDb
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.entity.PlayerDbMapper
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerResponse
@@ -23,7 +22,6 @@ import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
-import kotlinx.coroutines.flow.reduce
 import org.mapstruct.factory.Mappers
 import javax.inject.Singleton
 
@@ -71,35 +69,24 @@ class RosterGatewayHttpClient(
     override suspend fun findAllRosteredPlayersInUserLeagues(username: String): Flow<Pair<League, Flow<Player>>> {
 
         val rostersByLeague = getRostersInUserLeagues.getAllRosters(username)
-        val playersId = getPlayersId(rostersByLeague)
-        val players = playerRepository.findByIdInList(playersId)
 
         return rostersByLeague.map { (league, rosters) ->
-            val rosterPlayers = getPlayersFromRosters(rosters, players)
+            val rosterPlayers = getPlayersFromRosters(rosters)
             val domainLeague = leagueResponseMapper.convertToDomain(league)
             Pair(domainLeague, rosterPlayers)
         }
     }
 
     @FlowPreview
-    private suspend fun getPlayersId(
-        rostersByLeague: Flow<Pair<LeagueResponse, Flow<RosterResponse>>>
-    ): List<String> =
-        rostersByLeague.flatMapConcat {
-            it.second
-        }.map {
-            it.players
-        }.reduce { accumulator, value ->
-            accumulator + value.filter { !accumulator.contains(it) }
-        }
-
-    @FlowPreview
     private fun getPlayersFromRosters(
-        rosters: Flow<RosterResponse>,
-        players: List<PlayerDb>
+        rosters: Flow<RosterResponse>
     ): Flow<Player> = rosters.flatMapConcat { flowOf(*it.players.toTypedArray()) }
         .distinctUntilChanged()
         .mapNotNull {
-            players.firstOrNull { player -> player.id == it }?.let { player -> playerDbMapper.toDomain(player) }
+            playerRepository.findById(it)
+        }.mapNotNull {
+            it.orElse(null)
+        }.map {
+            playerDbMapper.toDomain(it)
         }
 }

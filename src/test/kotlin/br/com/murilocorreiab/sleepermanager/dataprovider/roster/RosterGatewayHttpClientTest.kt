@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import java.util.Optional
 import javax.inject.Inject
 
 @MicronautTest
@@ -119,8 +120,8 @@ class RosterGatewayHttpClientTest {
 
         // When
         coEvery { getRostersInUserLeagues.getAllRosters(userName) } returns flowOf(league to flowOf(roster1, roster2))
-        every { playerRepository.findByIdInList(listOf(rosteredPlayerId)) } returns
-            listOf(PlayerDbProducer(id = rosteredPlayerId).build())
+        every { playerRepository.findById(rosteredPlayerId) } returns
+            Optional.of(PlayerDbProducer(id = rosteredPlayerId).build())
         val actual = target.findAllRosteredPlayersInUserLeagues(userName).toList()
 
         // Then
