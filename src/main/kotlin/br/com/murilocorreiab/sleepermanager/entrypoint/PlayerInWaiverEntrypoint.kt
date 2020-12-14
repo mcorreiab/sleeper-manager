@@ -3,6 +3,7 @@ package br.com.murilocorreiab.sleepermanager.entrypoint
 import br.com.murilocorreiab.sleepermanager.domain.player.usecase.GetPlayersInWaiver
 import br.com.murilocorreiab.sleepermanager.entrypoint.model.PlayersWaiverResponse
 import io.micronaut.http.HttpResponse
+import io.micronaut.http.HttpResponse.badRequest
 import io.micronaut.http.HttpResponse.notFound
 import io.micronaut.http.HttpResponse.ok
 import io.micronaut.http.annotation.Controller
@@ -16,6 +17,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
@@ -43,11 +45,26 @@ class PlayerInWaiverEntrypoint(private val getPlayersInWaiver: GetPlayersInWaive
         players?.let {
             val namesToSearch = getNamesToSearch(it)
             if (namesToSearch.isNotEmpty()) {
-                ok(doGetPlayersInWaiver(username, namesToSearch))
+                getPlayers(username, namesToSearch)
             } else {
-                notFound()
+                badRequest()
             }
-        } ?: notFound()
+        } ?: badRequest()
+    }
+
+    private fun getNamesToSearch(playersQuery: String): List<String> =
+        playersQuery.split(",").filter { it.isNotBlank() }
+
+    private suspend fun getPlayers(
+        username: String,
+        namesToSearch: List<String>
+    ): HttpResponse<Flow<PlayersWaiverResponse>> {
+        val playersInWaiver = doGetPlayersInWaiver(username, namesToSearch)
+        return if (playersInWaiver.count() > 0) {
+            ok(playersInWaiver)
+        } else {
+            notFound()
+        }
     }
 
     private suspend fun doGetPlayersInWaiver(
@@ -57,7 +74,4 @@ class PlayerInWaiverEntrypoint(private val getPlayersInWaiver: GetPlayersInWaive
         .map { (player, leagues) ->
             PlayersWaiverResponse(player, leagues.toList())
         }
-
-    private fun getNamesToSearch(playersQuery: String): List<String> =
-        playersQuery.split(",").filter { it.isNotBlank() }
 }

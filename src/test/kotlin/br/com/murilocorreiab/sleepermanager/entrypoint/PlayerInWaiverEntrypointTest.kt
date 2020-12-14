@@ -3,13 +3,18 @@ package br.com.murilocorreiab.sleepermanager.entrypoint
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.PlayerRepository
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.entity.PlayerDbProducer
 import br.com.murilocorreiab.sleepermanager.entrypoint.client.PlayerInWaiverClient
+import br.com.murilocorreiab.sleepermanager.entrypoint.model.PlayersWaiverResponse
 import br.com.murilocorreiab.sleepermanager.util.Wiremock
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
-import io.micronaut.http.HttpStatus
+import io.micronaut.http.HttpResponse
+import io.micronaut.http.HttpStatus.BAD_REQUEST
+import io.micronaut.http.HttpStatus.NOT_FOUND
+import io.micronaut.http.HttpStatus.OK
 import io.micronaut.http.MediaType
+import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -28,6 +33,8 @@ class PlayerInWaiverEntrypointTest {
     @Inject
     private lateinit var wireMock: Wiremock
 
+    private val userName = "username"
+
     @BeforeEach
     fun populateDatabase() {
         playerRepository.deleteAll()
@@ -41,11 +48,40 @@ class PlayerInWaiverEntrypointTest {
     @Test
     fun `should get players in waiver with success`() {
         // Given
-        val userName = "username"
         val player1ToSearch = "Aaron"
         val player2ToSearch = "Davante"
+        val playersToSearch = "$player1ToSearch, $player2ToSearch,  "
+
+        // When
+        val response = searchForPlayers(playersToSearch)
+
+        // Then
+        assertEquals(OK, response.status)
+
+        val body = response.body() ?: throw Exception("Should had returned a player")
+        val playerFoundWaiver = body[0]
+        val leagues = playerFoundWaiver.leagues
+        assertEquals(1, body.size)
+        assertEquals("4199", playerFoundWaiver.player.id)
+        assertEquals(1, leagues.size)
+        assertEquals("602534189945909248", leagues[0].id)
+    }
+
+    @Test
+    fun `if cant find any player being searched return 404`() {
+        // Given
+        val player1ToSearch = "Barkley"
+        val player2ToSearch = "Watt"
         val playersToSearch = "$player1ToSearch, $player2ToSearch"
 
+        // When
+        val response = searchForPlayers(playersToSearch)
+
+        // Then
+        assertEquals(NOT_FOUND, response.status)
+    }
+
+    private fun searchForPlayers(playersToSearch: String): HttpResponse<List<PlayersWaiverResponse>> {
         // When
         stubFor(
             get(urlEqualTo("/user/$userName")).willReturn(
@@ -70,41 +106,28 @@ class PlayerInWaiverEntrypointTest {
                 )
         )
 
-        val response = playerInWaiverClient.getPlayersInWaiverByLeague(userName, playersToSearch)
-
-        // Then
-        assertEquals(HttpStatus.OK, response.status)
-
-        val body = response.body() ?: throw Exception("Should had returned a player")
-        val playerFoundWaiver = body[0]
-        val leagues = playerFoundWaiver.leagues
-        assertEquals(1, body.size)
-        assertEquals("4199", playerFoundWaiver.player.id)
-        assertEquals(1, leagues.size)
-        assertEquals("602534189945909248", leagues[0].id)
+        return playerInWaiverClient.getPlayersInWaiverByLeague(userName, playersToSearch)
     }
 
     @Test
-    fun `if no player is passed as param return 404`() {
-        // Given
-        val userName = "username"
-
+    fun `if no player is passed as param return 400`() {
         // When
-        val response = playerInWaiverClient.getPlayersInWaiverByLeague(userName, null)
-
-        // Then
-        assertEquals(HttpStatus.NOT_FOUND, response.status)
+        try {
+            playerInWaiverClient.getPlayersInWaiverByLeague(userName, null)
+            throw Exception("Should had throw an error")
+        } catch (ex: HttpClientResponseException) {
+            assertEquals(BAD_REQUEST, ex.status)
+        }
     }
 
     @Test
-    fun `if player list is empty return 404`() {
-        // Given
-        val userName = "username"
-
+    fun `if player list is empty return 400`() {
         // When
-        val response = playerInWaiverClient.getPlayersInWaiverByLeague(userName, "")
-
-        // Then
-        assertEquals(HttpStatus.NOT_FOUND, response.status)
+        try {
+            playerInWaiverClient.getPlayersInWaiverByLeague(userName, "")
+            throw Exception("Should had throw an error")
+        } catch (ex: HttpClientResponseException) {
+            assertEquals(BAD_REQUEST, ex.status)
+        }
     }
 }
