@@ -29,7 +29,7 @@ external:
 
 datasources:
   default:
-    url: ${DATABASE_URL}
+    url: jdbc:${DATABASE_URL}
     driverClassName: org.postgresql.Driver
     dialect: POSTGRES
 
