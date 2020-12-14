@@ -8,7 +8,7 @@ COPY build.gradle gradle.properties gradlew gradlew.bat $APP_HOME
 COPY gradle $APP_HOME/gradle
 RUN ./gradlew build -x test --continue
 COPY src src
-RUN ./gradlew build
+RUN ./gradlew build -x test
 
 FROM openjdk:11-jre-slim as production
 WORKDIR /root/
