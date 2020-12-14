@@ -2,6 +2,7 @@ package br.com.murilocorreiab.sleepermanager.entrypoint
 
 import br.com.murilocorreiab.sleepermanager.domain.player.usecase.UpdatePlayer
 import io.micronaut.http.HttpResponse
+import io.micronaut.http.HttpResponse.noContent
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Post
 import io.swagger.v3.oas.annotations.Operation
@@ -19,6 +20,6 @@ class UpdatePlayerEntrypoint(private val updatePlayer: UpdatePlayer) {
     @Post("/update")
     fun update(): HttpResponse<Unit> = runBlocking {
         updatePlayer.updatePlayers()
-        HttpResponse.ok()
+        noContent()
     }
 }

@@ -1,10 +1,10 @@
 package br.com.murilocorreiab.sleepermanager.entrypoint
 
+import br.com.murilocorreiab.sleepermanager.config.WireMockTest
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.PlayerRepository
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.entity.PlayerDbProducer
 import br.com.murilocorreiab.sleepermanager.entrypoint.client.PlayerInWaiverClient
 import br.com.murilocorreiab.sleepermanager.entrypoint.model.PlayersWaiverResponse
-import br.com.murilocorreiab.sleepermanager.util.Wiremock
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.stubFor
@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test
 import javax.inject.Inject
 
 @MicronautTest
+@WireMockTest
 class PlayerInWaiverEntrypointTest {
 
     @Inject
@@ -29,9 +30,6 @@ class PlayerInWaiverEntrypointTest {
 
     @Inject
     private lateinit var playerRepository: PlayerRepository
-
-    @Inject
-    private lateinit var wireMock: Wiremock
 
     private val userName = "username"
 
@@ -86,7 +84,7 @@ class PlayerInWaiverEntrypointTest {
         stubFor(
             get(urlEqualTo("/user/$userName")).willReturn(
                 aResponse().withHeader("content-type", MediaType.APPLICATION_JSON)
-                    .withBodyFile("user_response.json")
+                    .withBodyFile("user_response_murilocorreia.json")
             )
         )
 
