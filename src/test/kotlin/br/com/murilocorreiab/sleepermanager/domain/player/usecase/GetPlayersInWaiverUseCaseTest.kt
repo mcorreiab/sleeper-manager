@@ -9,8 +9,6 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -43,14 +41,14 @@ class GetPlayersInWaiverUseCaseTest {
 
         // When
         coEvery { rosterGateway.findAllRosteredPlayersInUserLeagues(username) }.returns(
-            flowOf(
-                leagueWithPlayerAvailable to flowOf(
+            listOf(
+                leagueWithPlayerAvailable to listOf(
                     playerInRoster
                 ),
-                leagueWithPlayerRostered to flowOf(playerInWaiver, playerInRoster)
+                leagueWithPlayerRostered to listOf(playerInWaiver, playerInRoster)
             )
         )
-        coEvery { playerGateway.getPlayersInformation(playersToCheck) }.returns(flowOf(playerInWaiver, playerInRoster))
+        coEvery { playerGateway.getPlayersInformation(playersToCheck) }.returns(listOf(playerInWaiver, playerInRoster))
         val actual = target.get(username, playersToCheck).toList().toMap()
 
         // Then

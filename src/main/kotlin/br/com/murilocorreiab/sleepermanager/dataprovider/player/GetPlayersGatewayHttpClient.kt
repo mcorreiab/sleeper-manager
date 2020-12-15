@@ -18,15 +18,13 @@ class GetPlayersGatewayHttpClient(
 ) : GetPlayersGateway {
     private val playerMapper = Mappers.getMapper(PlayerResponseMapper::class.java)
     private val playerDbMapper = Mappers.getMapper(PlayerDbMapper::class.java)
-    override suspend fun getPlayersInformation(players: List<String>): Flow<Player> =
+    override suspend fun getPlayersInformation(players: List<String>): List<Player> =
         players.map {
             playerRepository.findByNameIlike("%$it%")
         }.reduce { allPlayers, foundPlayers ->
             allPlayers + foundPlayers.filter { !allPlayers.contains(it) }
         }.map {
             playerDbMapper.toDomain(it)
-        }.let {
-            flowOf(*it.toTypedArray())
         }
 
     override suspend fun getAllPlayers(): Flow<Player> = flowOf(

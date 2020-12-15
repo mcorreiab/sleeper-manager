@@ -14,9 +14,6 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -62,10 +59,10 @@ class RosterGatewayHttpClientTest {
         ).associateBy({ it.playerId }, { it })
 
         // When
-        coEvery { getRostersInUserLeagues.getUserRosters(username) } returns flowOf(
+        coEvery { getRostersInUserLeagues.getUserRosters(username) } returns listOf(
             Pair(
                 leagueResponse,
-                flowOf(rosterResponse)
+                listOf(rosterResponse)
             )
         )
         every { playerClient.getAllPlayers() } returns playersById
@@ -74,7 +71,7 @@ class RosterGatewayHttpClientTest {
 
         // Then
         assertTrue(actual.toList().isNotEmpty())
-        actual.collect {
+        actual.forEach {
             assertEquals(rosterResponse.rosterId, it.id)
             assertEquals(leagueResponse.leagueId, it.league.id)
             assertEquals(userResponse.userId, it.ownerId)
@@ -93,10 +90,10 @@ class RosterGatewayHttpClientTest {
         val rosterResponse = RosterResponseProducer().build()
 
         // When
-        coEvery { getRostersInUserLeagues.getUserRosters(username) } returns flowOf(
+        coEvery { getRostersInUserLeagues.getUserRosters(username) } returns listOf(
             Pair(
                 leagueResponse,
-                flowOf(rosterResponse)
+                listOf(rosterResponse)
             )
         )
         every { playerClient.getAllPlayers() } returns emptyMap()
@@ -119,13 +116,13 @@ class RosterGatewayHttpClientTest {
         val league = LeagueResponseProducer().build()
 
         // When
-        coEvery { getRostersInUserLeagues.getAllRosters(userName) } returns flowOf(league to flowOf(roster1, roster2))
+        coEvery { getRostersInUserLeagues.getAllRosters(userName) } returns listOf(league to listOf(roster1, roster2))
         every { playerRepository.findById(rosteredPlayerId) } returns
             Optional.of(PlayerDbProducer(id = rosteredPlayerId).build())
-        val actual = target.findAllRosteredPlayersInUserLeagues(userName).toList()
+        val actual = target.findAllRosteredPlayersInUserLeagues(userName)
 
         // Then
-        val rosteredPlayers = actual[0].second.toList()
+        val rosteredPlayers = actual[0].second
         assertEquals(1, actual.size)
         assertEquals(1, rosteredPlayers.size)
         assertEquals(rosteredPlayerId, rosteredPlayers[0].id)

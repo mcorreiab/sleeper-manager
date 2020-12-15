@@ -16,10 +16,6 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.count
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 
 @Controller("/players")
@@ -41,7 +37,7 @@ class PlayerInWaiverEntrypoint(private val getPlayersInWaiver: GetPlayersInWaive
     fun getPlayersInWaiverByLeague(
         @PathVariable username: String,
         @QueryValue players: String?
-    ): HttpResponse<Flow<PlayersWaiverResponse>> = runBlocking {
+    ): HttpResponse<List<PlayersWaiverResponse>> = runBlocking {
         players?.let {
             val namesToSearch = getNamesToSearch(it)
             if (namesToSearch.isNotEmpty()) {
@@ -54,11 +50,12 @@ class PlayerInWaiverEntrypoint(private val getPlayersInWaiver: GetPlayersInWaive
 
     private fun getNamesToSearch(playersQuery: String): List<String> =
         playersQuery.split(",").filter { it.isNotBlank() }
+            .map { it.trim() }
 
     private suspend fun getPlayers(
         username: String,
         namesToSearch: List<String>
-    ): HttpResponse<Flow<PlayersWaiverResponse>> {
+    ): HttpResponse<List<PlayersWaiverResponse>> {
         val playersInWaiver = doGetPlayersInWaiver(username, namesToSearch)
         return if (playersInWaiver.count() > 0) {
             ok(playersInWaiver)
@@ -72,6 +69,6 @@ class PlayerInWaiverEntrypoint(private val getPlayersInWaiver: GetPlayersInWaive
         namesToSearch: List<String>
     ) = getPlayersInWaiver.get(username, namesToSearch)
         .map { (player, leagues) ->
-            PlayersWaiverResponse(player, leagues.toList())
+            PlayersWaiverResponse(player, leagues)
         }
 }

@@ -14,8 +14,6 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.runBlocking
 
 @Controller("/rosters")
@@ -34,7 +32,7 @@ class RosterEntrypoint(private val getRostersWithUnavailablePlayers: GetRostersW
         ApiResponse(responseCode = "500", description = "An unexpected error occurred"),
     )
     @Get("/user/{username}/unavailable")
-    fun recoverRostersWithUnavailablePlayers(@PathVariable username: String): HttpResponse<Flow<Roster>> =
+    fun recoverRostersWithUnavailablePlayers(@PathVariable username: String): HttpResponse<List<Roster>> =
         runBlocking {
             val rosters = getRostersWithUnavailablePlayers.get(username)
             if (rosters.count() > 0) {

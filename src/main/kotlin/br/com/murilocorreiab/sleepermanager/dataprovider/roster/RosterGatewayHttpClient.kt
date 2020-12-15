@@ -16,12 +16,6 @@ import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
 import org.mapstruct.factory.Mappers
 import javax.inject.Singleton
 
@@ -38,12 +32,12 @@ class RosterGatewayHttpClient(
     private val playerDbMapper = Mappers.getMapper(PlayerDbMapper::class.java)
 
     @FlowPreview
-    override suspend fun findUserRostersInLeagues(username: String): Flow<Roster> = coroutineScope {
+    override suspend fun findUserRostersInLeagues(username: String): List<Roster> = coroutineScope {
         val rostersByLeague = async { getRostersInUserLeagues.getUserRosters(username) }
 
         val allPlayers = async { playerClient.getAllPlayers() }
 
-        rostersByLeague.await().flatMapConcat { (league, rosters) ->
+        rostersByLeague.await().flatMap { (league, rosters) ->
             rosters.mapNotNull { roster -> mapRosters(roster, allPlayers.await(), league) }
         }
     }
@@ -66,7 +60,7 @@ class RosterGatewayHttpClient(
         }
 
     @FlowPreview
-    override suspend fun findAllRosteredPlayersInUserLeagues(username: String): Flow<Pair<League, Flow<Player>>> {
+    override suspend fun findAllRosteredPlayersInUserLeagues(username: String): List<Pair<League, List<Player>>> {
 
         val rostersByLeague = getRostersInUserLeagues.getAllRosters(username)
 
@@ -79,13 +73,11 @@ class RosterGatewayHttpClient(
 
     @FlowPreview
     private fun getPlayersFromRosters(
-        rosters: Flow<RosterResponse>
-    ): Flow<Player> = rosters.flatMapConcat { flowOf(*it.players.toTypedArray()) }
-        .distinctUntilChanged()
+        rosters: List<RosterResponse>
+    ): List<Player> = rosters.flatMap { it.players }
+        .distinct()
         .mapNotNull {
-            playerRepository.findById(it)
-        }.mapNotNull {
-            it.orElse(null)
+            playerRepository.findById(it).orElse(null)
         }.map {
             playerDbMapper.toDomain(it)
         }

@@ -5,6 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface GetPlayersGateway {
 
-    suspend fun getPlayersInformation(players: List<String>): Flow<Player>
+    suspend fun getPlayersInformation(players: List<String>): List<Player>
     suspend fun getAllPlayers(): Flow<Player>
 }

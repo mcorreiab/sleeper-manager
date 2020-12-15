@@ -6,11 +6,6 @@ import br.com.murilocorreiab.sleepermanager.domain.player.gateway.GetPlayersGate
 import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.count
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Singleton
 
 @Singleton
@@ -19,7 +14,7 @@ class GetPlayersInWaiverUseCase(
     private val getPlayersGateway: GetPlayersGateway
 ) :
     GetPlayersInWaiver {
-    override suspend fun get(username: String, players: List<String>): Flow<Pair<Player, Flow<League>>> =
+    override suspend fun get(username: String, players: List<String>): List<Pair<Player, List<League>>> =
         coroutineScope {
             val rosteredPlayers = async {
                 rosterGateway.findAllRosteredPlayersInUserLeagues(username)
@@ -31,7 +26,7 @@ class GetPlayersInWaiverUseCase(
 
             playersToCheck.await().mapNotNull {
                 val leaguesWithPlayerAvailable = getLeaguesWithOneOfPlayersInWaiver(rosteredPlayers.await(), it)
-                if (leaguesWithPlayerAvailable.count() > 0) {
+                if (leaguesWithPlayerAvailable.isNotEmpty()) {
                     Pair(it, leaguesWithPlayerAvailable)
                 } else {
                     null
@@ -39,15 +34,15 @@ class GetPlayersInWaiverUseCase(
             }
         }
 
-    private suspend fun getLeaguesWithOneOfPlayersInWaiver(
-        rosteredPlayers: Flow<Pair<League, Flow<Player>>>,
+    private fun getLeaguesWithOneOfPlayersInWaiver(
+        rosteredPlayers: List<Pair<League, List<Player>>>,
         player: Player
-    ): Flow<League> = rosteredPlayers
+    ): List<League> = rosteredPlayers
         .filter { (_, rosters) -> checkIfPlayerIsNotRostered(rosters, player) }
         .map { (league, _) -> league }
 
-    private suspend fun checkIfPlayerIsNotRostered(
-        rosteredPlayers: Flow<Player>,
+    private fun checkIfPlayerIsNotRostered(
+        rosteredPlayers: List<Player>,
         player: Player
     ) = rosteredPlayers.count { it.id == player.id } == 0
 }

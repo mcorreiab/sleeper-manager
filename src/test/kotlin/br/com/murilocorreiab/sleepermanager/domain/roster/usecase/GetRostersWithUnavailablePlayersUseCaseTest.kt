@@ -9,8 +9,6 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -46,10 +44,10 @@ class GetRostersWithUnavailablePlayersUseCaseTest {
         val expected = RosterProducer(id = expectedRosterId, players = listOf(outPlayer, irPlayer)).build()
 
         // When
-        coEvery { rosterGateway.findUserRostersInLeagues(username) }.returns(flowOf(roster, rosterWithOnlyActivePlayer))
+        coEvery { rosterGateway.findUserRostersInLeagues(username) }.returns(listOf(roster, rosterWithOnlyActivePlayer))
         val actual = target.get(username)
 
         // Then
-        actual.collect { assertEquals(expected, it) }
+        actual.forEach { assertEquals(expected, it) }
     }
 }
