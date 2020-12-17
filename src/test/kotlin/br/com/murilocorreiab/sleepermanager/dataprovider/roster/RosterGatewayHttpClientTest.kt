@@ -4,8 +4,6 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.league.entity.LeagueRes
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.entity.UserResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.PlayerRepository
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.entity.PlayerDbProducer
-import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerClient
-import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.entity.PlayerResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity.RosterResponseProducer
 import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
@@ -28,9 +26,6 @@ class RosterGatewayHttpClientTest {
     @Inject
     private lateinit var target: RosterGatewayHttpClient
 
-    @get:MockBean(PlayerClient::class)
-    val playerClient = mockk<PlayerClient>()
-
     @get:MockBean(GetRostersInUserLeagues::class)
     val getRostersInUserLeagues = mockk<GetRostersInUserLeagues>()
 
@@ -45,18 +40,14 @@ class RosterGatewayHttpClientTest {
         val username = "username"
         val starterPlayerId = "starterPlayerId"
         val benchPlayerId = "benchPlayerId"
+        val playerNonexistentId = "playerNonexistentId"
         val userResponse = UserResponseProducer().build()
         val leagueResponse = LeagueResponseProducer().build()
         val rosterResponse = RosterResponseProducer(
             starters = listOf(starterPlayerId),
-            players = listOf(starterPlayerId, benchPlayerId),
+            players = listOf(starterPlayerId, benchPlayerId, playerNonexistentId),
             ownerId = userResponse.userId
         ).build()
-        val playersById = listOf(
-            PlayerResponseProducer(playerId = starterPlayerId, fullName = starterPlayerId).build(),
-            PlayerResponseProducer(playerId = benchPlayerId, fullName = benchPlayerId).build(),
-            PlayerResponseProducer(playerId = "outOfTheRoster").build()
-        ).associateBy({ it.playerId }, { it })
 
         // When
         coEvery { getRostersInUserLeagues.getUserRosters(username) } returns listOf(
@@ -65,12 +56,14 @@ class RosterGatewayHttpClientTest {
                 listOf(rosterResponse)
             )
         )
-        every { playerClient.getAllPlayers() } returns playersById
+        createPlayerRepositoryMock(starterPlayerId)
+        createPlayerRepositoryMock(benchPlayerId)
+        every { playerRepository.findById(playerNonexistentId) } returns Optional.empty()
 
         val actual = target.findUserRostersInLeagues(username)
 
         // Then
-        assertTrue(actual.toList().isNotEmpty())
+        assertTrue(actual.isNotEmpty())
         actual.forEach {
             assertEquals(rosterResponse.rosterId, it.id)
             assertEquals(leagueResponse.leagueId, it.league.id)
@@ -80,14 +73,24 @@ class RosterGatewayHttpClientTest {
         }
     }
 
+    private fun createPlayerRepositoryMock(playerId: String) {
+        every { playerRepository.findById(playerId) } returns Optional.of(
+            PlayerDbProducer(
+                id = playerId,
+                name = playerId
+            ).build()
+        )
+    }
+
     @ExperimentalCoroutinesApi
     @FlowPreview
     @Test
     fun `if roster has no official players return empty flow`() = runBlockingTest {
         // Given
         val username = "username"
+        val playerNonexistentId = "playerNonexistentId"
         val leagueResponse = LeagueResponseProducer().build()
-        val rosterResponse = RosterResponseProducer().build()
+        val rosterResponse = RosterResponseProducer(players = listOf(playerNonexistentId)).build()
 
         // When
         coEvery { getRostersInUserLeagues.getUserRosters(username) } returns listOf(
@@ -96,12 +99,12 @@ class RosterGatewayHttpClientTest {
                 listOf(rosterResponse)
             )
         )
-        every { playerClient.getAllPlayers() } returns emptyMap()
+        every { playerRepository.findById(playerNonexistentId) } returns Optional.empty()
 
         val actual = target.findUserRostersInLeagues(username)
 
         // Then
-        assertTrue(actual.toList().isEmpty())
+        assertTrue(actual.isEmpty())
     }
 
     @FlowPreview
