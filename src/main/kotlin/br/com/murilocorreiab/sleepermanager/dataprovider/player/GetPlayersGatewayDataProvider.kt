@@ -6,18 +6,17 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerClien
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerResponseMapper
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
 import br.com.murilocorreiab.sleepermanager.domain.player.gateway.GetPlayersGateway
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import org.mapstruct.factory.Mappers
 import javax.inject.Singleton
 
 @Singleton
-class GetPlayersGatewayHttpClient(
+class GetPlayersGatewayDataProvider(
     private val playerClient: PlayerClient,
     private val playerRepository: PlayerRepository
 ) : GetPlayersGateway {
     private val playerMapper = Mappers.getMapper(PlayerResponseMapper::class.java)
     private val playerDbMapper = Mappers.getMapper(PlayerDbMapper::class.java)
+
     override suspend fun getPlayersInformation(players: List<String>): List<Player> =
         players.map {
             playerRepository.findByNameIlike("%$it%")
@@ -27,9 +26,8 @@ class GetPlayersGatewayHttpClient(
             playerDbMapper.toDomain(it)
         }
 
-    override suspend fun getAllPlayers(): Flow<Player> = flowOf(
-        *playerClient.getAllPlayers().values.map {
+    override suspend fun getAllPlayers(): List<Player> =
+        playerClient.getAllPlayers().values.map {
             playerMapper.toDomain(it)
-        }.toTypedArray()
-    )
+        }
 }

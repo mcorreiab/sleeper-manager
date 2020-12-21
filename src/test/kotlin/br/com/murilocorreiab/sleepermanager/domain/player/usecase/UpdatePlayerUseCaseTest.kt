@@ -9,8 +9,6 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Test
 import javax.inject.Inject
@@ -31,11 +29,11 @@ class UpdatePlayerUseCaseTest {
     @Test
     fun `should update players with success`() = runBlockingTest {
         // Given
-        val playersToUpdate = flowOf(PlayerProducer().build())
+        val playersToUpdate = listOf(PlayerProducer().build())
 
         // When
         coEvery { playerGateway.getAllPlayers() } returns playersToUpdate
-        coEvery { modifyPlayerGateway.updatePlayers(playersToUpdate) } returns emptyFlow()
+        coEvery { modifyPlayerGateway.updatePlayers(playersToUpdate) } returns playersToUpdate
         target.updatePlayers()
 
         // Then

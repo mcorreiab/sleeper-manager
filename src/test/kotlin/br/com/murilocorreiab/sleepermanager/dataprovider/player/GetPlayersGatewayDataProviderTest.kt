@@ -9,9 +9,6 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.count
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -19,10 +16,10 @@ import org.junit.jupiter.api.Test
 import javax.inject.Inject
 
 @MicronautTest
-class GetPlayersGatewayHttpClientTest {
+class GetPlayersGatewayDataProviderTest {
 
     @Inject
-    private lateinit var target: GetPlayersGatewayHttpClient
+    private lateinit var target: GetPlayersGatewayDataProvider
 
     @get:MockBean(PlayerRepository::class)
     val playerRepository = mockk<PlayerRepository>()
@@ -73,7 +70,7 @@ class GetPlayersGatewayHttpClientTest {
         val actual = target.getAllPlayers()
 
         // Then
-        assertEquals(1, actual.count())
+        assertEquals(1, actual.size)
         assertNotNull(actual.first { it.id == player.playerId })
     }
 }
