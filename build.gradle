@@ -19,8 +19,8 @@ repositories {
 }
 
 micronaut {
-    runtime "netty"
-    testRuntime "junit5"
+    runtime("netty")
+    testRuntime("junit5")
     processing {
         incremental true
         annotations "br.com.murilocorreiab.sleeepermanager.*"
@@ -109,7 +109,8 @@ jacocoTestReport {
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion('1.8')
+    sourceCompatibility = JavaVersion.toVersion("11")
+    targetCompatibility = JavaVersion.toVersion("11")
 }
 
 allOpen {
