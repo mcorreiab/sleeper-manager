@@ -91,7 +91,9 @@ dependencies {
 
 test.classpath += configurations.developmentOnly
 
-mainClassName = "br.com.murilocorreiab.sleepermanager.ApplicationKt"
+application {
+    mainClass.set("br.com.murilocorreiab.sleepermanager.ApplicationKt")
+}
 
 // use JUnit 5 platform
 test {
@@ -110,31 +112,22 @@ jacocoTestReport {
 
 java {
     sourceCompatibility = JavaVersion.toVersion("11")
-    targetCompatibility = JavaVersion.toVersion("11")
 }
 
 allOpen {
     annotation("io.micronaut.aop.Around")
 }
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = '1.8'
-        //Will retain parameter names for Java reflection
-        javaParameters = true
+
+tasks {
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "11"
+        }
     }
-}
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = '1.8'
-        javaParameters = true
-    }
-}
-kapt {
-    arguments {
-        arg("micronaut.processing.incremental", true)
-        arg("micronaut.processing.annotations", "br.com.murilocorreiab.*")
-        arg("micronaut.processing.group", "br.com.murilocorreiab.sleepermanager")
-        arg("micronaut.processing.module", "sleepermanager")
+    compileTestKotlin {
+        kotlinOptions {
+            jvmTarget = "11"
+        }
     }
 }
 
