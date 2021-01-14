@@ -34,6 +34,9 @@ class GetRostersInUserLeaguesHttp(
                     .toList()
             }
 
+    override suspend fun getUserRostersById(userId: String): List<Pair<LeagueResponse, List<RosterResponse>>> =
+        leagueClient.getByUserId(userId).asFlow().map { filterUserRosters(it, userId) }.toList()
+
     private suspend fun filterUserRosters(
         league: LeagueResponse,
         userId: String

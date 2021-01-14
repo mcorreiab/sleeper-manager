@@ -25,9 +25,16 @@ class RosterGatewayHttpClient(
     private val leagueResponseMapper = Mappers.getMapper(LeagueMapper::class.java)
     private val playerDbMapper = Mappers.getMapper(PlayerDbMapper::class.java)
 
-    @FlowPreview
     override suspend fun findUserRostersInLeagues(username: String): List<Roster> = coroutineScope {
         val rostersByLeague = getRostersInUserLeagues.getUserRosters(username)
+
+        rostersByLeague.flatMap { (league, rosters) ->
+            rosters.mapNotNull { roster -> mapRosters(roster, league) }
+        }
+    }
+
+    suspend fun findUserRosterByUserIdInLeagues(userId: String): List<Roster> = coroutineScope {
+        val rostersByLeague = getRostersInUserLeagues.getUserRostersById(userId)
 
         rostersByLeague.flatMap { (league, rosters) ->
             rosters.mapNotNull { roster -> mapRosters(roster, league) }

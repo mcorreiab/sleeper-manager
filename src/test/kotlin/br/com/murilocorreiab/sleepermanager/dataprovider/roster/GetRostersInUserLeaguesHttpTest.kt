@@ -4,14 +4,16 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.league.entity.LeagueRes
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.entity.UserResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.LeagueClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.UserClient
+import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponse
+import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.UserResponse
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity.RosterResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.RosterClient
+import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponse
 import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -36,29 +38,26 @@ class GetRostersInUserLeaguesHttpTest {
 
     @ExperimentalCoroutinesApi
     @Test
-    fun `should get rosters with success`() = runBlockingTest {
+    fun `should get all rosters with success`() = runBlockingTest {
         // Given
         val username = "username"
         val userResponse = UserResponseProducer().build()
         val leagueResponse = LeagueResponseProducer().build()
         val rosterResponse = RosterResponseProducer().build()
+        val rostersByLeague = Flux.just(rosterResponse)
 
         // When
         every { userClient.getByUsername(username) } returns Mono.just(userResponse)
-        every { leagueClient.getByUserId(userResponse.userId) } returns Flux.just(leagueResponse)
-        every { rosterClient.getRostersOfALeague(leagueResponse.leagueId) } returns Flux.just(rosterResponse)
+        whenGetRostersAndLeague(userResponse, leagueResponse, rostersByLeague)
         val actual = target.getAllRosters(username).toList()
 
         // Then
-        assertEquals(1, actual.size)
-        assertEquals(leagueResponse.leagueId, actual[0].first.leagueId)
-        assertEquals(1, actual[0].second.toList().size)
-        assertEquals(rosterResponse.rosterId, actual[0].second.toList()[0].rosterId)
+        assertThatGetRosters(actual, leagueResponse, rosterResponse)
     }
 
     @ExperimentalCoroutinesApi
     @Test
-    fun `should get user rosters with success`() = runBlockingTest {
+    fun `should get user rosters by username with success`() = runBlockingTest {
         // Given
         val username = "username"
         val userId = "userId"
@@ -66,18 +65,54 @@ class GetRostersInUserLeaguesHttpTest {
         val leagueResponse = LeagueResponseProducer().build()
         val userRoster = RosterResponseProducer(ownerId = userId, rosterId = "roster1").build()
         val otherUserRoster = RosterResponseProducer(ownerId = "otherUser", rosterId = "roster2").build()
+        val rostersByLeague = Flux.just(userRoster, otherUserRoster)
 
         // When
         every { userClient.getByUsername(username) } returns Mono.just(userResponse)
-        every { leagueClient.getByUserId(userResponse.userId) } returns Flux.just(leagueResponse)
-        every { rosterClient.getRostersOfALeague(leagueResponse.leagueId) } returns
-            Flux.just(userRoster, otherUserRoster)
+        whenGetRostersAndLeague(userResponse, leagueResponse, rostersByLeague)
         val actual = target.getUserRosters(username).toList()
 
         // Then
-        assertEquals(1, actual.size)
-        assertEquals(leagueResponse.leagueId, actual[0].first.leagueId)
-        assertEquals(1, actual[0].second.toList().size)
-        assertEquals(userRoster.rosterId, actual[0].second.toList()[0].rosterId)
+        assertThatGetRosters(actual, leagueResponse, userRoster)
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `should get user rosters by userId with success`() = runBlockingTest {
+        // Given
+        val userId = "userId"
+        val userResponse = UserResponseProducer(userId = userId).build()
+        val leagueResponse = LeagueResponseProducer().build()
+        val userRoster = RosterResponseProducer(ownerId = userId, rosterId = "roster1").build()
+        val otherUserRoster = RosterResponseProducer(ownerId = "otherUser", rosterId = "roster2").build()
+        val rostersByLeague = Flux.just(userRoster, otherUserRoster)
+
+        // When
+        whenGetRostersAndLeague(userResponse, leagueResponse, rostersByLeague)
+        val actual = target.getUserRostersById(userId)
+
+        // Then
+        assertThatGetRosters(actual, leagueResponse, userRoster)
+    }
+
+    private fun whenGetRostersAndLeague(
+        userResponse: UserResponse,
+        leagueResponse: LeagueResponse,
+        rostersByLeague: Flux<RosterResponse>
+    ) {
+        every { leagueClient.getByUserId(userResponse.userId) } returns Flux.just(leagueResponse)
+        every { rosterClient.getRostersOfALeague(leagueResponse.leagueId) } returns
+            rostersByLeague
+    }
+
+    private fun assertThatGetRosters(
+        rostersByLeague: List<Pair<LeagueResponse, List<RosterResponse>>>,
+        leagueResponse: LeagueResponse,
+        userRoster: RosterResponse
+    ) {
+        assertEquals(1, rostersByLeague.size)
+        assertEquals(leagueResponse.leagueId, rostersByLeague[0].first.leagueId)
+        assertEquals(1, rostersByLeague[0].second.toList().size)
+        assertEquals(userRoster.rosterId, rostersByLeague[0].second.toList()[0].rosterId)
     }
 }
