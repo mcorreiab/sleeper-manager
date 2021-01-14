@@ -34,7 +34,7 @@ class RosterEntrypoint(private val getRostersWithUnavailablePlayers: GetRostersW
     @Get("/user/{username}/unavailable")
     fun recoverRostersWithUnavailablePlayers(@PathVariable username: String): HttpResponse<List<Roster>> =
         runBlocking {
-            val rosters = getRostersWithUnavailablePlayers.get(username)
+            val rosters = getRostersWithUnavailablePlayers.getByUsername(username)
             if (rosters.count() > 0) {
                 ok(rosters)
             } else {

@@ -25,7 +25,7 @@ class RosterGatewayHttpClient(
     private val leagueResponseMapper = Mappers.getMapper(LeagueMapper::class.java)
     private val playerDbMapper = Mappers.getMapper(PlayerDbMapper::class.java)
 
-    override suspend fun findUserRostersInLeagues(username: String): List<Roster> = coroutineScope {
+    override suspend fun findUserRostersByUsernameInLeagues(username: String): List<Roster> = coroutineScope {
         val rostersByLeague = getRostersInUserLeagues.getUserRosters(username)
 
         rostersByLeague.flatMap { (league, rosters) ->
@@ -33,7 +33,7 @@ class RosterGatewayHttpClient(
         }
     }
 
-    suspend fun findUserRosterByUserIdInLeagues(userId: String): List<Roster> = coroutineScope {
+    override suspend fun findUserRostersByUserIdInLeagues(userId: String): List<Roster> = coroutineScope {
         val rostersByLeague = getRostersInUserLeagues.getUserRostersById(userId)
 
         rostersByLeague.flatMap { (league, rosters) ->

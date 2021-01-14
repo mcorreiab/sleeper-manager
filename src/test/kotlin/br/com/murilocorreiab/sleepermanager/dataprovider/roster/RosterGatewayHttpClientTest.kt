@@ -61,7 +61,7 @@ class RosterGatewayHttpClientTest {
         )
         createAllTypesPlayerRepositoryMock()
 
-        val actual = target.findUserRostersInLeagues(username)
+        val actual = target.findUserRostersByUsernameInLeagues(username)
 
         // Then
         assertThatFoundPlayersForUserRoster(actual, rosterResponse, leagueResponse, userResponse.userId)
@@ -88,7 +88,7 @@ class RosterGatewayHttpClientTest {
         )
         createAllTypesPlayerRepositoryMock()
 
-        val actual = target.findUserRosterByUserIdInLeagues(userId)
+        val actual = target.findUserRostersByUserIdInLeagues(userId)
 
         assertThatFoundPlayersForUserRoster(actual, rosterResponse, leagueResponse, userId)
     }
@@ -142,7 +142,7 @@ class RosterGatewayHttpClientTest {
         )
         every { playerRepository.findById(playerNonexistentId) } returns Optional.empty()
 
-        val actual = target.findUserRostersInLeagues(username)
+        val actual = target.findUserRostersByUsernameInLeagues(username)
 
         // Then
         assertTrue(actual.isEmpty())
