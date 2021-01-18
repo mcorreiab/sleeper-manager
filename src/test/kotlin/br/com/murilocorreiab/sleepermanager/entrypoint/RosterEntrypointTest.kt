@@ -46,33 +46,31 @@ class RosterEntrypointTest {
     }
 
     @Test
-    fun `should recover unavailable players for a user`() {
+    fun `should recover unavailable players for a user using username`() {
         // Given
         val username = "murilocorreia"
         val userId = "303333123121229824"
 
         // When
-        val actual = recoverRosterOfAUser(username, userId)
+        arrangeToRecoverRosterOfAUserByUsername(username, userId)
+        val actual = rosterClient.recoverRosterOfAUserByUsername(username)
 
         // Then
-        assertEquals(HttpStatus.OK.code, actual.status.code)
-        val body = actual.body()
-        assertTrue(body?.size == 1)
-        assertTrue(body?.get(0)?.players?.size == 1)
-        assertTrue(body?.any { it.players.any { player -> player.name == "Saquon Barkley" } } ?: false)
+        assertThatFoundUnavailablePlayer(actual)
     }
 
     @Test
-    fun `if user don't have unavailable player return 404`() {
+    fun `if user don't have unavailable player when searching for username return 404`() {
         // Given
         val username = "fernandocorreia"
         val userId = "336162535059259392"
 
-        val response = recoverRosterOfAUser(username, userId)
+        arrangeToRecoverRosterOfAUserByUsername(username, userId)
+        val response = rosterClient.recoverRosterOfAUserByUsername(username)
         assertEquals(NOT_FOUND, response.status)
     }
 
-    private fun recoverRosterOfAUser(username: String, userId: String): HttpResponse<List<Roster>> {
+    private fun arrangeToRecoverRosterOfAUserByUsername(username: String, userId: String) {
         // When
         stubFor(
             get(urlEqualTo("/user/$username"))
@@ -82,6 +80,33 @@ class RosterEntrypointTest {
                 )
         )
 
+        arrangeToRecoverRosterOfAUser(userId)
+    }
+
+    @Test
+    fun `should recover unavailable players for a user using id`() {
+        // Given
+        val userId = "303333123121229824"
+
+        // When
+        arrangeToRecoverRosterOfAUser(userId)
+        val actual = rosterClient.recoverRosterOfAUserById(userId)
+
+        // Then
+        assertThatFoundUnavailablePlayer(actual)
+    }
+
+    @Test
+    fun `if user don't have unavailable player when searching for userId return 404`() {
+        // Given
+        val userId = "336162535059259392"
+
+        arrangeToRecoverRosterOfAUser(userId)
+        val response = rosterClient.recoverRosterOfAUserById(userId)
+        assertEquals(NOT_FOUND, response.status)
+    }
+
+    private fun arrangeToRecoverRosterOfAUser(userId: String) {
         stubFor(
             get(urlEqualTo("/user/$userId/leagues/nfl/2020"))
                 .willReturn(
@@ -97,7 +122,13 @@ class RosterEntrypointTest {
                         .withBodyFile("roster_response.json")
                 )
         )
+    }
 
-        return rosterClient.recoverRosterOfAUser(username)
+    private fun assertThatFoundUnavailablePlayer(actual: HttpResponse<List<Roster>>) {
+        assertEquals(HttpStatus.OK.code, actual.status.code)
+        val body = actual.body()
+        assertTrue(body?.size == 1)
+        assertTrue(body?.get(0)?.players?.size == 1)
+        assertTrue(body?.any { it.players.any { player -> player.name == "Saquon Barkley" } } ?: false)
     }
 }

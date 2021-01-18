@@ -9,6 +9,9 @@ import io.micronaut.http.client.annotation.Client
 @Client("/rosters")
 interface RosterClient {
 
-    @Get("/user/{username}/unavailable")
-    fun recoverRosterOfAUser(@PathVariable username: String): HttpResponse<List<Roster>>
+    @Get("/user/username/{username}/unavailable")
+    fun recoverRosterOfAUserByUsername(@PathVariable username: String): HttpResponse<List<Roster>>
+
+    @Get("/user/userId/{userId}/unavailable")
+    fun recoverRosterOfAUserById(@PathVariable userId: String): HttpResponse<List<Roster>>
 }

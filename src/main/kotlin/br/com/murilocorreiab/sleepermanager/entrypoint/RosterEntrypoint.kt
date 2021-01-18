@@ -21,7 +21,7 @@ class RosterEntrypoint(private val getRostersWithUnavailablePlayers: GetRostersW
 
     @Operation(
         summary = "Get unavailable players",
-        description = "Get all unavailable players in starter position in each of user's rosters"
+        description = "Get all unavailable players in starter position in each of user's rosters by username"
     )
     @ApiResponses(
         ApiResponse(
@@ -31,10 +31,33 @@ class RosterEntrypoint(private val getRostersWithUnavailablePlayers: GetRostersW
         ApiResponse(responseCode = "404", description = "No unavailable player was found"),
         ApiResponse(responseCode = "500", description = "An unexpected error occurred"),
     )
-    @Get("/user/{username}/unavailable")
-    fun recoverRostersWithUnavailablePlayers(@PathVariable username: String): HttpResponse<List<Roster>> =
+    @Get("/user/username/{username}/unavailable")
+    fun recoverRostersWithUnavailablePlayersByUsername(@PathVariable username: String): HttpResponse<List<Roster>> =
         runBlocking {
             val rosters = getRostersWithUnavailablePlayers.getByUsername(username)
+            if (rosters.count() > 0) {
+                ok(rosters)
+            } else {
+                notFound()
+            }
+        }
+
+    @Operation(
+        summary = "Get unavailable players",
+        description = "Get all unavailable players in starter position in each of user's rosters by userId"
+    )
+    @ApiResponses(
+        ApiResponse(
+            description = "At least one of the rosters have one unavailable player",
+            content = [Content(array = ArraySchema(schema = Schema(implementation = Roster::class)))]
+        ),
+        ApiResponse(responseCode = "404", description = "No unavailable player was found"),
+        ApiResponse(responseCode = "500", description = "An unexpected error occurred"),
+    )
+    @Get("/user/userId/{userId}/unavailable")
+    fun recoverRostersWithUnavailablePlayersByUserId(@PathVariable userId: String): HttpResponse<List<Roster>> =
+        runBlocking {
+            val rosters = getRostersWithUnavailablePlayers.getByUserId(userId)
             if (rosters.count() > 0) {
                 ok(rosters)
             } else {
