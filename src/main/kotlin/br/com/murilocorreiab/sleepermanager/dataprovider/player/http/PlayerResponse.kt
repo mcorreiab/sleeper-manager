@@ -7,5 +7,7 @@ data class PlayerResponse(
     @JsonProperty("full_name") val fullName: String?,
     @JsonProperty("first_name") val firstName: String,
     @JsonProperty("last_name") val lastName: String,
-    @JsonProperty("injury_status") val injuryStatus: String?
+    @JsonProperty("injury_status") val injuryStatus: String?,
+    val position: String,
+    val team: String
 )

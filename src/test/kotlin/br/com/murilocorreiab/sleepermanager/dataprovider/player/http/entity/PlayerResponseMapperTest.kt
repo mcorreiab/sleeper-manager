@@ -38,6 +38,16 @@ class PlayerResponseMapperTest {
     }
 
     @Test
+    fun `should map position with success`() {
+        assertEquals(playerResponse.position, actual.position)
+    }
+
+    @Test
+    fun `should map team with success`() {
+        assertEquals(playerResponse.team, actual.team)
+    }
+
+    @Test
     fun `should map a list of players with success`() {
         assertTrue(target.toDomain(listOf(playerResponse)).isNotEmpty())
     }

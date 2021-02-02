@@ -20,8 +20,19 @@ class PlayerDbMapperTest {
         val injuryStatus = "injuryStatus"
         val name = "name"
         val starter = false
-        val player = Player(id = playerId, injuryStatus = injuryStatus, name = name, starter = starter)
-        val expected = PlayerDb(id = playerId, injuryStatus = injuryStatus, name = name)
+        val position = "position"
+        val team = "team"
+        val player =
+            Player(
+                id = playerId,
+                injuryStatus = injuryStatus,
+                name = name,
+                starter = starter,
+                position = position,
+                team = team
+            )
+        val expected =
+            PlayerDb(id = playerId, injuryStatus = injuryStatus, name = name, position = position, team = team)
 
         // When
         val actual = target.fromDomain(player)
@@ -49,8 +60,18 @@ class PlayerDbMapperTest {
         val injuryStatus = "injuryStatus"
         val name = "name"
         val starter = false
-        val player = PlayerDb(id = playerId, injuryStatus = injuryStatus, name = name)
-        val expected = Player(id = playerId, injuryStatus = injuryStatus, name = name, starter = starter)
+        val position = "position"
+        val team = "team"
+        val player = PlayerDb(id = playerId, injuryStatus = injuryStatus, name = name, position = position, team = team)
+        val expected =
+            Player(
+                id = playerId,
+                injuryStatus = injuryStatus,
+                name = name,
+                starter = starter,
+                position = position,
+                team = team
+            )
 
         // When
         val actual = target.toDomain(player)

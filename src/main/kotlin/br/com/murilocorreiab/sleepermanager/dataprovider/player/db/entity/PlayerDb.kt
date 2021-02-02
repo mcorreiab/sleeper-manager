@@ -6,4 +6,10 @@ import javax.persistence.Id
 
 @Introspected
 @Entity(name = "players")
-data class PlayerDb(@Id val id: String, val name: String, val injuryStatus: String)
+data class PlayerDb(
+    @Id val id: String,
+    val name: String,
+    val injuryStatus: String,
+    val position: String,
+    val team: String
+)
