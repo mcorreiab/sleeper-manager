@@ -31,7 +31,12 @@ class RosterResponseMapperTest {
     @Test
     fun `should map league with success`() {
         val league =
-            League(name = leagueResponse.name, id = leagueResponse.leagueId, size = leagueResponse.totalRosters)
+            League(
+                name = leagueResponse.name,
+                id = leagueResponse.leagueId,
+                size = leagueResponse.totalRosters,
+                avatar = leagueResponse.avatar
+            )
         assertEquals(league, actual.league)
     }
 

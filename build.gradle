@@ -63,7 +63,6 @@ dependencies {
     implementation("io.micronaut.reactor:micronaut-reactor") {
         because("It's necessary to use reactor in micronaut 2.x.x")
     }
-    implementation("io.micronaut.xml:micronaut-jackson-xml")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari") {
         because("To persist data in sql database")
     }
@@ -72,7 +71,7 @@ dependencies {
     }
     developmentOnly("io.micronaut:micronaut-runtime-osx:$micronautVersion")
     runtimeOnly("ch.qos.logback:logback-classic")
-    runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     runtimeOnly("org.postgresql:postgresql")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxCoroutinesVersion") {
