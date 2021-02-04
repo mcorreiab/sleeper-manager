@@ -1,10 +1,10 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.player.http.entity
 
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerResponseMapper
+import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.mapstruct.factory.Mappers
@@ -13,42 +13,28 @@ import org.mapstruct.factory.Mappers
 class PlayerResponseMapperTest {
 
     private val target = Mappers.getMapper(PlayerResponseMapper::class.java)
-    private val playerResponse =
-        PlayerResponseProducer(injuryStatus = PlayerStatus.IR.status).build()
-    private val actual = target.toDomain(playerResponse)
 
     @Test
-    fun `should map id with success`() {
-        assertEquals(playerResponse.playerId, actual.id)
-    }
+    fun `should map with success`() {
+        val playerResponse = PlayerResponseProducer().build()
 
-    @Test
-    fun `should map name with success`() {
-        assertEquals(playerResponse.fullName, actual.name)
-    }
+        val expected = Player(
+            id = playerResponse.playerId,
+            name = playerResponse.fullName!!,
+            starter = false,
+            injuryStatus = playerResponse.injuryStatus!!,
+            position = playerResponse.position,
+            team = playerResponse.team
+        )
 
-    @Test
-    fun `should map injury status with success`() {
-        assertEquals(PlayerStatus.IR.status, actual.injuryStatus)
-    }
+        val actual = target.toDomain(playerResponse)
 
-    @Test
-    fun `should have starter default value as false`() {
-        assertFalse(actual.starter)
-    }
-
-    @Test
-    fun `should map position with success`() {
-        assertEquals(playerResponse.position, actual.position)
-    }
-
-    @Test
-    fun `should map team with success`() {
-        assertEquals(playerResponse.team, actual.team)
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `should map a list of players with success`() {
+        val playerResponse = PlayerResponseProducer().build()
         assertTrue(target.toDomain(listOf(playerResponse)).isNotEmpty())
     }
 

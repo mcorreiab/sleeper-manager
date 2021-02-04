@@ -1,9 +1,12 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity
 
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.entity.LeagueResponseProducer
+import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.ScoringSettingsResponse
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponseMapper
 import br.com.murilocorreiab.sleepermanager.domain.league.entity.League
+import br.com.murilocorreiab.sleepermanager.domain.league.entity.PointsByReception
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
+import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Roster
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -13,35 +16,27 @@ import org.mapstruct.factory.Mappers
 class RosterResponseMapperTest {
 
     private val target = Mappers.getMapper(RosterResponseMapper::class.java)
-    private val rosterResponse = RosterResponseProducer().build()
-    private val leagueResponse = LeagueResponseProducer().build()
-    private val players = listOf(PlayerProducer().build())
-    private val actual = target.toDomain(rosterResponse, leagueResponse, players)
 
     @Test
-    fun `should map id with success`() {
-        assertEquals(rosterResponse.rosterId, actual.id)
-    }
+    fun `should map roster response with success`() {
+        val pointsByReception = 0.0
+        val players = listOf(PlayerProducer().build())
+        val rosterResponse = RosterResponseProducer().build()
+        val leagueResponse =
+            LeagueResponseProducer(scoringSettingsResponse = ScoringSettingsResponse(pointsByReception)).build()
 
-    @Test
-    fun `should map ownerId with success`() {
-        assertEquals(rosterResponse.ownerId, actual.ownerId)
-    }
+        val league = League(
+            name = leagueResponse.name,
+            id = leagueResponse.leagueId,
+            size = leagueResponse.totalRosters,
+            avatar = leagueResponse.avatar,
+            pointsByReception = PointsByReception.STANDARD
+        )
+        val expected =
+            Roster(id = rosterResponse.rosterId, ownerId = rosterResponse.ownerId, players = players, league = league)
 
-    @Test
-    fun `should map league with success`() {
-        val league =
-            League(
-                name = leagueResponse.name,
-                id = leagueResponse.leagueId,
-                size = leagueResponse.totalRosters,
-                avatar = leagueResponse.avatar
-            )
-        assertEquals(league, actual.league)
-    }
+        val actual = target.toDomain(rosterResponse, leagueResponse, players)
 
-    @Test
-    fun `should map players with success`() {
-        assertEquals(players, actual.players)
+        assertEquals(expected, actual)
     }
 }

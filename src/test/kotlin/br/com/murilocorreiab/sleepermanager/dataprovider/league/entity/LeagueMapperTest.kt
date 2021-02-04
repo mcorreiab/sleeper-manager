@@ -1,6 +1,9 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.league.entity
 
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueMapper
+import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponse
+import br.com.murilocorreiab.sleepermanager.domain.league.entity.League
+import br.com.murilocorreiab.sleepermanager.domain.league.entity.PointsByReception
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -12,41 +15,79 @@ class LeagueMapperTest {
     private val target = Mappers.getMapper(LeagueMapper::class.java)
 
     @Test
-    fun `should map league name with success`() {
+    fun `should map league with success`() {
         // Given
-        val leagueName = "leagueName"
-        val leagueResponse = LeagueResponseProducer(name = leagueName).build()
+        val receptionPoints = 0.0
+
+        val leagueResponse = LeagueResponseProducer(
+            scoringSettingsResponse = ScoringSettingsResponseProducer(receptionPoints).build(),
+        ).build()
 
         // When
+        val expected = createExpectedLeague(leagueResponse, PointsByReception.STANDARD)
         val actual = target.convertToDomain(leagueResponse)
 
         // Then
-        assertEquals(leagueName, actual.name)
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun `should map league size with success`() {
+    fun `should map half ppr points by reception with success`() {
         // Given
-        val leagueSize = 16
-        val leagueResponse = LeagueResponseProducer(totalRosters = leagueSize).build()
+        val receptionPoints = 0.5
+
+        val leagueResponse = LeagueResponseProducer(
+            scoringSettingsResponse = ScoringSettingsResponseProducer(receptionPoints).build(),
+        ).build()
 
         // When
+        val expected = createExpectedLeague(leagueResponse, PointsByReception.HALF_PPR)
         val actual = target.convertToDomain(leagueResponse)
 
         // Then
-        assertEquals(leagueSize, actual.size)
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun `should map league id with success`() {
+    fun `should map full ppr points by reception with success`() {
         // Given
-        val leagueId = "38402"
-        val leagueResponse = LeagueResponseProducer(leagueId = leagueId).build()
+        val receptionPoints = 1.0
+
+        val leagueResponse = LeagueResponseProducer(
+            scoringSettingsResponse = ScoringSettingsResponseProducer(receptionPoints).build(),
+        ).build()
 
         // When
+        val expected = createExpectedLeague(leagueResponse, PointsByReception.PPR)
         val actual = target.convertToDomain(leagueResponse)
 
         // Then
-        assertEquals(leagueId, actual.id)
+        assertEquals(expected, actual)
     }
+
+    @Test
+    fun `should map invalid points format to standard with success`() {
+        // Given
+        val receptionPoints = -1.0
+
+        val leagueResponse = LeagueResponseProducer(
+            scoringSettingsResponse = ScoringSettingsResponseProducer(receptionPoints).build(),
+        ).build()
+
+        // When
+        val expected = createExpectedLeague(leagueResponse, PointsByReception.STANDARD)
+        val actual = target.convertToDomain(leagueResponse)
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    private fun createExpectedLeague(leagueResponse: LeagueResponse, pointsByReception: PointsByReception): League =
+        League(
+            name = leagueResponse.name,
+            size = leagueResponse.totalRosters,
+            id = leagueResponse.leagueId,
+            pointsByReception = pointsByReception,
+            avatar = leagueResponse.avatar
+        )
 }

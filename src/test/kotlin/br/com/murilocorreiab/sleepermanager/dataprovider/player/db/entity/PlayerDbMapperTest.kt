@@ -16,23 +16,15 @@ class PlayerDbMapperTest {
     @Test
     fun `should map player from domain with success`() {
         // Given
-        val playerId = "playerId"
-        val injuryStatus = "injuryStatus"
-        val name = "name"
-        val starter = false
-        val position = "position"
-        val team = "team"
-        val player =
-            Player(
-                id = playerId,
-                injuryStatus = injuryStatus,
-                name = name,
-                starter = starter,
-                position = position,
-                team = team
-            )
+        val player = PlayerProducer().build()
         val expected =
-            PlayerDb(id = playerId, injuryStatus = injuryStatus, name = name, position = position, team = team)
+            PlayerDb(
+                id = player.id,
+                injuryStatus = player.injuryStatus,
+                name = player.name,
+                position = player.position,
+                team = player.team
+            )
 
         // When
         val actual = target.fromDomain(player)
@@ -56,21 +48,15 @@ class PlayerDbMapperTest {
     @Test
     fun `should map player to domain with success`() {
         // Given
-        val playerId = "playerId"
-        val injuryStatus = "injuryStatus"
-        val name = "name"
-        val starter = false
-        val position = "position"
-        val team = "team"
-        val player = PlayerDb(id = playerId, injuryStatus = injuryStatus, name = name, position = position, team = team)
+        val player = PlayerDbProducer().build()
         val expected =
             Player(
-                id = playerId,
-                injuryStatus = injuryStatus,
-                name = name,
-                starter = starter,
-                position = position,
-                team = team
+                id = player.id,
+                injuryStatus = player.injuryStatus,
+                name = player.name,
+                starter = false,
+                position = player.position,
+                team = player.team
             )
 
         // When
