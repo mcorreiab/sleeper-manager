@@ -7,4 +7,5 @@ import org.mapstruct.Mapper
 interface RosterResponseMapper {
 
     fun fromDomain(source: Roster): RosterResponse
+    fun fromDomain(source: List<Roster>): List<RosterResponse>
 }

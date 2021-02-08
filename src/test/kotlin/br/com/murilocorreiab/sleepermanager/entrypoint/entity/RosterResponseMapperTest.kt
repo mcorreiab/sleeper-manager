@@ -3,6 +3,7 @@ package br.com.murilocorreiab.sleepermanager.entrypoint.entity
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.RosterProducer
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.mapstruct.factory.Mappers
 
@@ -28,5 +29,14 @@ class RosterResponseMapperTest {
         val actual = target.fromDomain(roster)
 
         assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `should map a list of rosters with success`() {
+        val roster = RosterProducer().build()
+
+        val actual = target.fromDomain(listOf(roster))
+
+        assertTrue(actual.isNotEmpty())
     }
 }

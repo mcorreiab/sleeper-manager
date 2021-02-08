@@ -4,8 +4,8 @@ import br.com.murilocorreiab.sleepermanager.config.WireMockTest
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.PlayerRepository
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.entity.PlayerDbProducer
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
-import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Roster
 import br.com.murilocorreiab.sleepermanager.entrypoint.client.RosterClient
+import br.com.murilocorreiab.sleepermanager.entrypoint.entity.RosterResponse
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.stubFor
@@ -124,7 +124,7 @@ class RosterEntrypointTest {
         )
     }
 
-    private fun assertThatFoundUnavailablePlayer(actual: HttpResponse<List<Roster>>) {
+    private fun assertThatFoundUnavailablePlayer(actual: HttpResponse<List<RosterResponse>>) {
         assertEquals(HttpStatus.OK.code, actual.status.code)
         val body = actual.body()
         assertTrue(body?.size == 1)
