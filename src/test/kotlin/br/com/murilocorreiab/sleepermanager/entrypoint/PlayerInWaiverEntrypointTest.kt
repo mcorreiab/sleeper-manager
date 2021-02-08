@@ -4,7 +4,7 @@ import br.com.murilocorreiab.sleepermanager.config.WireMockTest
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.PlayerRepository
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.entity.PlayerDbProducer
 import br.com.murilocorreiab.sleepermanager.entrypoint.client.PlayerInWaiverClient
-import br.com.murilocorreiab.sleepermanager.entrypoint.model.PlayersWaiverResponse
+import br.com.murilocorreiab.sleepermanager.entrypoint.entity.PlayersWaiverResponse
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.stubFor

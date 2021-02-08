@@ -1,4 +1,4 @@
-package br.com.murilocorreiab.sleepermanager.entrypoint.model
+package br.com.murilocorreiab.sleepermanager.entrypoint.entity
 
 import br.com.murilocorreiab.sleepermanager.domain.league.entity.League
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player

@@ -6,6 +6,6 @@ data class PlayerResponse(
     val firstName: String,
     val lastName: String,
     val injuryStatus: String?,
-    val position: String,
-    val team: String
+    val position: String?,
+    val team: String?
 )

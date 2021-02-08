@@ -1,7 +1,7 @@
 package br.com.murilocorreiab.sleepermanager.entrypoint
 
 import br.com.murilocorreiab.sleepermanager.domain.player.usecase.GetPlayersInWaiver
-import br.com.murilocorreiab.sleepermanager.entrypoint.model.PlayersWaiverResponse
+import br.com.murilocorreiab.sleepermanager.entrypoint.entity.PlayersWaiverResponse
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpResponse.badRequest
 import io.micronaut.http.HttpResponse.notFound

@@ -8,7 +8,7 @@ import org.mapstruct.Mappings
 import org.mapstruct.Named
 
 @Mapper(componentModel = "jsr330")
-interface LeagueMapper {
+abstract class LeagueMapper {
 
     @Mappings(
         value = [
@@ -21,11 +21,8 @@ interface LeagueMapper {
             )
         ]
     )
-    fun convertToDomain(leagueResponse: LeagueResponse): League
+    abstract fun convertToDomain(leagueResponse: LeagueResponse): League
 
-    companion object {
-        @JvmStatic
-        @Named("convertPointsByReception")
-        fun convertPointsByReception(pointsByReception: Double) = PointsByReception.getByPoints(pointsByReception)
-    }
+    @Named("convertPointsByReception")
+    fun convertPointsByReception(pointsByReception: Double) = PointsByReception.getByPoints(pointsByReception)
 }

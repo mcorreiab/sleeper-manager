@@ -23,8 +23,8 @@ class PlayerResponseMapperTest {
             name = playerResponse.fullName!!,
             starter = false,
             injuryStatus = playerResponse.injuryStatus!!,
-            position = playerResponse.position,
-            team = playerResponse.team
+            position = playerResponse.position!!,
+            team = playerResponse.team!!
         )
 
         val actual = target.toDomain(playerResponse)
@@ -39,10 +39,20 @@ class PlayerResponseMapperTest {
     }
 
     @Test
-    fun `if injury status is missing should map to active`() {
-        val playerWithoutInjury = PlayerResponseProducer(injuryStatus = null).build()
-        val actualWithoutInjury = target.toDomain(playerWithoutInjury)
-        assertEquals(PlayerStatus.ACTIVE.status, actualWithoutInjury.injuryStatus)
+    fun `if properties are null should map to default ones`() {
+        val playerResponse = PlayerResponseProducer(injuryStatus = null, team = null, position = null).build()
+
+        val expected = Player(
+            id = playerResponse.playerId,
+            name = playerResponse.fullName!!,
+            injuryStatus = PlayerStatus.ACTIVE.status,
+            starter = false,
+            position = "No position",
+            team = "No team"
+        )
+
+        val actual = target.toDomain(playerResponse)
+        assertEquals(expected, actual)
     }
 
     @Test

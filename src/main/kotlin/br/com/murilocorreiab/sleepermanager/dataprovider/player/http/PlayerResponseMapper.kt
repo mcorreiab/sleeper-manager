@@ -21,7 +21,9 @@ abstract class PlayerResponseMapper {
                 target = "injuryStatus",
                 source = "injuryStatus",
                 defaultValue = "Active"
-            )
+            ),
+            Mapping(target = "team", source = "team", defaultValue = "No team"),
+            Mapping(target = "position", source = "position", defaultValue = "No position")
         ]
     )
     abstract fun toDomain(playerResponse: PlayerResponse): Player
