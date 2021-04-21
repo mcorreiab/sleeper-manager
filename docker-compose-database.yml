@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  database:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=sa
+      - POSTGRES_USER=sa
+      - POSTGRES_DB=sleeper_manager
+    ports:
+      - 5432:5432

@@ -89,7 +89,7 @@ class PlayerInWaiverEntrypointTest {
         )
 
         stubFor(
-            get(urlEqualTo("/user/303333123121229824/leagues/nfl/2020"))
+            get(urlEqualTo("/user/303333123121229824/leagues/nfl/2021"))
                 .willReturn(
                     aResponse().withHeader("content-type", MediaType.APPLICATION_JSON)
                         .withBodyFile("league_response.json")
