@@ -43,7 +43,7 @@ class RosterEntrypoint(
         runBlocking {
             val rosters =
                 getRostersWithUnavailablePlayers.getByUsername(username).let { rosterResponseMapper.fromDomain(it) }
-            if (rosters.count() > 0) {
+            if (rosters.isNotEmpty()) {
                 ok(rosters)
             } else {
                 notFound()
@@ -67,7 +67,7 @@ class RosterEntrypoint(
         runBlocking {
             val rosters =
                 getRostersWithUnavailablePlayers.getByUserId(userId).let { rosterResponseMapper.fromDomain(it) }
-            if (rosters.count() > 0) {
+            if (rosters.isNotEmpty()) {
                 ok(rosters)
             } else {
                 notFound()

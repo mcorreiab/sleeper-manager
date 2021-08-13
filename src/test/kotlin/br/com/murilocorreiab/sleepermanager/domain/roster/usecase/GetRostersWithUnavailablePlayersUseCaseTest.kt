@@ -4,31 +4,31 @@ import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.RosterProducer
 import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway
-import io.micronaut.test.annotation.MockBean
-import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.coEvery
-import io.mockk.mockk
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import javax.inject.Inject
+import org.junit.jupiter.api.extension.ExtendWith
 
-@MicronautTest
+@ExtendWith(MockKExtension::class)
 class GetRostersWithUnavailablePlayersUseCaseTest {
 
-    @Inject
+    @InjectMockKs
     private lateinit var target: GetRostersWithUnavailablePlayersUseCase
 
-    @get:MockBean(RosterGateway::class)
-    val rosterGateway = mockk<RosterGateway>()
+    @MockK
+    private lateinit var rosterGateway: RosterGateway
 
     private val expectedRosterId = "roster1"
-    private val availablePlayer = PlayerProducer(id = "player1", name = "available", PlayerStatus.ACTIVE.status).build()
-    private val outPlayer = PlayerProducer(id = "player2", name = "out", PlayerStatus.OUT.status).build()
-    private val irPlayer = PlayerProducer(id = "player3", name = "ir", PlayerStatus.OUT.status).build()
+    private val availablePlayer = PlayerProducer(id = "player1", name = "available", PlayerStatus.ACTIVE).build()
+    private val outPlayer = PlayerProducer(id = "player2", name = "out", PlayerStatus.OUT).build()
+    private val irPlayer = PlayerProducer(id = "player3", name = "ir", PlayerStatus.OUT).build()
     private val outPlayerInBench =
-        PlayerProducer(id = "player4", name = "out", PlayerStatus.OUT.status, starter = false).build()
+        PlayerProducer(id = "player4", name = "out", PlayerStatus.OUT, starter = false).build()
     private val roster =
         RosterProducer(
             id = expectedRosterId,

@@ -23,8 +23,20 @@ class RosterResponseMapperTest {
             avatar = league.avatar,
             pointsByReception = league.pointsByReception.text
         )
+
+        val players = roster.players.map {
+            PlayerResponse(
+                id = it.id,
+                name = it.name,
+                injuryStatus = it.injuryStatus,
+                starter = it.starter,
+                position = it.position,
+                team = it.team,
+            )
+        }
+
         val expected =
-            RosterResponse(id = roster.id, ownerId = roster.ownerId, players = roster.players, league = expectedLeague)
+            RosterResponse(id = roster.id, ownerId = roster.ownerId, players = players, league = expectedLeague)
 
         val actual = target.fromDomain(roster)
 

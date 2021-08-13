@@ -8,11 +8,11 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.entity.Player
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity.RosterResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponse
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Roster
-import io.micronaut.test.annotation.MockBean
-import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.coEvery
 import io.mockk.every
-import io.mockk.mockk
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.test.runBlockingTest
@@ -20,20 +20,20 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import java.util.Optional
-import javax.inject.Inject
 
-@MicronautTest
+@ExtendWith(MockKExtension::class)
 class RosterGatewayHttpClientTest {
 
-    @Inject
+    @InjectMockKs
     private lateinit var target: RosterGatewayHttpClient
 
-    @get:MockBean(GetRostersInUserLeagues::class)
-    val getRostersInUserLeagues = mockk<GetRostersInUserLeagues>()
+    @MockK
+    private lateinit var getRostersInUserLeagues: GetRostersInUserLeagues
 
-    @get:MockBean(PlayerRepository::class)
-    val playerRepository = mockk<PlayerRepository>()
+    @MockK
+    private lateinit var playerRepository: PlayerRepository
 
     private val starterPlayerId = "starterPlayerId"
     private val benchPlayerId = "benchPlayerId"

@@ -3,27 +3,27 @@ package br.com.murilocorreiab.sleepermanager.domain.player.usecase
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
 import br.com.murilocorreiab.sleepermanager.domain.player.gateway.GetPlayersGateway
 import br.com.murilocorreiab.sleepermanager.domain.player.gateway.ModifyPlayerGateway
-import io.micronaut.test.annotation.MockBean
-import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.mockk
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Test
-import javax.inject.Inject
+import org.junit.jupiter.api.extension.ExtendWith
 
-@MicronautTest
+@ExtendWith(MockKExtension::class)
 class UpdatePlayerUseCaseTest {
 
-    @Inject
-    lateinit var target: UpdatePlayerUseCase
+    @InjectMockKs
+    private lateinit var target: UpdatePlayerUseCase
 
-    @get:MockBean(GetPlayersGateway::class)
-    val playerGateway = mockk<GetPlayersGateway>()
+    @MockK
+    private lateinit var playerGateway: GetPlayersGateway
 
-    @get:MockBean(ModifyPlayerGateway::class)
-    val modifyPlayerGateway = mockk<ModifyPlayerGateway>()
+    @MockK
+    private lateinit var modifyPlayerGateway: ModifyPlayerGateway
 
     @ExperimentalCoroutinesApi
     @Test

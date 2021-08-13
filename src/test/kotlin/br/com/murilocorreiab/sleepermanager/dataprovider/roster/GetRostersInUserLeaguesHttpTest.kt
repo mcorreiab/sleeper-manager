@@ -9,32 +9,32 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.User
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity.RosterResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.RosterClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponse
-import io.micronaut.test.annotation.MockBean
-import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.every
-import io.mockk.mockk
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import javax.inject.Inject
 
-@MicronautTest
+@ExtendWith(MockKExtension::class)
 class GetRostersInUserLeaguesHttpTest {
 
-    @Inject
-    lateinit var target: GetRostersInUserLeaguesHttp
+    @InjectMockKs
+    private lateinit var target: GetRostersInUserLeaguesHttp
 
-    @get:MockBean(UserClient::class)
-    val userClient = mockk<UserClient>()
+    @MockK
+    private lateinit var userClient: UserClient
 
-    @get:MockBean(LeagueClient::class)
-    val leagueClient = mockk<LeagueClient>()
+    @MockK
+    private lateinit var leagueClient: LeagueClient
 
-    @get:MockBean(RosterClient::class)
-    val rosterClient = mockk<RosterClient>()
+    @MockK
+    private lateinit var rosterClient: RosterClient
 
     @ExperimentalCoroutinesApi
     @Test
