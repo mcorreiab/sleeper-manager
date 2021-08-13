@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.info.Info
 @OpenAPIDefinition(
     info = Info(
         title = "Sleeper Manager",
-        version = "2.1.0",
+        version = "2.2.0",
         description = "APIs that intend to easy the life of people playing fantasy on sleeper"
     )
 )
