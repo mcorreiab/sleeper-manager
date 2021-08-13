@@ -41,13 +41,13 @@ jobs:
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
       # run lint
-      - run: gradle ktlintCheck
+      - run: ./gradlew ktlintCheck
 
       # run tests!
-      - run: gradle test
+      - run: ./gradlew test
 
       #Generate report file
-      - run: gradle jacocoTestReport
+      - run: ./gradlew jacocoTestReport
 
       #Upload report file
       - codecov/upload:
