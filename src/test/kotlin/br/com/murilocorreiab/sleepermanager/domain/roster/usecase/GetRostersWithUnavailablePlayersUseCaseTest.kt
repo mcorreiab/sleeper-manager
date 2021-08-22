@@ -24,11 +24,11 @@ class GetRostersWithUnavailablePlayersUseCaseTest {
     private lateinit var rosterGateway: RosterGateway
 
     private val expectedRosterId = "roster1"
-    private val availablePlayer = PlayerProducer(id = "player1", name = "available", PlayerStatus.ACTIVE).build()
-    private val outPlayer = PlayerProducer(id = "player2", name = "out", PlayerStatus.OUT).build()
-    private val irPlayer = PlayerProducer(id = "player3", name = "ir", PlayerStatus.OUT).build()
+    private val availablePlayer = PlayerProducer.build(id = "player1", name = "available", PlayerStatus.ACTIVE)
+    private val outPlayer = PlayerProducer.build(id = "player2", name = "out", PlayerStatus.OUT)
+    private val irPlayer = PlayerProducer.build(id = "player3", name = "ir", PlayerStatus.OUT)
     private val outPlayerInBench =
-        PlayerProducer(id = "player4", name = "out", PlayerStatus.OUT, starter = false).build()
+        PlayerProducer.build(id = "player4", name = "out", PlayerStatus.OUT, starter = false)
     private val roster =
         RosterProducer(
             id = expectedRosterId,

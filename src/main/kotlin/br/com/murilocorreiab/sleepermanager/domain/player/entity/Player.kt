@@ -6,5 +6,5 @@ data class Player(
     val injuryStatus: String,
     var starter: Boolean,
     val position: String,
-    val team: String
+    val team: Team,
 )

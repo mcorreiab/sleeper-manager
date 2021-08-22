@@ -29,7 +29,7 @@ class UpdatePlayerUseCaseTest {
     @Test
     fun `should update players with success`() = runBlockingTest {
         // Given
-        val playersToUpdate = listOf(PlayerProducer().build())
+        val playersToUpdate = listOf(PlayerProducer.build())
 
         // When
         coEvery { playerGateway.getAllPlayers() } returns playersToUpdate

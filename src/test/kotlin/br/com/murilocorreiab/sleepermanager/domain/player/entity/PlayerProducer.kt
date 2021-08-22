@@ -1,12 +1,12 @@
 package br.com.murilocorreiab.sleepermanager.domain.player.entity
 
-data class PlayerProducer(
-    val id: String = "playerId",
-    val name: String = "playerName",
-    val injuryStatus: PlayerStatus = PlayerStatus.OUT,
-    val starter: Boolean = true,
-    val position: String = "position",
-    val team: String = "team"
-) {
-    fun build() = Player(id, name, injuryStatus.status, starter, position, team)
+object PlayerProducer {
+    fun build(
+        id: String = "playerId",
+        name: String = "playerName",
+        injuryStatus: PlayerStatus = PlayerStatus.OUT,
+        starter: Boolean = true,
+        position: String = "position",
+        team: Team = Team.GB,
+    ) = Player(id, name, injuryStatus.status, starter, position, team)
 }

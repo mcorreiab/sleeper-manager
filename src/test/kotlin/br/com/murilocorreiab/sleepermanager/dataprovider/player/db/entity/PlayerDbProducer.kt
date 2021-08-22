@@ -5,7 +5,7 @@ data class PlayerDbProducer(
     val name: String = "name",
     val injuryStatus: String = "injuryStatus",
     val position: String = "position",
-    val team: String = "team"
+    val team: String = "GB"
 ) {
     fun build() = PlayerDb(id, name, injuryStatus, position, team)
 }

@@ -10,7 +10,7 @@ data class PlayerResponseProducer(
     val lastName: String = "lastName",
     val injuryStatus: String? = PlayerStatus.IR.status,
     val position: String? = "position",
-    val team: String? = "team"
+    val team: String? = "GB"
 ) {
     fun build() =
         PlayerResponse(

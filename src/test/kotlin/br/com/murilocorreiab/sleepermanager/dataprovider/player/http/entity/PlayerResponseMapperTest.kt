@@ -3,6 +3,7 @@ package br.com.murilocorreiab.sleepermanager.dataprovider.player.http.entity
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerResponseMapper
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
+import br.com.murilocorreiab.sleepermanager.domain.player.entity.Team
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -24,7 +25,7 @@ class PlayerResponseMapperTest {
             starter = false,
             injuryStatus = playerResponse.injuryStatus!!,
             position = playerResponse.position!!,
-            team = playerResponse.team!!
+            team = Team.valueOf(playerResponse.team!!)
         )
 
         val actual = target.toDomain(playerResponse)
@@ -48,7 +49,7 @@ class PlayerResponseMapperTest {
             injuryStatus = PlayerStatus.ACTIVE.status,
             starter = false,
             position = "No position",
-            team = "No team"
+            team = Team.NO_TEAM,
         )
 
         val actual = target.toDomain(playerResponse)

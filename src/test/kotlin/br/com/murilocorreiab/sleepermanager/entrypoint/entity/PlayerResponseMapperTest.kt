@@ -31,7 +31,7 @@ class PlayerResponseMapperTest {
         injuryStatus: PlayerStatus,
         expectedInjuryStatus: PlayerStatus
     ) {
-        val player = PlayerProducer(injuryStatus = injuryStatus).build()
+        val player = PlayerProducer.build(injuryStatus = injuryStatus)
 
         val expected = PlayerResponse(
             id = player.id,
@@ -39,7 +39,7 @@ class PlayerResponseMapperTest {
             injuryStatus = expectedInjuryStatus.status,
             starter = player.starter,
             position = player.position,
-            team = player.team,
+            team = player.team.teamName,
         )
 
         val actual = target.fromDomain(player)

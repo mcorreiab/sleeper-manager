@@ -19,7 +19,7 @@ class ModifyPlayerGatewayDatabaseTest {
 
     @Test
     fun `should save all players`() {
-        val playerToSave = PlayerProducer().build()
+        val playerToSave = PlayerProducer.build()
         runBlocking {
             target.updatePlayers(listOf(playerToSave)).toList()
         }

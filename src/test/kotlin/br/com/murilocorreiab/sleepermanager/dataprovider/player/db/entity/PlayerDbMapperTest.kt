@@ -2,6 +2,7 @@ package br.com.murilocorreiab.sleepermanager.dataprovider.player.db.entity
 
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
+import br.com.murilocorreiab.sleepermanager.domain.player.entity.Team
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -16,14 +17,14 @@ class PlayerDbMapperTest {
     @Test
     fun `should map player from domain with success`() {
         // Given
-        val player = PlayerProducer().build()
+        val player = PlayerProducer.build()
         val expected =
             PlayerDb(
                 id = player.id,
                 injuryStatus = player.injuryStatus,
                 name = player.name,
                 position = player.position,
-                team = player.team
+                team = player.team.toString()
             )
 
         // When
@@ -36,7 +37,7 @@ class PlayerDbMapperTest {
     @Test
     fun `should map a list of players with success`() {
         // Given
-        val player = PlayerProducer().build()
+        val player = PlayerProducer.build()
 
         // When
         val actual = target.fromDomain(listOf(player))
@@ -56,7 +57,7 @@ class PlayerDbMapperTest {
                 name = player.name,
                 starter = false,
                 position = player.position,
-                team = player.team
+                team = Team.valueOf(player.team)
             )
 
         // When

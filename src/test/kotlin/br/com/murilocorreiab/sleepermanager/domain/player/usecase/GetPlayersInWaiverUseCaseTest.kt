@@ -32,8 +32,8 @@ class GetPlayersInWaiverUseCaseTest {
         // Given
         val playerInWaiverName = "player1 available"
         val playerInRosterName = "player2 unavailable"
-        val playerInWaiver = PlayerProducer(name = playerInWaiverName, id = playerInWaiverName).build()
-        val playerInRoster = PlayerProducer(name = playerInRosterName, id = playerInRosterName).build()
+        val playerInWaiver = PlayerProducer.build(name = playerInWaiverName, id = playerInWaiverName)
+        val playerInRoster = PlayerProducer.build(name = playerInRosterName, id = playerInRosterName)
         val playersToCheck = listOf(playerInWaiverName, playerInRosterName)
         val leagueWithPlayerAvailable = LeagueProducer(id = "league1").build()
         val leagueWithPlayerRostered = LeagueProducer(id = "league2").build()

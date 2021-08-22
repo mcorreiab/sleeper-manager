@@ -6,7 +6,7 @@ import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
 
 data class RosterProducer(
-    val players: List<Player> = arrayListOf(PlayerProducer().build()),
+    val players: List<Player> = arrayListOf(PlayerProducer.build()),
     val ownerId: String = "ownerId",
     val id: String = "id",
     val league: League = LeagueProducer().build()

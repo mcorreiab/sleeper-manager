@@ -31,7 +31,7 @@ class RosterResponseMapperTest {
                 injuryStatus = it.injuryStatus,
                 starter = it.starter,
                 position = it.position,
-                team = it.team,
+                team = it.team.teamName,
             )
         }
 

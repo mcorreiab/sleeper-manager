@@ -20,7 +20,7 @@ class RosterResponseMapperTest {
     @Test
     fun `should map roster response with success`() {
         val pointsByReception = 0.0
-        val players = listOf(PlayerProducer().build())
+        val players = listOf(PlayerProducer.build())
         val rosterResponse = RosterResponseProducer().build()
         val leagueResponse =
             LeagueResponseProducer(scoringSettingsResponse = ScoringSettingsResponse(pointsByReception)).build()
