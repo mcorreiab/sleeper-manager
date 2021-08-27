@@ -5,7 +5,7 @@ import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Roster
 
 interface RosterGateway {
-    suspend fun findUserRostersByUsernameInLeagues(username: String): List<Roster>
-    suspend fun findUserRostersByUserIdInLeagues(userId: String): List<Roster>
-    suspend fun findAllRosteredPlayersInUserLeagues(username: String): List<Pair<League, List<Player>>>
+    fun findUserRostersByUsernameInLeagues(username: String): List<Roster>
+    fun findUserRostersByUserIdInLeagues(userId: String): List<Roster>
+    fun findAllRosteredPlayersInUserLeagues(username: String): List<Pair<League, List<Player>>>
 }

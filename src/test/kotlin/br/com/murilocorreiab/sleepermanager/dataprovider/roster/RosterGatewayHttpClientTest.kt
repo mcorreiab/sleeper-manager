@@ -8,14 +8,10 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.entity.Player
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity.RosterResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponse
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Roster
-import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -38,22 +34,22 @@ class RosterGatewayHttpClientTest {
     private val starterPlayerId = "starterPlayerId"
     private val benchPlayerId = "benchPlayerId"
     private val playerNonexistentId = "playerNonexistentId"
+    private val username = "username"
 
-    @ExperimentalCoroutinesApi
     @Test
-    fun `should get rosters for user with success`() = runBlockingTest {
+    fun `should get rosters for user with success`() {
         // Given
         val username = "username"
         val userResponse = UserResponseProducer().build()
         val leagueResponse = LeagueResponseProducer().build()
-        val rosterResponse = RosterResponseProducer(
+        val rosterResponse = RosterResponseProducer.build(
             starters = listOf(starterPlayerId),
             players = listOf(starterPlayerId, benchPlayerId, playerNonexistentId),
             ownerId = userResponse.userId
-        ).build()
+        )
 
         // When
-        coEvery { getRostersInUserLeagues.getUserRosters(username) } returns listOf(
+        every { getRostersInUserLeagues.getUserRosters(username) } returns listOf(
             Pair(
                 leagueResponse,
                 listOf(rosterResponse)
@@ -67,20 +63,19 @@ class RosterGatewayHttpClientTest {
         assertThatFoundPlayersForUserRoster(actual, rosterResponse, leagueResponse, userResponse.userId)
     }
 
-    @ExperimentalCoroutinesApi
     @Test
-    fun `should get players by user id with success`() = runBlockingTest {
+    fun `should get players by user id with success`() {
         // Given
         val userId = "userId"
         val leagueResponse = LeagueResponseProducer().build()
-        val rosterResponse = RosterResponseProducer(
+        val rosterResponse = RosterResponseProducer.build(
             starters = listOf(starterPlayerId),
             players = listOf(starterPlayerId, benchPlayerId, playerNonexistentId),
             ownerId = userId
-        ).build()
+        )
 
         // When
-        coEvery { getRostersInUserLeagues.getUserRostersById(userId) } returns listOf(
+        every { getRostersInUserLeagues.getUserRostersById(userId) } returns listOf(
             Pair(
                 leagueResponse,
                 listOf(rosterResponse)
@@ -124,17 +119,15 @@ class RosterGatewayHttpClientTest {
         }
     }
 
-    @ExperimentalCoroutinesApi
     @Test
-    fun `if roster has no official players return empty flow`() = runBlockingTest {
+    fun `if roster has no official players return empty list`() {
         // Given
-        val username = "username"
         val playerNonexistentId = "playerNonexistentId"
         val leagueResponse = LeagueResponseProducer().build()
-        val rosterResponse = RosterResponseProducer(players = listOf(playerNonexistentId)).build()
+        val rosterResponse = RosterResponseProducer.build(players = listOf(playerNonexistentId))
 
         // When
-        coEvery { getRostersInUserLeagues.getUserRosters(username) } returns listOf(
+        every { getRostersInUserLeagues.getUserRosters(username) } returns listOf(
             Pair(
                 leagueResponse,
                 listOf(rosterResponse)
@@ -148,22 +141,46 @@ class RosterGatewayHttpClientTest {
         assertTrue(actual.isEmpty())
     }
 
-    @FlowPreview
-    @ExperimentalCoroutinesApi
     @Test
-    fun `should get all rostered players with success`() = runBlockingTest {
+    fun `given that the roster has no players should return an empty list`() {
         // Given
-        val userName = "username"
+        val leagueResponse = LeagueResponseProducer().build()
+        val rosterResponse = RosterResponseProducer.build(players = null)
+
+        // When
+        every { getRostersInUserLeagues.getUserRosters(username) } returns listOf(
+            Pair(
+                leagueResponse,
+                listOf(rosterResponse)
+            )
+        )
+
+        val actual = target.findUserRostersByUsernameInLeagues(username)
+
+        // Then
+        assertTrue(actual.isEmpty())
+    }
+
+    @Test
+    fun `should get all rostered players with success`() {
+        // Given
         val rosteredPlayerId = "rosteredPlayerId"
-        val roster1 = RosterResponseProducer(rosterId = "roster1", players = listOf(rosteredPlayerId)).build()
+        val roster1 = RosterResponseProducer.build(rosterId = "roster1", players = listOf(rosteredPlayerId))
         val roster2 = roster1.copy(rosterId = "roster2")
+        val roster3 = roster1.copy(rosterId = "roster3", players = null)
         val league = LeagueResponseProducer().build()
 
         // When
-        coEvery { getRostersInUserLeagues.getAllRosters(userName) } returns listOf(league to listOf(roster1, roster2))
+        every { getRostersInUserLeagues.getAllRosters(username) } returns listOf(
+            league to listOf(
+                roster1,
+                roster2,
+                roster3
+            )
+        )
         every { playerRepository.findById(rosteredPlayerId) } returns
             Optional.of(PlayerDbProducer(id = rosteredPlayerId).build())
-        val actual = target.findAllRosteredPlayersInUserLeagues(userName)
+        val actual = target.findAllRosteredPlayersInUserLeagues(username)
 
         // Then
         val rosteredPlayers = actual[0].second

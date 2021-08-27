@@ -4,7 +4,7 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.Leag
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponse
 
 interface GetRostersInUserLeagues {
-    suspend fun getAllRosters(username: String): List<Pair<LeagueResponse, List<RosterResponse>>>
-    suspend fun getUserRosters(username: String): List<Pair<LeagueResponse, List<RosterResponse>>>
-    suspend fun getUserRostersById(userId: String): List<Pair<LeagueResponse, List<RosterResponse>>>
+    fun getAllRosters(username: String): List<Pair<LeagueResponse, List<RosterResponse>>>
+    fun getUserRosters(username: String): List<Pair<LeagueResponse, List<RosterResponse>>>
+    fun getUserRostersById(userId: String): List<Pair<LeagueResponse, List<RosterResponse>>>
 }

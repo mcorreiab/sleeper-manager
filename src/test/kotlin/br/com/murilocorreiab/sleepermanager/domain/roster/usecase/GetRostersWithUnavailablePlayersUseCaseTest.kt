@@ -4,12 +4,10 @@ import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.RosterProducer
 import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway
-import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -38,14 +36,13 @@ class GetRostersWithUnavailablePlayersUseCaseTest {
         RosterProducer(id = "roster2", players = listOf(availablePlayer, outPlayerInBench)).build()
     private val expected = RosterProducer(id = expectedRosterId, players = listOf(outPlayer, irPlayer)).build()
 
-    @ExperimentalCoroutinesApi
     @Test
-    fun `should return all doubtful players in starter lineup with success`() = runBlockingTest {
+    fun `should return all doubtful players in starter lineup with success`() {
         // Given
         val username = "username"
 
         // When
-        coEvery { rosterGateway.findUserRostersByUsernameInLeagues(username) } returns
+        every { rosterGateway.findUserRostersByUsernameInLeagues(username) } returns
             listOf(roster, rosterWithOnlyActivePlayer)
         val actual = target.getByUsername(username)
 
@@ -53,13 +50,12 @@ class GetRostersWithUnavailablePlayersUseCaseTest {
         actual.forEach { assertEquals(expected, it) }
     }
 
-    @ExperimentalCoroutinesApi
     @Test
-    fun `should return all doubtful players by user id`() = runBlockingTest {
+    fun `should return all doubtful players by user id`() {
         // Given
         val userId = "userId"
         // When
-        coEvery { rosterGateway.findUserRostersByUserIdInLeagues(userId) } returns
+        every { rosterGateway.findUserRostersByUserIdInLeagues(userId) } returns
             listOf(roster, rosterWithOnlyActivePlayer)
         val actual = target.getByUserId(userId)
 

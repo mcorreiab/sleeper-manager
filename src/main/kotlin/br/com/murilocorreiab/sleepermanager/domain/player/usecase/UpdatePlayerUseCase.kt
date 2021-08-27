@@ -9,7 +9,7 @@ class UpdatePlayerUseCase(
     private val getPlayersGateway: GetPlayersGateway,
     private val modifyPlayerGateway: ModifyPlayerGateway
 ) : UpdatePlayer {
-    override suspend fun updatePlayers() = getPlayersGateway.getAllPlayers().let {
+    override fun updatePlayers() = getPlayersGateway.getAllPlayers().let {
         modifyPlayerGateway.updatePlayers(it)
     }
 }

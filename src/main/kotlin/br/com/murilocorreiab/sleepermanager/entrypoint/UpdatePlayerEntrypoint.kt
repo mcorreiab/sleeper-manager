@@ -9,7 +9,6 @@ import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Status
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
-import kotlinx.coroutines.runBlocking
 
 @Controller("/players")
 class UpdatePlayerEntrypoint(private val updatePlayer: UpdatePlayer) {
@@ -21,8 +20,8 @@ class UpdatePlayerEntrypoint(private val updatePlayer: UpdatePlayer) {
     @ApiResponse(description = "Players updated with success")
     @Post("/update")
     @Status(HttpStatus.NO_CONTENT)
-    fun update(): HttpResponse<Unit> = runBlocking {
+    fun update(): HttpResponse<Unit> {
         updatePlayer.updatePlayers()
-        noContent()
+        return noContent()
     }
 }

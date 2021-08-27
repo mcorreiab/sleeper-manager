@@ -5,11 +5,6 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.UserClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponse
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.RosterClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponse
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.reactive.asFlow
-import kotlinx.coroutines.reactive.awaitFirst
 import javax.inject.Singleton
 
 @Singleton
@@ -18,30 +13,28 @@ class GetRostersInUserLeaguesHttp(
     private val leagueClient: LeagueClient,
     private val rosterClient: RosterClient
 ) : GetRostersInUserLeagues {
-    override suspend fun getAllRosters(username: String): List<Pair<LeagueResponse, List<RosterResponse>>> =
-        userClient.getByUsername(username).awaitFirst()
-            .let { leagueClient.getByUserId(it.userId).asFlow() }
-            .map { getLeagueRosters(it) }.toList()
+    override fun getAllRosters(username: String): List<Pair<LeagueResponse, List<RosterResponse>>> =
+        userClient.getByUsername(username)
+            .let { leagueClient.getByUserId(it.userId) }
+            .map { getLeagueRosters(it) }
 
-    private suspend fun getLeagueRosters(league: LeagueResponse): Pair<LeagueResponse, List<RosterResponse>> =
-        rosterClient.getRostersOfALeague(league.leagueId).asFlow()
-            .let { Pair(league, it.toList()) }
+    private fun getLeagueRosters(league: LeagueResponse): Pair<LeagueResponse, List<RosterResponse>> =
+        Pair(league, rosterClient.getRostersOfALeague(league.leagueId))
 
-    override suspend fun getUserRosters(username: String): List<Pair<LeagueResponse, List<RosterResponse>>> =
-        userClient.getByUsername(username).awaitFirst()
+    override fun getUserRosters(username: String): List<Pair<LeagueResponse, List<RosterResponse>>> =
+        userClient.getByUsername(username)
             .let { user ->
-                leagueClient.getByUserId(user.userId).asFlow().map { league -> filterUserRosters(league, user.userId) }
-                    .toList()
+                leagueClient.getByUserId(user.userId).map { league -> filterUserRosters(league, user.userId) }
             }
 
-    override suspend fun getUserRostersById(userId: String): List<Pair<LeagueResponse, List<RosterResponse>>> =
-        leagueClient.getByUserId(userId).asFlow().map { filterUserRosters(it, userId) }.toList()
+    override fun getUserRostersById(userId: String): List<Pair<LeagueResponse, List<RosterResponse>>> =
+        leagueClient.getByUserId(userId).map { filterUserRosters(it, userId) }.toList()
 
-    private suspend fun filterUserRosters(
+    private fun filterUserRosters(
         league: LeagueResponse,
         userId: String
     ): Pair<LeagueResponse, List<RosterResponse>> =
-        rosterClient.getRostersOfALeague(league.leagueId).asFlow()
+        rosterClient.getRostersOfALeague(league.leagueId)
             .filter { roster -> roster.ownerId == userId }
             .let { Pair(league, it.toList()) }
 }

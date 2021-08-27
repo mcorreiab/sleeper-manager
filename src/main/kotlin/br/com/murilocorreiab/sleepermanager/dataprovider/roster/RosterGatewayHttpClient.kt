@@ -10,8 +10,6 @@ import br.com.murilocorreiab.sleepermanager.domain.league.entity.League
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Roster
 import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.coroutineScope
 import org.mapstruct.factory.Mappers
 import javax.inject.Singleton
 
@@ -25,18 +23,18 @@ class RosterGatewayHttpClient(
     private val leagueResponseMapper = Mappers.getMapper(LeagueMapper::class.java)
     private val playerDbMapper = Mappers.getMapper(PlayerDbMapper::class.java)
 
-    override suspend fun findUserRostersByUsernameInLeagues(username: String): List<Roster> = coroutineScope {
+    override fun findUserRostersByUsernameInLeagues(username: String): List<Roster> {
         val rostersByLeague = getRostersInUserLeagues.getUserRosters(username)
 
-        rostersByLeague.flatMap { (league, rosters) ->
+        return rostersByLeague.flatMap { (league, rosters) ->
             rosters.mapNotNull { roster -> mapRosters(roster, league) }
         }
     }
 
-    override suspend fun findUserRostersByUserIdInLeagues(userId: String): List<Roster> = coroutineScope {
+    override fun findUserRostersByUserIdInLeagues(userId: String): List<Roster> {
         val rostersByLeague = getRostersInUserLeagues.getUserRostersById(userId)
 
-        rostersByLeague.flatMap { (league, rosters) ->
+        return rostersByLeague.flatMap { (league, rosters) ->
             rosters.mapNotNull { roster -> mapRosters(roster, league) }
         }
     }
@@ -49,16 +47,15 @@ class RosterGatewayHttpClient(
     }
 
     private fun mapPlayers(roster: RosterResponse): List<Player> =
-        roster.players.mapNotNull {
+        roster.players?.mapNotNull {
             playerRepository.findById(it).orElse(null)
-        }.map {
+        }?.map {
             val player = playerDbMapper.toDomain(it)
             player.starter = roster.starters.contains(player.id)
             player
-        }
+        } ?: emptyList()
 
-    @FlowPreview
-    override suspend fun findAllRosteredPlayersInUserLeagues(username: String): List<Pair<League, List<Player>>> {
+    override fun findAllRosteredPlayersInUserLeagues(username: String): List<Pair<League, List<Player>>> {
 
         val rostersByLeague = getRostersInUserLeagues.getAllRosters(username)
 
@@ -69,10 +66,9 @@ class RosterGatewayHttpClient(
         }
     }
 
-    @FlowPreview
     private fun getPlayersFromRosters(
         rosters: List<RosterResponse>
-    ): List<Player> = rosters.flatMap { it.players }
+    ): List<Player> = rosters.flatMap { it.players ?: emptyList() }
         .distinct()
         .mapNotNull {
             playerRepository.findById(it).orElse(null)

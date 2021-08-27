@@ -11,7 +11,7 @@ import javax.inject.Singleton
 class ModifyPlayerGatewayDatabase(private val playerRepository: PlayerRepository) : ModifyPlayerGateway {
     private val playerDbMapper = Mappers.getMapper(PlayerDbMapper::class.java)
 
-    override suspend fun updatePlayers(players: List<Player>): List<Player> {
+    override fun updatePlayers(players: List<Player>): List<Player> {
         val playersToSave = playerDbMapper.fromDomain(players.toList())
         playerRepository.deleteAll()
         return playerRepository.saveAll(playersToSave).map { playerDbMapper.toDomain(it) }

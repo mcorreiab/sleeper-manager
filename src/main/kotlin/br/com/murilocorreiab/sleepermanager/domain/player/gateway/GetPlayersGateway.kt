@@ -4,6 +4,6 @@ import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
 
 interface GetPlayersGateway {
 
-    suspend fun getPlayersInformation(players: List<String>): List<Player>
-    suspend fun getAllPlayers(): List<Player>
+    fun getPlayersInformation(players: List<String>): List<Player>
+    fun getAllPlayers(): List<Player>
 }

@@ -9,7 +9,6 @@ import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
@@ -29,7 +28,7 @@ class GetPlayersGatewayDataProviderTest {
 
     @ExperimentalCoroutinesApi
     @Test
-    fun `should recover all informed players with success`() = runBlockingTest {
+    fun `should recover all informed players with success`() {
         // Given
         val firstNameToSearch = "Aaron"
         val secondNameToSearch = "Nelson"
@@ -61,7 +60,7 @@ class GetPlayersGatewayDataProviderTest {
 
     @ExperimentalCoroutinesApi
     @Test
-    fun `should get all players with success`() = runBlockingTest {
+    fun `should get all players with success`() {
         // Given
         val player = PlayerResponseProducer().build()
 

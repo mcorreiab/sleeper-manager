@@ -17,7 +17,7 @@ class GetPlayersGatewayDataProvider(
     private val playerMapper = Mappers.getMapper(PlayerResponseMapper::class.java)
     private val playerDbMapper = Mappers.getMapper(PlayerDbMapper::class.java)
 
-    override suspend fun getPlayersInformation(players: List<String>): List<Player> =
+    override fun getPlayersInformation(players: List<String>): List<Player> =
         players.map {
             playerRepository.findByNameIlike("%$it%")
         }.reduce { allPlayers, foundPlayers ->
@@ -26,7 +26,7 @@ class GetPlayersGatewayDataProvider(
             playerDbMapper.toDomain(it)
         }
 
-    override suspend fun getAllPlayers(): List<Player> =
+    override fun getAllPlayers(): List<Player> =
         playerClient.getAllPlayers().values.map {
             playerMapper.toDomain(it)
         }

@@ -8,12 +8,12 @@ import javax.inject.Singleton
 @Singleton
 class GetRostersWithUnavailablePlayersUseCase(private val rosterGateway: RosterGateway) :
     GetRostersWithUnavailablePlayers {
-    override suspend fun getByUsername(username: String): List<Roster> =
+    override fun getByUsername(username: String): List<Roster> =
         rosterGateway.findUserRostersByUsernameInLeagues(username).mapNotNull {
             getRosterWithUnavailableStarter(it)
         }
 
-    override suspend fun getByUserId(userId: String): List<Roster> =
+    override fun getByUserId(userId: String): List<Roster> =
         rosterGateway.findUserRostersByUserIdInLeagues(userId).mapNotNull {
             getRosterWithUnavailableStarter(it)
         }

@@ -15,7 +15,6 @@ group "br.com.murilocorreiab.sleeepermanager"
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 micronaut {
@@ -54,15 +53,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion") {
         because("To use kotlin coroutines when running asynchronous code")
     }
-    implementation("io.projectreactor:reactor-core:$reactorVersion") {
-        because("To use reactor types in http clients return, since flow is experimental")
-    }
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:$kotlinxCoroutinesReactiveVersion") {
-        because("To convert reactor types to coroutines")
-    }
-    implementation("io.micronaut.reactor:micronaut-reactor") {
-        because("It's necessary to use reactor in micronaut 2.x.x")
-    }
     implementation("io.micronaut.sql:micronaut-jdbc-hikari") {
         because("To persist data in sql database")
     }
@@ -76,9 +66,6 @@ dependencies {
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxCoroutinesVersion") {
         because("To use coroutines in unit tests")
-    }
-    testImplementation("io.projectreactor:reactor-test:$reactorVersion") {
-        because("To use reactor types in http clients return, since flow is experimental")
     }
     testImplementation("com.github.tomakehurst:wiremock-jre8:$wiremockVersion") {
         because("Mock clients responses in integration tests")

@@ -57,7 +57,7 @@ class PlayerInWaiverEntrypoint(private val getPlayersInWaiver: GetPlayersInWaive
         namesToSearch: List<String>
     ): HttpResponse<List<PlayersWaiverResponse>> {
         val playersInWaiver = doGetPlayersInWaiver(username, namesToSearch)
-        return if (playersInWaiver.count() > 0) {
+        return if (playersInWaiver.isNotEmpty()) {
             ok(playersInWaiver)
         } else {
             notFound()
