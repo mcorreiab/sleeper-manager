@@ -4,9 +4,9 @@ import br.com.murilocorreiab.sleepermanager.domain.league.entity.League
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
 import br.com.murilocorreiab.sleepermanager.domain.player.gateway.GetPlayersGateway
 import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway
+import jakarta.inject.Singleton
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import javax.inject.Singleton
 
 @Singleton
 class GetPlayersInWaiverUseCase(

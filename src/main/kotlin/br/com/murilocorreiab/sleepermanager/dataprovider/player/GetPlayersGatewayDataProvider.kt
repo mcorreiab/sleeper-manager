@@ -6,8 +6,8 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerClien
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerResponseMapper
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
 import br.com.murilocorreiab.sleepermanager.domain.player.gateway.GetPlayersGateway
+import jakarta.inject.Singleton
 import org.mapstruct.factory.Mappers
-import javax.inject.Singleton
 
 @Singleton
 class GetPlayersGatewayDataProvider(

@@ -5,7 +5,7 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.UserClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponse
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.RosterClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponse
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 @Singleton
 class GetRostersInUserLeaguesHttp(

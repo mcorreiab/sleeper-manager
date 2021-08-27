@@ -10,11 +10,11 @@ import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
 import io.micronaut.http.HttpStatus.NO_CONTENT
 import io.micronaut.http.MediaType
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
+import jakarta.inject.Inject
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import javax.inject.Inject
 
 @MicronautTest
 @WireMockTest

@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  application:
+    build: .
+    environment:
+      - MICRONAUT_ENVIRONMENTS=dev-docker
+    ports :
+      - "8080:8080"
+    depends_on :
+      - db
+  db:
+    image: postgres
+    environment :
+      - POSTGRES_PASSWORD=sa
+      - POSTGRES_USER=sa
+      - POSTGRES_DB=sleeper_manager

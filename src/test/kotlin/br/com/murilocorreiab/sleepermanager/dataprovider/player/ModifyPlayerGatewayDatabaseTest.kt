@@ -3,10 +3,10 @@ package br.com.murilocorreiab.sleepermanager.dataprovider.player
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.PlayerRepository
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
+import jakarta.inject.Inject
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import javax.inject.Inject
 
 @MicronautTest
 class ModifyPlayerGatewayDatabaseTest {

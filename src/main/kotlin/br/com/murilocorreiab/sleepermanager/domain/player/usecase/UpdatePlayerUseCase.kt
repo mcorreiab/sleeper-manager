@@ -2,7 +2,7 @@ package br.com.murilocorreiab.sleepermanager.domain.player.usecase
 
 import br.com.murilocorreiab.sleepermanager.domain.player.gateway.GetPlayersGateway
 import br.com.murilocorreiab.sleepermanager.domain.player.gateway.ModifyPlayerGateway
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 @Singleton
 class UpdatePlayerUseCase(

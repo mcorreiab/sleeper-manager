@@ -4,7 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import io.micronaut.context.annotation.Value
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 @Singleton
 class Wiremock(@Value("\${wiremock.server.port}") port: Int) {

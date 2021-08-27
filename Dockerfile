@@ -14,5 +14,4 @@ FROM openjdk:11-jre-slim as production
 WORKDIR /root/
 COPY --from=build /root/dev/sleepermanager/build/libs/sleepermanager-*-all.jar sleepermanager.jar
 EXPOSE 8080
-ENV MICRONAUT_ENVIRONMENTS "prod"
 CMD java -jar sleepermanager.jar

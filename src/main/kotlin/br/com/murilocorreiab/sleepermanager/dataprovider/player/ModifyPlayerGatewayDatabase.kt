@@ -4,8 +4,8 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.PlayerReposit
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.entity.PlayerDbMapper
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
 import br.com.murilocorreiab.sleepermanager.domain.player.gateway.ModifyPlayerGateway
+import jakarta.inject.Singleton
 import org.mapstruct.factory.Mappers
-import javax.inject.Singleton
 
 @Singleton
 class ModifyPlayerGatewayDatabase(private val playerRepository: PlayerRepository) : ModifyPlayerGateway {
