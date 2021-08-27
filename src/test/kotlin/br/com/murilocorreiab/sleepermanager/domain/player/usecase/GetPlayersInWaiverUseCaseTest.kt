@@ -4,7 +4,7 @@ import br.com.murilocorreiab.sleepermanager.domain.league.entity.LeagueProducer
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
 import br.com.murilocorreiab.sleepermanager.domain.player.gateway.GetPlayersGateway
 import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway
-import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -40,7 +40,7 @@ class GetPlayersInWaiverUseCaseTest {
         val username = "username"
 
         // When
-        coEvery { rosterGateway.findAllRosteredPlayersInUserLeagues(username) }.returns(
+        every { rosterGateway.findAllRosteredPlayersInUserLeagues(username) }.returns(
             listOf(
                 leagueWithPlayerAvailable to listOf(
                     playerInRoster
@@ -48,7 +48,7 @@ class GetPlayersInWaiverUseCaseTest {
                 leagueWithPlayerRostered to listOf(playerInWaiver, playerInRoster)
             )
         )
-        coEvery { playerGateway.getPlayersInformation(playersToCheck) }.returns(listOf(playerInWaiver, playerInRoster))
+        every { playerGateway.getPlayersInformation(playersToCheck) }.returns(listOf(playerInWaiver, playerInRoster))
         val actual = target.get(username, playersToCheck).toList().toMap()
 
         // Then
