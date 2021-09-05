@@ -13,3 +13,6 @@ jpa:
       hibernate:
         hbm2ddl:
           auto: update
+
+redis :
+  uri : redis://localhost

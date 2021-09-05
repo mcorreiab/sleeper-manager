@@ -82,6 +82,16 @@ class PlayerInWaiverEntrypointTest {
     private fun searchForPlayers(playersToSearch: String): HttpResponse<List<PlayersWaiverResponse>> {
         // When
         stubFor(
+            get(urlEqualTo("/players/nfl"))
+                .willReturn(
+                    aResponse().withHeader(
+                        "content-type",
+                        MediaType.APPLICATION_JSON
+                    ).withBodyFile("players_response.json")
+                )
+        )
+
+        stubFor(
             get(urlEqualTo("/user/$userName")).willReturn(
                 aResponse().withHeader("content-type", MediaType.APPLICATION_JSON)
                     .withBodyFile("user_response_murilocorreia.json")

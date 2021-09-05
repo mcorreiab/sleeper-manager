@@ -3,23 +3,22 @@ package br.com.murilocorreiab.sleepermanager.dataprovider.player.http.entity
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerResponse
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
 
-data class PlayerResponseProducer(
-    val playerId: String = "playerId",
-    val fullName: String? = "fullName",
-    val firstName: String = "firstName",
-    val lastName: String = "lastName",
-    val injuryStatus: String? = PlayerStatus.IR.status,
-    val position: String? = "position",
-    val team: String? = "GB"
-) {
-    fun build() =
-        PlayerResponse(
-            playerId = playerId,
-            fullName = fullName,
-            firstName = firstName,
-            lastName = lastName,
-            injuryStatus = injuryStatus,
-            position = position,
-            team = team
-        )
+object PlayerResponseProducer {
+    fun build(
+        playerId: String = "playerId",
+        fullName: String? = "fullName",
+        firstName: String = "firstName",
+        lastName: String = "lastName",
+        injuryStatus: String? = PlayerStatus.IR.status,
+        position: String? = "position",
+        team: String? = "GB"
+    ) = PlayerResponse(
+        playerId = playerId,
+        fullName = fullName,
+        firstName = firstName,
+        lastName = lastName,
+        injuryStatus = injuryStatus,
+        position = position,
+        team = team
+    )
 }

@@ -1,48 +1,51 @@
-micronaut:
-  application:
-    name: sleepermanager
-  http:
-    client:
-      read-timeout: 30s
-  router:
-    static-resources:
-      swagger:
-        paths: classpath:META-INF/swagger
-        mapping: /swagger/**
-      swagger-ui:
-        paths: classpath:META-INF/swagger/views/swagger-ui
-        mapping: /swagger-ui/**
-  server:
-    host: 0.0.0.0
-    thread-selection: auto
+micronaut :
+  application :
+    name : sleepermanager
+  http :
+    client :
+      read-timeout : 30s
+  router :
+    static-resources :
+      swagger :
+        paths : classpath:META-INF/swagger
+        mapping : /swagger/**
+      swagger-ui :
+        paths : classpath:META-INF/swagger/views/swagger-ui
+        mapping : /swagger-ui/**
+  server :
+    host : 0.0.0.0
+    thread-selection : auto
 
-external:
-  api:
-    sleeper:
-      base: https://api.sleeper.app/v1
-      user:
-        root: ${external.api.sleeper.base}/user
-        getByUsername: /{username}
-        getLeagues: /{userId}/leagues/nfl/2021
-      roster: ${external.api.sleeper.base}/league/{leagueId}/rosters
-      player: ${external.api.sleeper.base}/players/nfl
+external :
+  api :
+    sleeper :
+      base : https://api.sleeper.app/v1
+      user :
+        root : ${external.api.sleeper.base}/user
+        getByUsername : /{username}
+        getLeagues : /{userId}/leagues/nfl/2021
+      roster : ${external.api.sleeper.base}/league/{leagueId}/rosters
+      player : ${external.api.sleeper.base}/players/nfl
 
-datasources:
-  default:
-    url: ${JDBC_DATABASE_URL}
-    username: ${JDBC_DATABASE_USERNAME}
-    password: ${JDBC_DATABASE_PASSWORD}
-    driverClassName: org.postgresql.Driver
-    dialect: POSTGRES
+datasources :
+  default :
+    url : ${JDBC_DATABASE_URL}
+    username : ${JDBC_DATABASE_USERNAME}
+    password : ${JDBC_DATABASE_PASSWORD}
+    driverClassName : org.postgresql.Driver
+    dialect : POSTGRES
 
-jpa:
-  default:
-    entity-scan:
-      packages: br.com.murilocorreiab.sleepermanager
-    properties:
-      hibernate:
-        hbm2ddl:
-          auto: validate
+jpa :
+  default :
+    entity-scan :
+      packages : br.com.murilocorreiab.sleepermanager
+    properties :
+      hibernate :
+        hbm2ddl :
+          auto : validate
 
-jackson:
-  property-naming-strategy: SNAKE_CASE
+jackson :
+  property-naming-strategy : SNAKE_CASE
+
+redis :
+  uri : ${REDISCLOUD_URL}

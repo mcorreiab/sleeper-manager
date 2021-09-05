@@ -1,33 +1,14 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.player
 
-import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.PlayerRepository
-import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.entity.PlayerDbMapper
-import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerClient
-import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerResponseMapper
+import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.GetPlayers
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
 import br.com.murilocorreiab.sleepermanager.domain.player.gateway.GetPlayersGateway
 import jakarta.inject.Singleton
-import org.mapstruct.factory.Mappers
 
 @Singleton
-class GetPlayersGatewayDataProvider(
-    private val playerClient: PlayerClient,
-    private val playerRepository: PlayerRepository
-) : GetPlayersGateway {
-    private val playerMapper = Mappers.getMapper(PlayerResponseMapper::class.java)
-    private val playerDbMapper = Mappers.getMapper(PlayerDbMapper::class.java)
-
+class GetPlayersGatewayDataProvider(private val getPlayers: GetPlayers) : GetPlayersGateway {
     override fun getPlayersInformation(players: List<String>): List<Player> =
-        players.map {
-            playerRepository.findByNameIlike("%$it%")
-        }.reduce { allPlayers, foundPlayers ->
-            allPlayers + foundPlayers.filter { !allPlayers.contains(it) }
-        }.map {
-            playerDbMapper.toDomain(it)
-        }
+        getAllPlayers().filter { players.any { player -> it.name.contains(player, true) } }
 
-    override fun getAllPlayers(): List<Player> =
-        playerClient.getAllPlayers().values.map {
-            playerMapper.toDomain(it)
-        }
+    override fun getAllPlayers(): List<Player> = getPlayers.getAllPlayers()
 }

@@ -108,6 +108,16 @@ class RosterEntrypointTest {
 
     private fun arrangeToRecoverRosterOfAUser(userId: String) {
         stubFor(
+            get(urlEqualTo("/players/nfl"))
+                .willReturn(
+                    aResponse().withHeader(
+                        "content-type",
+                        MediaType.APPLICATION_JSON
+                    ).withBodyFile("players_response.json")
+                )
+        )
+
+        stubFor(
             get(urlEqualTo("/user/$userId/leagues/nfl/2021"))
                 .willReturn(
                     aResponse().withHeader("content-type", MediaType.APPLICATION_JSON)

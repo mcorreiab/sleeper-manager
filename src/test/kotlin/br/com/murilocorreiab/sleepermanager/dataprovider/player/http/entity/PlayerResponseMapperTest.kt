@@ -17,7 +17,7 @@ class PlayerResponseMapperTest {
 
     @Test
     fun `should map with success`() {
-        val playerResponse = PlayerResponseProducer().build()
+        val playerResponse = PlayerResponseProducer.build()
 
         val expected = Player(
             id = playerResponse.playerId,
@@ -35,13 +35,13 @@ class PlayerResponseMapperTest {
 
     @Test
     fun `should map a list of players with success`() {
-        val playerResponse = PlayerResponseProducer().build()
+        val playerResponse = PlayerResponseProducer.build()
         assertTrue(target.toDomain(listOf(playerResponse)).isNotEmpty())
     }
 
     @Test
     fun `if properties are null should map to default ones`() {
-        val playerResponse = PlayerResponseProducer(injuryStatus = null, team = null, position = null).build()
+        val playerResponse = PlayerResponseProducer.build(injuryStatus = null, team = null, position = null)
 
         val expected = Player(
             id = playerResponse.playerId,
@@ -58,7 +58,7 @@ class PlayerResponseMapperTest {
 
     @Test
     fun `if full name is missing should map to first name + last name`() {
-        val playerWithoutFullName = PlayerResponseProducer(fullName = null).build()
+        val playerWithoutFullName = PlayerResponseProducer.build(fullName = null)
         val actualWithoutFullName = target.toDomain(playerWithoutFullName)
         assertEquals(
             "${playerWithoutFullName.firstName} ${playerWithoutFullName.lastName}",

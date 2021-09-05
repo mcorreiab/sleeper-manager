@@ -2,8 +2,7 @@ package br.com.murilocorreiab.sleepermanager.dataprovider.roster
 
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueMapper
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponse
-import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.PlayerRepository
-import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.entity.PlayerDbMapper
+import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.GetPlayers
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponse
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponseMapper
 import br.com.murilocorreiab.sleepermanager.domain.league.entity.League
@@ -16,12 +15,11 @@ import org.mapstruct.factory.Mappers
 @Singleton
 class RosterGatewayHttpClient(
     private val getRostersInUserLeagues: GetRostersInUserLeagues,
-    private val playerRepository: PlayerRepository
+    private val getPlayers: GetPlayers,
 ) : RosterGateway {
 
     private val rosterResponseMapper = Mappers.getMapper(RosterResponseMapper::class.java)
     private val leagueResponseMapper = Mappers.getMapper(LeagueMapper::class.java)
-    private val playerDbMapper = Mappers.getMapper(PlayerDbMapper::class.java)
 
     override fun findUserRostersByUsernameInLeagues(username: String): List<Roster> {
         val rostersByLeague = getRostersInUserLeagues.getUserRosters(username)
@@ -47,12 +45,9 @@ class RosterGatewayHttpClient(
     }
 
     private fun mapPlayers(roster: RosterResponse): List<Player> =
-        roster.players?.mapNotNull {
-            playerRepository.findById(it).orElse(null)
-        }?.map {
-            val player = playerDbMapper.toDomain(it)
-            player.starter = roster.starters.contains(player.id)
-            player
+        roster.players?.mapNotNull { getPlayers.getPlayerById(it) }?.map {
+            it.starter = roster.starters.contains(it.id)
+            it
         } ?: emptyList()
 
     override fun findAllRosteredPlayersInUserLeagues(username: String): List<Pair<League, List<Player>>> {
@@ -71,8 +66,6 @@ class RosterGatewayHttpClient(
     ): List<Player> = rosters.flatMap { it.players ?: emptyList() }
         .distinct()
         .mapNotNull {
-            playerRepository.findById(it).orElse(null)
-        }.map {
-            playerDbMapper.toDomain(it)
+            getPlayers.getPlayerById(it)
         }
 }
