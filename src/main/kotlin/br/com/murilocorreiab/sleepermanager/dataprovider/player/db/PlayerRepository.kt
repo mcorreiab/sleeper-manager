@@ -7,7 +7,7 @@ import jakarta.inject.Singleton
 import java.time.Duration
 
 @Singleton
-class PlayerRepositoryRedis(private val connection: StatefulRedisConnection<String, Player>) {
+class PlayerRepository(private val connection: StatefulRedisConnection<String, Player>) {
 
     fun getAll() = connection.sync().keys("*").map { connection.async().get(it) }.mapNotNull { it.get() }
 

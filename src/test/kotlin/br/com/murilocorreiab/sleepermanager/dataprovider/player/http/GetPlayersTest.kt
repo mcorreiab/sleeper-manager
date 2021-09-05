@@ -1,6 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.player.http
 
-import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.PlayerRepositoryRedis
+import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.PlayerRepository
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.entity.PlayerResponseProducer
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
@@ -24,7 +24,7 @@ class GetPlayersTest {
     lateinit var playerClient: PlayerClient
 
     @MockK
-    lateinit var playerRepository: PlayerRepositoryRedis
+    lateinit var playerRepository: PlayerRepository
 
     @Test
     fun `should get all players from remote api`() {
