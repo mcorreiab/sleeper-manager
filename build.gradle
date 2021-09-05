@@ -37,7 +37,6 @@ dependencies {
     }
     compileOnly("org.graalvm.nativeimage:svm")
     kapt("io.micronaut.openapi:micronaut-openapi")
-    kapt("io.micronaut.data:micronaut-data-processor")
     implementation("io.swagger.core.v3:swagger-annotations")
     implementation("io.micronaut:micronaut-validation")
     implementation("io.micronaut.redis:micronaut-redis-lettuce")
@@ -47,22 +46,14 @@ dependencies {
     implementation("io.micronaut:micronaut-runtime")
     implementation("javax.annotation:javax.annotation-api")
     implementation("io.micronaut:micronaut-http-client")
-    implementation("org.jetbrains.kotlin:kotlin-noarg")
     implementation("org.mapstruct:mapstruct:$mapStructVersion") {
         because("To map objects in a clear way")
     }
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion") {
         because("To use kotlin coroutines when running asynchronous code")
     }
-    implementation("io.micronaut.sql:micronaut-jdbc-hikari") {
-        because("To persist data in sql database")
-    }
-    implementation("io.micronaut.data:micronaut-data-hibernate-jpa") {
-        because("To persist data in sql database")
-    }
     runtimeOnly("ch.qos.logback:logback-classic")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    runtimeOnly("org.postgresql:postgresql")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxCoroutinesVersion") {
         because("To use coroutines in unit tests")
@@ -70,10 +61,7 @@ dependencies {
     testImplementation("com.github.tomakehurst:wiremock-jre8:$wiremockVersion") {
         because("Mock clients responses in integration tests")
     }
-    testImplementation("com.h2database:h2:${h2DatabaseVersion}") {
-        because("To use in memory sql database in test scope")
-    }
-    testImplementation("com.github.kstyrc:embedded-redis:0.6")
+    testImplementation("com.github.kstyrc:embedded-redis:$embededRedisVersion")
     implementation("javax.inject:javax.inject:1")
 }
 
@@ -125,10 +113,6 @@ tasks {
 
 shadowJar {
     mergeServiceFiles()
-}
-
-noArg {
-    annotation("javax.persistence.Entity")
 }
 
 tasks.withType(JavaExec) {

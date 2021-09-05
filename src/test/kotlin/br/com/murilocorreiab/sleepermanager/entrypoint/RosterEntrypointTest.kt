@@ -1,9 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.entrypoint
 
 import br.com.murilocorreiab.sleepermanager.config.WireMockTest
-import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.PlayerRepository
-import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.entity.PlayerDbProducer
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
 import br.com.murilocorreiab.sleepermanager.entrypoint.client.RosterClient
 import br.com.murilocorreiab.sleepermanager.entrypoint.entity.RosterResponse
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
@@ -18,7 +15,6 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @MicronautTest
@@ -27,23 +23,6 @@ class RosterEntrypointTest {
 
     @Inject
     private lateinit var rosterClient: RosterClient
-
-    @Inject
-    private lateinit var playerRepository: PlayerRepository
-
-    @BeforeEach
-    fun populateDatabase() {
-        playerRepository.deleteAll()
-        val player1 =
-            PlayerDbProducer(id = "96", name = "Aaron Rodgers", injuryStatus = PlayerStatus.ACTIVE.status).build()
-        val player2 =
-            PlayerDbProducer(id = "2133", name = "Davante Adams", injuryStatus = PlayerStatus.ACTIVE.status).build()
-        val player3 =
-            PlayerDbProducer(id = "4866", name = "Saquon Barkley", injuryStatus = PlayerStatus.IR.status).build()
-        val player4 =
-            PlayerDbProducer(id = "4199", name = "Aaron Jones", injuryStatus = PlayerStatus.ACTIVE.status).build()
-        playerRepository.saveAll(listOf(player1, player2, player3, player4))
-    }
 
     @Test
     fun `should recover unavailable players for a user using username`() {

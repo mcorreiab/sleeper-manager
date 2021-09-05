@@ -9,8 +9,4 @@ services:
     depends_on :
       - db
   db:
-    image: postgres
-    environment :
-      - POSTGRES_PASSWORD=sa
-      - POSTGRES_USER=sa
-      - POSTGRES_DB=sleeper_manager
+    image: redis

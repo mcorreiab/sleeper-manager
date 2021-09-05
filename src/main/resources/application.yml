@@ -28,23 +28,6 @@ external :
       roster : ${external.api.sleeper.base}/league/{leagueId}/rosters
       player : ${external.api.sleeper.base}/players/nfl
 
-datasources :
-  default :
-    url : ${JDBC_DATABASE_URL}
-    username : ${JDBC_DATABASE_USERNAME}
-    password : ${JDBC_DATABASE_PASSWORD}
-    driverClassName : org.postgresql.Driver
-    dialect : POSTGRES
-
-jpa :
-  default :
-    entity-scan :
-      packages : br.com.murilocorreiab.sleepermanager
-    properties :
-      hibernate :
-        hbm2ddl :
-          auto : validate
-
 jackson :
   property-naming-strategy : SNAKE_CASE
 
