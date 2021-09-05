@@ -30,3 +30,6 @@ jpa:
       hibernate:
         hbm2ddl:
           auto: create
+
+redis :
+  uri : redis://localhost

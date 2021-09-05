@@ -15,6 +15,7 @@ micronaut :
   server :
     host : 0.0.0.0
     thread-selection : auto
+    port : ${PORT:8080}
 
 external :
   api :
