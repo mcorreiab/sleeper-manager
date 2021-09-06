@@ -38,15 +38,15 @@ class RosterEntrypoint(
     @Get("/user/username/{username}/unavailable")
     fun recoverRostersWithUnavailablePlayersByUsername(
         @PathVariable username: String
-    ): HttpResponse<List<RosterResponse>> {
-        val rosters =
-            getRostersWithUnavailablePlayers.getByUsername(username).let { rosterResponseMapper.fromDomain(it) }
-        return if (rosters.isNotEmpty()) {
-            ok(rosters)
-        } else {
-            notFound()
-        }
-    }
+    ): HttpResponse<List<RosterResponse>> =
+        getRostersWithUnavailablePlayers.getByUsername(username).let { rosterResponseMapper.fromDomain(it) }
+            .let {
+                if (it.isNotEmpty()) {
+                    ok(it)
+                } else {
+                    notFound()
+                }
+            }
 
     @Operation(
         summary = "Get unavailable players",
@@ -61,13 +61,13 @@ class RosterEntrypoint(
         ApiResponse(responseCode = "500", description = "An unexpected error occurred"),
     )
     @Get("/user/userId/{userId}/unavailable")
-    fun recoverRostersWithUnavailablePlayersByUserId(@PathVariable userId: String): HttpResponse<List<RosterResponse>> {
-        val rosters =
-            getRostersWithUnavailablePlayers.getByUserId(userId).let { rosterResponseMapper.fromDomain(it) }
-        return if (rosters.isNotEmpty()) {
-            ok(rosters)
-        } else {
-            notFound()
-        }
-    }
+    fun recoverRostersWithUnavailablePlayersByUserId(@PathVariable userId: String): HttpResponse<List<RosterResponse>> =
+        getRostersWithUnavailablePlayers.getByUserId(userId).let { rosterResponseMapper.fromDomain(it) }
+            .let {
+                if (it.isNotEmpty()) {
+                    ok(it)
+                } else {
+                    notFound()
+                }
+            }
 }
