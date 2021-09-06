@@ -5,5 +5,6 @@ data class LeagueResponse(
     val leagueId: String,
     val totalRosters: Int,
     val avatar: String?,
-    val scoringSettings: ScoringSettingsResponse
+    val scoringSettings: ScoringSettingsResponse,
+    val settings: SettingsResponse,
 )

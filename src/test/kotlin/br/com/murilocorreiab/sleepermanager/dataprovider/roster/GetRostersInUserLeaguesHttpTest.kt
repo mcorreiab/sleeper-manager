@@ -1,11 +1,11 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.roster
 
-import br.com.murilocorreiab.sleepermanager.dataprovider.league.entity.LeagueResponseProducer
-import br.com.murilocorreiab.sleepermanager.dataprovider.league.entity.UserResponseProducer
-import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.LeagueClient
+import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.GetLeagues
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.UserClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponse
+import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.UserResponse
+import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.UserResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity.RosterResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.RosterClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponse
@@ -27,17 +27,17 @@ class GetRostersInUserLeaguesHttpTest {
     private lateinit var userClient: UserClient
 
     @MockK
-    private lateinit var leagueClient: LeagueClient
+    private lateinit var rosterClient: RosterClient
 
     @MockK
-    private lateinit var rosterClient: RosterClient
+    private lateinit var getLeagues: GetLeagues
 
     @Test
     fun `should get all rosters with success`() {
         // Given
         val username = "username"
-        val userResponse = UserResponseProducer().build()
-        val leagueResponse = LeagueResponseProducer().build()
+        val userResponse = UserResponseProducer.build()
+        val leagueResponse = LeagueResponseProducer.build()
         val rosterResponse = RosterResponseProducer.build()
         val rostersByLeague = listOf(rosterResponse)
 
@@ -55,8 +55,8 @@ class GetRostersInUserLeaguesHttpTest {
         // Given
         val username = "username"
         val userId = "userId"
-        val userResponse = UserResponseProducer(userId = userId).build()
-        val leagueResponse = LeagueResponseProducer().build()
+        val userResponse = UserResponseProducer.build(userId = userId)
+        val leagueResponse = LeagueResponseProducer.build()
         val userRoster = RosterResponseProducer.build(ownerId = userId, rosterId = "roster1")
         val otherUserRoster = RosterResponseProducer.build(ownerId = "otherUser", rosterId = "roster2")
         val rostersByLeague = listOf(userRoster, otherUserRoster)
@@ -74,8 +74,8 @@ class GetRostersInUserLeaguesHttpTest {
     fun `should get user rosters by userId with success`() {
         // Given
         val userId = "userId"
-        val userResponse = UserResponseProducer(userId = userId).build()
-        val leagueResponse = LeagueResponseProducer().build()
+        val userResponse = UserResponseProducer.build(userId = userId)
+        val leagueResponse = LeagueResponseProducer.build()
         val userRoster = RosterResponseProducer.build(ownerId = userId, rosterId = "roster1")
         val otherUserRoster = RosterResponseProducer.build(ownerId = "otherUser", rosterId = "roster2")
         val rostersByLeague = listOf(userRoster, otherUserRoster)
@@ -93,7 +93,7 @@ class GetRostersInUserLeaguesHttpTest {
         leagueResponse: LeagueResponse,
         rostersByLeague: List<RosterResponse>
     ) {
-        every { leagueClient.getByUserId(userResponse.userId) } returns listOf(leagueResponse)
+        every { getLeagues.getByUserId(userResponse.userId) } returns listOf(leagueResponse)
         every { rosterClient.getRostersOfALeague(leagueResponse.leagueId) } returns
             rostersByLeague
     }

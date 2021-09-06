@@ -1,6 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.roster
 
-import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.LeagueClient
+import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.GetLeagues
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.UserClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponse
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.RosterClient
@@ -10,12 +10,12 @@ import jakarta.inject.Singleton
 @Singleton
 class GetRostersInUserLeaguesHttp(
     private val userClient: UserClient,
-    private val leagueClient: LeagueClient,
-    private val rosterClient: RosterClient
+    private val rosterClient: RosterClient,
+    private val getLeagues: GetLeagues,
 ) : GetRostersInUserLeagues {
     override fun getAllRosters(username: String): List<Pair<LeagueResponse, List<RosterResponse>>> =
         userClient.getByUsername(username)
-            .let { leagueClient.getByUserId(it.userId) }
+            .let { getLeagues.getByUserId(it.userId) }
             .map { getLeagueRosters(it) }
 
     private fun getLeagueRosters(league: LeagueResponse): Pair<LeagueResponse, List<RosterResponse>> =
@@ -24,11 +24,11 @@ class GetRostersInUserLeaguesHttp(
     override fun getUserRosters(username: String): List<Pair<LeagueResponse, List<RosterResponse>>> =
         userClient.getByUsername(username)
             .let { user ->
-                leagueClient.getByUserId(user.userId).map { league -> filterUserRosters(league, user.userId) }
+                getLeagues.getByUserId(user.userId).map { league -> filterUserRosters(league, user.userId) }
             }
 
     override fun getUserRostersById(userId: String): List<Pair<LeagueResponse, List<RosterResponse>>> =
-        leagueClient.getByUserId(userId).map { filterUserRosters(it, userId) }.toList()
+        getLeagues.getByUserId(userId).map { filterUserRosters(it, userId) }.toList()
 
     private fun filterUserRosters(
         league: LeagueResponse,

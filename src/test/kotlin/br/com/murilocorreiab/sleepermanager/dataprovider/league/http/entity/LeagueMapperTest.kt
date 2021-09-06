@@ -1,7 +1,5 @@
-package br.com.murilocorreiab.sleepermanager.dataprovider.league.entity
+package br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity
 
-import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueMapper
-import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponse
 import br.com.murilocorreiab.sleepermanager.domain.league.entity.League
 import br.com.murilocorreiab.sleepermanager.domain.league.entity.PointsByReception
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
@@ -19,9 +17,9 @@ class LeagueMapperTest {
         // Given
         val receptionPoints = 0.0
 
-        val leagueResponse = LeagueResponseProducer(
-            scoringSettingsResponse = ScoringSettingsResponseProducer(receptionPoints).build(),
-        ).build()
+        val leagueResponse = LeagueResponseProducer.build(
+            scoringSettingsResponse = ScoringSettingsResponseProducer.build(receptionPoints),
+        )
 
         // When
         val expected = createExpectedLeague(leagueResponse, PointsByReception.STANDARD)
@@ -36,9 +34,9 @@ class LeagueMapperTest {
         // Given
         val receptionPoints = 0.5
 
-        val leagueResponse = LeagueResponseProducer(
-            scoringSettingsResponse = ScoringSettingsResponseProducer(receptionPoints).build(),
-        ).build()
+        val leagueResponse = LeagueResponseProducer.build(
+            scoringSettingsResponse = ScoringSettingsResponseProducer.build(receptionPoints),
+        )
 
         // When
         val expected = createExpectedLeague(leagueResponse, PointsByReception.HALF_PPR)
@@ -53,9 +51,9 @@ class LeagueMapperTest {
         // Given
         val receptionPoints = 1.0
 
-        val leagueResponse = LeagueResponseProducer(
-            scoringSettingsResponse = ScoringSettingsResponseProducer(receptionPoints).build(),
-        ).build()
+        val leagueResponse = LeagueResponseProducer.build(
+            scoringSettingsResponse = ScoringSettingsResponseProducer.build(receptionPoints),
+        )
 
         // When
         val expected = createExpectedLeague(leagueResponse, PointsByReception.PPR)
@@ -70,9 +68,9 @@ class LeagueMapperTest {
         // Given
         val receptionPoints = -1.0
 
-        val leagueResponse = LeagueResponseProducer(
-            scoringSettingsResponse = ScoringSettingsResponseProducer(receptionPoints).build(),
-        ).build()
+        val leagueResponse = LeagueResponseProducer.build(
+            scoringSettingsResponse = ScoringSettingsResponseProducer.build(receptionPoints),
+        )
 
         // When
         val expected = createExpectedLeague(leagueResponse, PointsByReception.STANDARD)

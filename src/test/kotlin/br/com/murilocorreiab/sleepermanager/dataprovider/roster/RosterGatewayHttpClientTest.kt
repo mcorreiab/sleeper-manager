@@ -1,8 +1,8 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.roster
 
-import br.com.murilocorreiab.sleepermanager.dataprovider.league.entity.LeagueResponseProducer
-import br.com.murilocorreiab.sleepermanager.dataprovider.league.entity.UserResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponse
+import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponseProducer
+import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.UserResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.GetPlayers
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity.RosterResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponse
@@ -39,8 +39,8 @@ class RosterGatewayHttpClientTest {
     fun `should get rosters for user with success`() {
         // Given
         val username = "username"
-        val userResponse = UserResponseProducer().build()
-        val leagueResponse = LeagueResponseProducer().build()
+        val userResponse = UserResponseProducer.build()
+        val leagueResponse = LeagueResponseProducer.build()
         val rosterResponse = RosterResponseProducer.build(
             starters = listOf(starterPlayerId),
             players = listOf(starterPlayerId, benchPlayerId, playerNonexistentId),
@@ -66,7 +66,7 @@ class RosterGatewayHttpClientTest {
     fun `should get players by user id with success`() {
         // Given
         val userId = "userId"
-        val leagueResponse = LeagueResponseProducer().build()
+        val leagueResponse = LeagueResponseProducer.build()
         val rosterResponse = RosterResponseProducer.build(
             starters = listOf(starterPlayerId),
             players = listOf(starterPlayerId, benchPlayerId, playerNonexistentId),
@@ -117,7 +117,7 @@ class RosterGatewayHttpClientTest {
     fun `if roster has no official players return empty list`() {
         // Given
         val playerNonexistentId = "playerNonexistentId"
-        val leagueResponse = LeagueResponseProducer().build()
+        val leagueResponse = LeagueResponseProducer.build()
         val rosterResponse = RosterResponseProducer.build(players = listOf(playerNonexistentId))
 
         // When
@@ -138,7 +138,7 @@ class RosterGatewayHttpClientTest {
     @Test
     fun `given that the roster has no players should return an empty list`() {
         // Given
-        val leagueResponse = LeagueResponseProducer().build()
+        val leagueResponse = LeagueResponseProducer.build()
         val rosterResponse = RosterResponseProducer.build(players = null)
 
         // When
@@ -162,7 +162,7 @@ class RosterGatewayHttpClientTest {
         val roster1 = RosterResponseProducer.build(rosterId = "roster1", players = listOf(rosteredPlayerId))
         val roster2 = roster1.copy(rosterId = "roster2")
         val roster3 = roster1.copy(rosterId = "roster3", players = null)
-        val league = LeagueResponseProducer().build()
+        val league = LeagueResponseProducer.build()
 
         // When
         every { getRostersInUserLeagues.getAllRosters(username) } returns listOf(

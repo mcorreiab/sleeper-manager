@@ -1,6 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity
 
-import br.com.murilocorreiab.sleepermanager.dataprovider.league.entity.LeagueResponseProducer
+import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.ScoringSettingsResponse
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponseMapper
 import br.com.murilocorreiab.sleepermanager.domain.league.entity.League
@@ -23,7 +23,7 @@ class RosterResponseMapperTest {
         val players = listOf(PlayerProducer.build())
         val rosterResponse = RosterResponseProducer.build()
         val leagueResponse =
-            LeagueResponseProducer(scoringSettingsResponse = ScoringSettingsResponse(pointsByReception)).build()
+            LeagueResponseProducer.build(scoringSettingsResponse = ScoringSettingsResponse(pointsByReception))
 
         val league = League(
             name = leagueResponse.name,
