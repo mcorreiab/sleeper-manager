@@ -16,6 +16,8 @@ micronaut :
     host : 0.0.0.0
     thread-selection : auto
     port : ${PORT:8080}
+    cors :
+      enabled : true
 
 external :
   api :
