@@ -1,9 +1,11 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.player.http
 
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
+import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
 import org.mapstruct.Mappings
+import org.mapstruct.Named
 
 @Mapper
 abstract class PlayerResponseMapper {
@@ -20,7 +22,7 @@ abstract class PlayerResponseMapper {
             Mapping(
                 target = "injuryStatus",
                 source = "injuryStatus",
-                defaultValue = "Active"
+                qualifiedByName = ["mapInjuryStatus"]
             ),
             Mapping(target = "team", source = "team", defaultValue = "NO_TEAM"),
             Mapping(target = "position", source = "position", defaultValue = "No position")
@@ -31,4 +33,8 @@ abstract class PlayerResponseMapper {
     abstract fun toDomain(playerResponse: List<PlayerResponse>): List<Player>
 
     fun mapName(fullName: String?, firstName: String, lastName: String) = fullName ?: "$firstName $lastName"
+
+    @Named("mapInjuryStatus")
+    fun mapInjuryStatus(injuryStatus: String?) =
+        injuryStatus?.let { it.ifEmpty { PlayerStatus.ACTIVE.status } } ?: PlayerStatus.ACTIVE.status
 }

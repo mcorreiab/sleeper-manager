@@ -65,4 +65,14 @@ class PlayerResponseMapperTest {
             actualWithoutFullName.name
         )
     }
+
+    @Test
+    fun `if injury status is empty should map to active`() {
+        val playerInjuryStatusEmpty = PlayerResponseProducer.build(injuryStatus = "")
+        val actual = target.toDomain(playerInjuryStatusEmpty)
+        assertEquals(
+            PlayerStatus.ACTIVE.status,
+            actual.injuryStatus
+        )
+    }
 }
