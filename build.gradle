@@ -35,25 +35,30 @@ dependencies {
     kapt("org.mapstruct:mapstruct-processor:$mapStructVersion") {
         because("To allow mapstruct to run in kotlin processor")
     }
-    compileOnly("org.graalvm.nativeimage:svm")
     kapt("io.micronaut.openapi:micronaut-openapi")
-    implementation("io.swagger.core.v3:swagger-annotations")
-    implementation("io.micronaut:micronaut-validation")
-    implementation("io.micronaut.redis:micronaut-redis-lettuce")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
-    implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
-    implementation("io.micronaut:micronaut-runtime")
-    implementation("javax.annotation:javax.annotation-api")
+
     implementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut:micronaut-jackson-databind")
+    implementation("io.micronaut:micronaut-runtime")
+    implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
+    implementation("io.micronaut.redis:micronaut-redis-lettuce")
+    implementation("io.swagger.core.v3:swagger-annotations")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    compileOnly("org.graalvm.nativeimage:svm")
+
+    implementation("io.micronaut:micronaut-validation")
+
+    runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+    implementation("javax.annotation:javax.annotation-api")
     implementation("org.mapstruct:mapstruct:$mapStructVersion") {
         because("To map objects in a clear way")
     }
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion") {
         because("To use kotlin coroutines when running asynchronous code")
     }
-    runtimeOnly("ch.qos.logback:logback-classic")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxCoroutinesVersion") {
         because("To use coroutines in unit tests")
@@ -91,7 +96,7 @@ jacocoTestReport {
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion("11")
+    sourceCompatibility = JavaVersion.toVersion("17")
 }
 
 allOpen {
@@ -101,12 +106,12 @@ allOpen {
 tasks {
     compileKotlin {
         kotlinOptions {
-            jvmTarget = "11"
+            jvmTarget = "17"
         }
     }
     compileTestKotlin {
         kotlinOptions {
-            jvmTarget = "11"
+            jvmTarget = "17"
         }
     }
 }
