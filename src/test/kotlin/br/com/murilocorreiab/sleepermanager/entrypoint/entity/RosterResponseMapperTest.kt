@@ -14,7 +14,7 @@ class RosterResponseMapperTest {
 
     @Test
     fun `should map roster response with success`() {
-        val roster = RosterProducer().build()
+        val roster = RosterProducer.build()
         val league = roster.league
         val expectedLeague = LeagueResponse(
             name = league.name,
@@ -45,7 +45,7 @@ class RosterResponseMapperTest {
 
     @Test
     fun `should map a list of rosters with success`() {
-        val roster = RosterProducer().build()
+        val roster = RosterProducer.build()
 
         val actual = target.fromDomain(listOf(roster))
 

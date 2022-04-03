@@ -59,6 +59,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion") {
         because("To use kotlin coroutines when running asynchronous code")
     }
+    implementation("javax.inject:javax.inject:1") {
+        because("Mapstruct generates implementation using javax annotations")
+    }
+
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxCoroutinesVersion") {
         because("To use coroutines in unit tests")
@@ -67,7 +71,8 @@ dependencies {
         because("Mock clients responses in integration tests")
     }
     testImplementation("com.github.kstyrc:embedded-redis:$embededRedisVersion")
-    implementation("javax.inject:javax.inject:1")
+    testImplementation("org.assertj:assertj-core:$assertJVersion")
+
 }
 
 test.classpath += configurations.developmentOnly

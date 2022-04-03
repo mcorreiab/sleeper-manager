@@ -28,13 +28,13 @@ class GetRostersWithUnavailablePlayersUseCaseTest {
     private val outPlayerInBench =
         PlayerProducer.build(id = "player4", name = "out", PlayerStatus.OUT, starter = false)
     private val roster =
-        RosterProducer(
+        RosterProducer.build(
             id = expectedRosterId,
             players = listOf(availablePlayer, outPlayer, irPlayer, outPlayerInBench)
-        ).build()
+        )
     private val rosterWithOnlyActivePlayer =
-        RosterProducer(id = "roster2", players = listOf(availablePlayer, outPlayerInBench)).build()
-    private val expected = RosterProducer(id = expectedRosterId, players = listOf(outPlayer, irPlayer)).build()
+        RosterProducer.build(id = "roster2", players = listOf(availablePlayer, outPlayerInBench))
+    private val expected = RosterProducer.build(id = expectedRosterId, players = listOf(outPlayer, irPlayer))
 
     @Test
     fun `should return all doubtful players in starter lineup with success`() {

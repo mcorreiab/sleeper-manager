@@ -1,11 +1,11 @@
 package br.com.murilocorreiab.sleepermanager.domain.league.entity
 
-data class LeagueProducer(
-    val name: String = "league",
-    val id: String = "120",
-    val size: Int = 10,
-    val avatar: String = "avatar",
-    val pointsByReception: PointsByReception = PointsByReception.STANDARD
-) {
-    fun build() = League(name = name, id = id, size = size, avatar = avatar, pointsByReception = pointsByReception)
+object LeagueProducer {
+    fun build(
+        name: String = "league",
+        id: String = "120",
+        size: Int = 10,
+        avatar: String = "avatar",
+        pointsByReception: PointsByReception = PointsByReception.STANDARD
+    ) = League(name = name, id = id, size = size, avatar = avatar, pointsByReception = pointsByReception)
 }

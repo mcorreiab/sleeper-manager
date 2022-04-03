@@ -13,7 +13,7 @@ class LeagueResponseMapperTest {
 
     @Test
     fun `should map from domain with success`() {
-        val league = LeagueProducer().build()
+        val league = LeagueProducer.build()
 
         val expected = LeagueResponse(
             name = league.name,
