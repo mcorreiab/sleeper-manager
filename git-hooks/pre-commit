@@ -1,0 +1,31 @@
+#!/bin/bash
+
+echo "Stashing local changes"
+
+git stash -q --keep-index -u
+
+echo "Running Ktlint"
+./gradlew ktlintFormat
+
+git add .
+
+./gradlew ktlintCheck
+
+ktLintStatus=$?
+
+if [[ $ktLintStatus -ne 0 ]]; then
+    echo "ktLint failed"
+    echo "Pop Stash"
+    git stash pop -q
+    exit $ktLintStatus
+fi
+
+echo "Running unit tests"
+./gradlew test
+
+status=$?
+
+echo "Pop Stash"
+git stash pop -q
+
+exit $status
