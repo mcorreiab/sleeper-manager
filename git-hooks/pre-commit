@@ -1,31 +1,53 @@
 #!/bin/bash
 
-echo "Stashing local changes"
+stash_local_changes() {
+    echo "Stashing local changes"
 
-git stash -q --keep-index -u
+    git stash -q --keep-index -u
+}
 
-echo "Running Ktlint"
-./gradlew ktlintFormat
+run_ktlint_and_add_to_staging(){
+    echo "Running Ktlint"
+    ./gradlew ktlintFormat
 
-git add .
+    git add .
 
-./gradlew ktlintCheck
+    ./gradlew ktlintCheck
+}
 
-ktLintStatus=$?
+check_for_ktLint_error(){
+    ktLintStatus=$?
 
-if [[ $ktLintStatus -ne 0 ]]; then
-    echo "ktLint failed"
+    if [[ $ktLintStatus -ne 0 ]]; then
+        echo "ktLint failed"
+        echo "Pop Stash"
+        git stash pop -q
+        exit $ktLintStatus
+    fi
+}
+
+run_tests() {
+    echo "Running unit tests"
+    ./gradlew test
+}
+
+restore_stash() {
     echo "Pop Stash"
     git stash pop -q
-    exit $ktLintStatus
-fi
+}
 
-echo "Running unit tests"
-./gradlew test
+stash_local_changes
+
+run_ktlint_and_add_to_staging
+
+check_for_ktLint_error
+
+run_tests
 
 status=$?
 
-echo "Pop Stash"
-git stash pop -q
+restore_stash
 
 exit $status
+
+

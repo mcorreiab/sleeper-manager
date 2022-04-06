@@ -40,6 +40,8 @@ class FindPlayersOnExternalResourceTest {
     )
     private val playerEmptyInjuryStatus = PlayerResponseProducer.build(playerId = "3", injuryStatus = "")
 
+    // TODO: Convert this inside of PlayerResponseProducer
+    // Params = injuryStatus, team, starter
     private val playerFieldsFilledDomain = PlayerProducer.build(
         id = playerFieldsFilled.playerId,
         name = playerFieldsFilled.fullName!!,
