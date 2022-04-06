@@ -3,8 +3,8 @@ package br.com.murilocorreiab.sleepermanager.dataprovider.player
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.PlayerRepository
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.entity.PlayerResponseProducer
+import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.entity.PlayerResponseProducer.toDomain
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Team
 import io.micronaut.test.annotation.MockBean
@@ -40,10 +40,7 @@ class FindPlayersOnExternalResourceTest {
     )
     private val playerEmptyInjuryStatus = PlayerResponseProducer.build(playerId = "3", injuryStatus = "")
 
-    // TODO: Convert this inside of PlayerResponseProducer
-    // Params = injuryStatus, team, starter
-    private val playerFieldsFilledDomain = PlayerProducer.build(
-        id = playerFieldsFilled.playerId,
+    private val playerFieldsFilledDomain = playerFieldsFilled.toDomain(
         name = playerFieldsFilled.fullName!!,
         position = playerFieldsFilled.position!!,
         injuryStatus = PlayerStatus.ACTIVE,
@@ -51,8 +48,7 @@ class FindPlayersOnExternalResourceTest {
         starter = false,
     )
 
-    private val playerOptionalFieldsMissingDomain = PlayerProducer.build(
-        id = playerOptionalFieldsMissing.playerId,
+    private val playerOptionalFieldsMissingDomain = playerOptionalFieldsMissing.toDomain(
         name = "${playerOptionalFieldsMissing.firstName} ${playerOptionalFieldsMissing.lastName}",
         position = "No position",
         injuryStatus = PlayerStatus.ACTIVE,
@@ -60,8 +56,7 @@ class FindPlayersOnExternalResourceTest {
         starter = false,
     )
 
-    private val playerEmptyInjuryStatusDomain = PlayerProducer.build(
-        id = playerEmptyInjuryStatus.playerId,
+    private val playerEmptyInjuryStatusDomain = playerEmptyInjuryStatus.toDomain(
         name = playerEmptyInjuryStatus.fullName!!,
         position = playerEmptyInjuryStatus.position!!,
         injuryStatus = PlayerStatus.ACTIVE,
@@ -70,7 +65,7 @@ class FindPlayersOnExternalResourceTest {
     )
 
     @Test
-    fun `should get all players with from api with success`() {
+    fun `should get all players from api with success`() {
         // Arrange
         every { playerRepository.getAll() } returns emptyList()
         every { playerClient.getAllPlayers() } returns mapOf(

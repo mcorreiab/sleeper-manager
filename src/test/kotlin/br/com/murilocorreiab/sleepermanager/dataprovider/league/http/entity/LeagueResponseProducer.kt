@@ -13,11 +13,11 @@ object LeagueResponseProducer {
         settings: SettingsResponse = SettingsResponseProducer.build()
     ) = LeagueResponse(name, leagueId, totalRosters, avatar, scoringSettingsResponse, settings)
 
-    fun toDomain(leagueResponse: LeagueResponse, pointsByReception: PointsByReception) = League(
-        leagueResponse.name,
-        leagueResponse.leagueId,
-        leagueResponse.totalRosters,
-        leagueResponse.avatar,
+    fun LeagueResponse.toDomain(pointsByReception: PointsByReception) = League(
+        name,
+        leagueId,
+        totalRosters,
+        avatar,
         pointsByReception,
     )
 }

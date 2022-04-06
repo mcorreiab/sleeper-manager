@@ -2,6 +2,7 @@ package br.com.murilocorreiab.sleepermanager.dataprovider.league
 
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.LeagueClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponseProducer
+import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponseProducer.toDomain
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.ScoringSettingsResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.SettingsResponseProducer
 import br.com.murilocorreiab.sleepermanager.domain.league.entity.PointsByReception
@@ -54,13 +55,12 @@ class GetAllLeaguesTest {
         val result = sut.findAllUserLeagues("userId")
 
         // Assert
-        Assertions.assertThat(result)
-            .containsExactly(
-                LeagueResponseProducer.toDomain(standardScoringLeague, PointsByReception.STANDARD),
-                LeagueResponseProducer.toDomain(halfPprLeague, PointsByReception.HALF_PPR),
-                LeagueResponseProducer.toDomain(fullPprLeague, PointsByReception.PPR),
-                LeagueResponseProducer.toDomain(invalidScoringLeague, PointsByReception.STANDARD),
-            )
+        Assertions.assertThat(result).containsExactly(
+            standardScoringLeague.toDomain(PointsByReception.STANDARD),
+            halfPprLeague.toDomain(PointsByReception.HALF_PPR),
+            fullPprLeague.toDomain(PointsByReception.PPR),
+            invalidScoringLeague.toDomain(PointsByReception.STANDARD),
+        )
     }
 
     @MockBean(LeagueClient::class)
