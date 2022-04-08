@@ -9,7 +9,7 @@ import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
 import br.com.murilocorreiab.sleepermanager.domain.player.gateway.PlayerGateway
 import br.com.murilocorreiab.sleepermanager.domain.player.usecase.PlayersInWaiverUseCase
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Roster2
-import br.com.murilocorreiab.sleepermanager.domain.roster.entity.RosterProducer2
+import br.com.murilocorreiab.sleepermanager.domain.roster.entity.RosterFactory2
 import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway2
 import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
@@ -156,7 +156,7 @@ class GetPlayersOfUserLeaguesInWaiverTest {
 
         fun withPlayer(id: String) = players.add(id)
 
-        fun build() = RosterProducer2.build(id = id, players = players)
+        fun build() = RosterFactory2.build(id = id, players = players)
     }
 
     @MockBean(LeagueGateway::class)

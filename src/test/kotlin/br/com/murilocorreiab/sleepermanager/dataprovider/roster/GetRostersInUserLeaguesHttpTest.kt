@@ -6,7 +6,7 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.Leag
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.UserResponse
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.UserResponseProducer
-import br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity.RosterResponseProducer
+import br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity.RosterResponseFactory
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.RosterClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponse
 import io.mockk.every
@@ -38,7 +38,7 @@ class GetRostersInUserLeaguesHttpTest {
         val username = "username"
         val userResponse = UserResponseProducer.build()
         val leagueResponse = LeagueResponseProducer.build()
-        val rosterResponse = RosterResponseProducer.build()
+        val rosterResponse = RosterResponseFactory.build()
         val rostersByLeague = listOf(rosterResponse)
 
         // When
@@ -57,8 +57,8 @@ class GetRostersInUserLeaguesHttpTest {
         val userId = "userId"
         val userResponse = UserResponseProducer.build(userId = userId)
         val leagueResponse = LeagueResponseProducer.build()
-        val userRoster = RosterResponseProducer.build(ownerId = userId, rosterId = "roster1")
-        val otherUserRoster = RosterResponseProducer.build(ownerId = "otherUser", rosterId = "roster2")
+        val userRoster = RosterResponseFactory.build(ownerId = userId, rosterId = "roster1")
+        val otherUserRoster = RosterResponseFactory.build(ownerId = "otherUser", rosterId = "roster2")
         val rostersByLeague = listOf(userRoster, otherUserRoster)
 
         // When
@@ -76,8 +76,8 @@ class GetRostersInUserLeaguesHttpTest {
         val userId = "userId"
         val userResponse = UserResponseProducer.build(userId = userId)
         val leagueResponse = LeagueResponseProducer.build()
-        val userRoster = RosterResponseProducer.build(ownerId = userId, rosterId = "roster1")
-        val otherUserRoster = RosterResponseProducer.build(ownerId = "otherUser", rosterId = "roster2")
+        val userRoster = RosterResponseFactory.build(ownerId = userId, rosterId = "roster1")
+        val otherUserRoster = RosterResponseFactory.build(ownerId = "otherUser", rosterId = "roster2")
         val rostersByLeague = listOf(userRoster, otherUserRoster)
 
         // When

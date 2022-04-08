@@ -8,11 +8,11 @@ stash_local_changes() {
 
 run_ktlint_and_add_to_staging(){
     echo "Running Ktlint"
-    ./gradlew ktlintFormat
+    ./gradlew ktlintFormat -q
 
     git add .
 
-    ./gradlew ktlintCheck
+    ./gradlew ktlintCheck -q
 }
 
 check_for_ktLint_error(){
@@ -21,7 +21,7 @@ check_for_ktLint_error(){
     if [[ $ktLintStatus -ne 0 ]]; then
         echo "ktLint failed"
         echo "Pop Stash"
-        git stash pop -q
+#        git stash pop -q
         exit $ktLintStatus
     fi
 }
@@ -36,7 +36,7 @@ restore_stash() {
     git stash pop -q
 }
 
-stash_local_changes
+#stash_local_changes
 
 run_ktlint_and_add_to_staging
 
@@ -46,7 +46,7 @@ run_tests
 
 status=$?
 
-restore_stash
+#restore_stash
 
 exit $status
 
