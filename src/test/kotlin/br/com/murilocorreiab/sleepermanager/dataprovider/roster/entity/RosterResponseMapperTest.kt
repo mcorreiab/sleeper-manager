@@ -30,7 +30,8 @@ class RosterResponseMapperTest {
             id = leagueResponse.leagueId,
             size = leagueResponse.totalRosters,
             avatar = leagueResponse.avatar,
-            pointsByReception = PointsByReception.STANDARD
+            pointsByReception = PointsByReception.STANDARD,
+            isBestBall = false,
         )
         val expected =
             Roster(id = rosterResponse.rosterId, ownerId = rosterResponse.ownerId, players = players, league = league)

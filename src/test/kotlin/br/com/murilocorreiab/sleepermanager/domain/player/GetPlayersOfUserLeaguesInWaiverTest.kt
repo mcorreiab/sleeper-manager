@@ -1,6 +1,5 @@
 package br.com.murilocorreiab.sleepermanager.domain.player
 
-import br.com.murilocorreiab.sleepermanager.domain.league.entity.League
 import br.com.murilocorreiab.sleepermanager.domain.league.entity.LeagueProducer
 import br.com.murilocorreiab.sleepermanager.domain.league.gateway.LeagueGateway
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.LeaguesForPlayer
@@ -37,27 +36,29 @@ class GetPlayersOfUserLeaguesInWaiverTest {
     private val userId = "userId"
 
     @Test
-    fun `should list 2 players in waiver with success filtering out rostered players`() {
+    fun `should list 2 players in waiver with success filtering out rostered players and bestball leagues`() {
         // Arrange
         val playerFullMatch = PlayerProducer.build(id = "1", name = "aaron donald")
         val playerPartialMatch = PlayerProducer.build(id = "2", name = "Russell")
         val playerNotInWaivers = PlayerProducer.build(id = "3", name = "Aaron Jones")
         val playerDifferentName = PlayerProducer.build(id = "4", name = "Jared")
 
-        val league1 = LeagueBuilder("1").withRoster("1").thatHavePlayer(playerNotInWaivers.id).completeRoster()
-        val league2 = LeagueBuilder("2").withRoster("2").thatHavePlayer(playerPartialMatch.id).completeRoster().and()
-            .withRoster("3").thatHavePlayer(playerNotInWaivers.id).completeRoster()
+        val league1 = LeagueBuilder("1").withRoster("1").thatHavePlayer(playerNotInWaivers.id).buildRoster()
+        val league2 =
+            LeagueBuilder("2").withRoster("2").thatHavePlayer(playerPartialMatch.id).buildRoster().and().withRoster("3")
+                .thatHavePlayer(playerNotInWaivers.id).buildRoster()
         val league3 =
             LeagueBuilder("3").withRoster("4").thatHavePlayer(playerFullMatch.id).thatHavePlayer(playerNotInWaivers.id)
-                .completeRoster()
+                .buildRoster()
+        val league4 = LeagueBuilder("4").bestBall().withRoster("5").thatHavePlayer(playerFullMatch.id).buildRoster()
 
-        val leagues = listOf(league1, league2, league3)
+        val leagues = listOf(league1, league2, league3, league4)
 
         createMockForLeagues(leagues)
         createMockGetAllPlayers(
             listOf(
-                playerFullMatch, playerPartialMatch, playerNotInWaivers, playerDifferentName
-            )
+                playerFullMatch, playerPartialMatch, playerNotInWaivers, playerDifferentName,
+            ),
         )
 
         // Act
@@ -65,10 +66,13 @@ class GetPlayersOfUserLeaguesInWaiverTest {
 
         // Assert
         val expectFullMatchIn2Leagues = LeaguesForPlayer(
-            player = playerFullMatch, leagues = listOf(league1.league, league2.league)
+            player = playerFullMatch, leagues = listOf(league1.build(), league2.build()),
         )
         val expectPartialMatchIn2Leagues = LeaguesForPlayer(
-            player = playerPartialMatch, leagues = listOf(league1.league, league3.league)
+            player = playerPartialMatch,
+            leagues = listOf(
+                league1.build(), league3.build()
+            ),
         )
 
         Assertions.assertThat(actual).containsExactlyInAnyOrder(expectFullMatchIn2Leagues, expectPartialMatchIn2Leagues)
@@ -80,7 +84,7 @@ class GetPlayersOfUserLeaguesInWaiverTest {
         val rosteredPlayerInAllLeagues = PlayerProducer.build(id = "1", name = "bobby wagner")
         val playerDifferentName = PlayerProducer.build(id = "2", name = "Von")
 
-        val league = LeagueBuilder("1").withRoster("1").thatHavePlayer(rosteredPlayerInAllLeagues.id).completeRoster()
+        val league = LeagueBuilder("1").withRoster("1").thatHavePlayer(rosteredPlayerInAllLeagues.id).buildRoster()
 
         createMockForLeagues(listOf(league))
         createMockGetAllPlayers(listOf(rosteredPlayerInAllLeagues, playerDifferentName))
@@ -119,9 +123,9 @@ class GetPlayersOfUserLeaguesInWaiverTest {
     }
 
     private fun createMockForLeagues(leagues: List<LeagueBuilder>) {
-        every { leagueGateway.findAllUserLeagues(userId) } returns leagues.map { it.league }
+        every { leagueGateway.findAllUserLeagues(userId) } returns leagues.map { it.build() }
         leagues.forEach {
-            every { rosterGateway.findRostersOfLeague(it.league.id) } returns it.rosters
+            every { rosterGateway.findRostersOfLeague(it.build().id) } returns it.rosters
         }
     }
 
@@ -130,12 +134,17 @@ class GetPlayersOfUserLeaguesInWaiverTest {
     }
 
     private class LeagueBuilder(
-        id: String,
+        private val id: String,
     ) {
-        val league: League = LeagueProducer.build(id = id)
         val rosters: MutableList<Roster2> = mutableListOf()
 
         private lateinit var rosterBuilder: RosterBuilder
+        private var isBestBall = false
+
+        fun bestBall() = apply {
+            isBestBall = true
+        }
+
         fun withRoster(id: String) = apply {
             rosterBuilder = RosterBuilder(id)
         }
@@ -144,11 +153,13 @@ class GetPlayersOfUserLeaguesInWaiverTest {
             rosterBuilder.withPlayer(id)
         }
 
-        fun completeRoster() = apply {
+        fun buildRoster() = apply {
             rosters.add(rosterBuilder.build())
         }
 
         fun and() = this
+
+        fun build() = LeagueProducer.build(id = id, isBestBall = isBestBall)
     }
 
     private data class RosterBuilder(val id: String) {

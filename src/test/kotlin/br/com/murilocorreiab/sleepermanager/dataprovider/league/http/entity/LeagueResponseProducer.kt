@@ -19,5 +19,6 @@ object LeagueResponseProducer {
         totalRosters,
         avatar,
         pointsByReception,
+        settings.bestBall == 1
     )
 }

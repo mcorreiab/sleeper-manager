@@ -31,7 +31,7 @@ class PlayersInWaiverUseCase(
     }
 
     private fun getPlayersOfUserLeagues(userId: String) =
-        leagueGateway.findAllUserLeagues(userId).map { it.collectLeaguePlayers() }
+        leagueGateway.findAllUserLeagues(userId).filter { !it.isBestBall }.map { it.collectLeaguePlayers() }
 
     private fun League.collectLeaguePlayers() =
         rosterGateway.findRostersOfLeague(this.id).flatMap { it.players }.let { LeagueWithPlayers(this, it) }

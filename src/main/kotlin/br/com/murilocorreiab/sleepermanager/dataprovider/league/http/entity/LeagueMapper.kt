@@ -17,12 +17,16 @@ abstract class LeagueMapper {
             Mapping(
                 source = "scoringSettings.rec",
                 target = "pointsByReception",
-                qualifiedByName = ["convertPointsByReception"]
-            )
-        ]
+                qualifiedByName = ["convertPointsByReception"],
+            ),
+            Mapping(source = "settings.bestBall", target = "isBestBall", qualifiedByName = ["convertBestBall"]),
+        ],
     )
     abstract fun convertToDomain(leagueResponse: LeagueResponse): League
 
     @Named("convertPointsByReception")
     fun convertPointsByReception(pointsByReception: Double) = PointsByReception.getByPoints(pointsByReception)
+
+    @Named("convertBestBall")
+    fun convertBestBall(bestBall: Int) = bestBall == 1
 }

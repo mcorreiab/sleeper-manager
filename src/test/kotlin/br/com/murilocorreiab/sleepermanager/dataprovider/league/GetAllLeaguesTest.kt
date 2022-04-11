@@ -38,6 +38,7 @@ class GetAllLeaguesTest {
         val fullPprLeague = LeagueResponseProducer.build(
             leagueId = "3",
             scoringSettingsResponse = ScoringSettingsResponseProducer.build(rec = 1.0),
+            settings = SettingsResponseProducer.build(bestBall = 0),
         )
         val invalidScoringLeague = LeagueResponseProducer.build(
             leagueId = "4",
