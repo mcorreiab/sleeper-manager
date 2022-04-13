@@ -40,24 +40,27 @@ class GetPlayersOfUserLeaguesInWaiverTest {
         // Arrange
         val playerFullMatch = PlayerProducer.build(id = "1", name = "aaron donald")
         val playerPartialMatch = PlayerProducer.build(id = "2", name = "Russell")
-        val playerNotInWaivers = PlayerProducer.build(id = "3", name = "Aaron Jones")
-        val playerDifferentName = PlayerProducer.build(id = "4", name = "Jared")
+        val playerAlwaysRostered = PlayerProducer.build(id = "3", name = "Aaron Jones")
+        val playerNameDoNotMatch = PlayerProducer.build(id = "4", name = "Jared")
 
-        val league1 = LeagueBuilder("1").withRoster("1").thatHavePlayer(playerNotInWaivers.id).buildRoster()
-        val league2 =
-            LeagueBuilder("2").withRoster("2").thatHavePlayer(playerPartialMatch.id).buildRoster().and().withRoster("3")
-                .thatHavePlayer(playerNotInWaivers.id).buildRoster()
-        val league3 =
-            LeagueBuilder("3").withRoster("4").thatHavePlayer(playerFullMatch.id).thatHavePlayer(playerNotInWaivers.id)
-                .buildRoster()
-        val league4 = LeagueBuilder("4").bestBall().withRoster("5").thatHavePlayer(playerFullMatch.id).buildRoster()
+        val leagueBothPlayersAvailable = createLeagueWithBothPlayersAvailable(playerAlwaysRostered)
+        val leagueOnlyFullMatchAvailable =
+            createLeagueWithPlayerFullMatchAvailable(playerPartialMatch, playerAlwaysRostered)
+        val leaguePlayerPartialMatchAvailable =
+            createLeagueWithPlayerPartialMatchAvailable(playerFullMatch, playerAlwaysRostered)
+        val bestBallLeague = createBestBallLeagueWithPlayerPartialMatchAvailable(playerFullMatch)
 
-        val leagues = listOf(league1, league2, league3, league4)
+        val leagues = listOf(
+            leagueBothPlayersAvailable,
+            leagueOnlyFullMatchAvailable,
+            leaguePlayerPartialMatchAvailable,
+            bestBallLeague,
+        )
 
         createMockForLeagues(leagues)
         createMockGetAllPlayers(
             listOf(
-                playerFullMatch, playerPartialMatch, playerNotInWaivers, playerDifferentName,
+                playerFullMatch, playerPartialMatch, playerAlwaysRostered, playerNameDoNotMatch,
             ),
         )
 
@@ -66,17 +69,36 @@ class GetPlayersOfUserLeaguesInWaiverTest {
 
         // Assert
         val expectFullMatchIn2Leagues = LeaguesForPlayer(
-            player = playerFullMatch, leagues = listOf(league1.build(), league2.build()),
+            player = playerFullMatch,
+            leagues = listOf(leagueBothPlayersAvailable.build(), leagueOnlyFullMatchAvailable.build()),
         )
         val expectPartialMatchIn2Leagues = LeaguesForPlayer(
             player = playerPartialMatch,
             leagues = listOf(
-                league1.build(), league3.build()
+                leagueBothPlayersAvailable.build(), leaguePlayerPartialMatchAvailable.build(),
             ),
         )
 
         Assertions.assertThat(actual).containsExactlyInAnyOrder(expectFullMatchIn2Leagues, expectPartialMatchIn2Leagues)
     }
+
+    private fun createLeagueWithBothPlayersAvailable(playerAlwaysRostered: Player) =
+        LeagueBuilder("1").withRoster("1").thatHavePlayer(playerAlwaysRostered.id).buildRoster()
+
+    private fun createLeagueWithPlayerFullMatchAvailable(
+        playerPartialMatch: Player,
+        playerAlwaysRostered: Player
+    ) = LeagueBuilder("2").withRoster("2").thatHavePlayer(playerPartialMatch.id).buildRoster().and().withRoster("3")
+        .thatHavePlayer(playerAlwaysRostered.id).buildRoster()
+
+    private fun createLeagueWithPlayerPartialMatchAvailable(
+        playerFullMatch: Player,
+        playerAlwaysRostered: Player
+    ) = LeagueBuilder("3").withRoster("4").thatHavePlayer(playerFullMatch.id).thatHavePlayer(playerAlwaysRostered.id)
+        .buildRoster()
+
+    private fun createBestBallLeagueWithPlayerPartialMatchAvailable(playerFullMatch: Player) =
+        LeagueBuilder("4").bestBall().withRoster("5").thatHavePlayer(playerFullMatch.id).buildRoster()
 
     @Test
     fun `should return an empty list if can't find players to list`() {
