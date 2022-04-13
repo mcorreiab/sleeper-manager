@@ -5,7 +5,6 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.Leag
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.GetPlayers
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponse
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponseMapper
-import br.com.murilocorreiab.sleepermanager.domain.league.entity.League
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Roster
 import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway
@@ -49,23 +48,4 @@ class RosterGatewayHttpClient(
             it.starter = roster.starters.contains(it.id)
             it
         } ?: emptyList()
-
-    override fun findAllRosteredPlayersInUserLeagues(username: String): List<Pair<League, List<Player>>> {
-
-        val rostersByLeague = getRostersInUserLeagues.getAllRosters(username)
-
-        return rostersByLeague.map { (league, rosters) ->
-            val rosterPlayers = getPlayersFromRosters(rosters)
-            val domainLeague = leagueResponseMapper.convertToDomain(league)
-            Pair(domainLeague, rosterPlayers)
-        }
-    }
-
-    private fun getPlayersFromRosters(
-        rosters: List<RosterResponse>
-    ): List<Player> = rosters.flatMap { it.players ?: emptyList() }
-        .distinct()
-        .mapNotNull {
-            getPlayers.getPlayerById(it)
-        }
 }

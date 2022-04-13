@@ -33,24 +33,6 @@ class GetRostersInUserLeaguesHttpTest {
     private lateinit var getLeagues: GetLeagues
 
     @Test
-    fun `should get all rosters with success`() {
-        // Given
-        val username = "username"
-        val userResponse = UserResponseProducer.build()
-        val leagueResponse = LeagueResponseProducer.build()
-        val rosterResponse = RosterResponseFactory.build()
-        val rostersByLeague = listOf(rosterResponse)
-
-        // When
-        every { userClient.getByUsername(username) } returns userResponse
-        whenGetRostersAndLeague(userResponse, leagueResponse, rostersByLeague)
-        val actual = target.getAllRosters(username).toList()
-
-        // Then
-        assertThatGetRosters(actual, leagueResponse, rosterResponse)
-    }
-
-    @Test
     fun `should get user rosters by username with success`() {
         // Given
         val username = "username"

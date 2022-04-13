@@ -13,13 +13,6 @@ class GetRostersInUserLeaguesHttp(
     private val rosterClient: RosterClient,
     private val getLeagues: GetLeagues,
 ) : GetRostersInUserLeagues {
-    override fun getAllRosters(username: String): List<Pair<LeagueResponse, List<RosterResponse>>> =
-        userClient.getByUsername(username)
-            .let { getLeagues.getByUserId(it.userId) }
-            .map { getLeagueRosters(it) }
-
-    private fun getLeagueRosters(league: LeagueResponse): Pair<LeagueResponse, List<RosterResponse>> =
-        Pair(league, rosterClient.getRostersOfALeague(league.leagueId))
 
     override fun getUserRosters(username: String): List<Pair<LeagueResponse, List<RosterResponse>>> =
         userClient.getByUsername(username)

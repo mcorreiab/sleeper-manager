@@ -154,31 +154,4 @@ class RosterGatewayHttpClientTest {
         // Then
         assertTrue(actual.isEmpty())
     }
-
-    @Test
-    fun `should get all rostered players with success`() {
-        // Given
-        val rosteredPlayerId = "rosteredPlayerId"
-        val roster1 = RosterResponseFactory.build(rosterId = "roster1", players = listOf(rosteredPlayerId))
-        val roster2 = roster1.copy(rosterId = "roster2")
-        val roster3 = roster1.copy(rosterId = "roster3", players = null)
-        val league = LeagueResponseProducer.build()
-
-        // When
-        every { getRostersInUserLeagues.getAllRosters(username) } returns listOf(
-            league to listOf(
-                roster1,
-                roster2,
-                roster3
-            )
-        )
-        every { getPlayers.getPlayerById(rosteredPlayerId) } returns PlayerProducer.build(id = rosteredPlayerId)
-        val actual = target.findAllRosteredPlayersInUserLeagues(username)
-
-        // Then
-        val rosteredPlayers = actual[0].second
-        assertEquals(1, actual.size)
-        assertEquals(1, rosteredPlayers.size)
-        assertEquals(rosteredPlayerId, rosteredPlayers[0].id)
-    }
 }

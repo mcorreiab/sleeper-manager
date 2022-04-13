@@ -7,8 +7,6 @@ import jakarta.inject.Singleton
 
 @Singleton
 class GetPlayersGatewayDataProvider(private val getPlayers: GetPlayers) : GetPlayersGateway {
-    override fun getPlayersInformation(players: List<String>): List<Player> =
-        getAllPlayers().filter { players.any { player -> it.name.contains(player, true) } }
 
     override fun getAllPlayers(): List<Player> = getPlayers.getAllPlayers()
 }

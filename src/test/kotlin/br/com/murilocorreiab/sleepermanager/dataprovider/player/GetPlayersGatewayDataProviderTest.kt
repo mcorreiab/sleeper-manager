@@ -21,28 +21,6 @@ class GetPlayersGatewayDataProviderTest {
     private lateinit var getPlayers: GetPlayers
 
     @Test
-    fun `should recover all informed players with success`() {
-        // Given
-        val firstNameToSearch = "Aaron"
-        val secondNameToSearch = "nelson"
-        val player1 = PlayerProducer.build(id = "1", name = "Aaron Rodgers")
-        val player2 = PlayerProducer.build(id = "2", name = "Aaron Jones")
-        val player3 = PlayerProducer.build(id = "3", name = "David Bakhtiari")
-        val player4 = PlayerProducer.build(id = "4", name = "Jordy Nelson")
-
-        // When
-        every { getPlayers.getAllPlayers() } returns listOf(player1, player2, player3, player4)
-
-        val actual = target.getPlayersInformation(listOf(firstNameToSearch, secondNameToSearch)).toList()
-
-        // Then
-        assertEquals(3, actual.size)
-        assertEquals(player1.id, actual[0].id)
-        assertEquals(player2.id, actual[1].id)
-        assertEquals(player4.id, actual[2].id)
-    }
-
-    @Test
     fun `should get all players with success`() {
         // Given
         val player = PlayerProducer.build()

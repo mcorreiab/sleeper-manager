@@ -1,6 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.entrypoint
 
-import br.com.murilocorreiab.sleepermanager.domain.player.usecase.GetPlayersInWaiver
+import br.com.murilocorreiab.sleepermanager.domain.player.usecase.PlayersInWaiverUseCase
 import br.com.murilocorreiab.sleepermanager.entrypoint.entity.PlayersWaiverResponse
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpResponse.badRequest
@@ -19,29 +19,29 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import kotlinx.coroutines.runBlocking
 
 @Controller("/players")
-class PlayerInWaiverEntrypoint(private val getPlayersInWaiver: GetPlayersInWaiver) {
+class PlayerInWaiverEntrypoint(private val getPlayersInWaiver: PlayersInWaiverUseCase) {
 
     @Operation(
         summary = "Get Players in waiver",
-        description = "Get all leagues in which at least one of a list of players is available"
+        description = "Get all leagues in which at least one of a list of players is available",
     )
     @ApiResponses(
         ApiResponse(
             description = "One or more players are available in one or more league's waivers",
-            content = [Content(array = ArraySchema(schema = Schema(implementation = PlayersWaiverResponse::class)))]
+            content = [Content(array = ArraySchema(schema = Schema(implementation = PlayersWaiverResponse::class)))],
         ),
         ApiResponse(responseCode = "400", description = "Should inform one or more players"),
-        ApiResponse(responseCode = "404", description = "Couldn't find any of the informed players in waivers")
+        ApiResponse(responseCode = "404", description = "Couldn't find any of the informed players in waivers"),
     )
-    @Get("/user/{username}/waiver{?players}")
+    @Get("/user/{userId}/waiver{?players}")
     fun getPlayersInWaiverByLeague(
-        @PathVariable username: String,
+        @PathVariable userId: String,
         @QueryValue players: String?
     ): HttpResponse<List<PlayersWaiverResponse>> = runBlocking {
         players?.let {
             val namesToSearch = getNamesToSearch(it)
             if (namesToSearch.isNotEmpty()) {
-                getPlayers(username, namesToSearch)
+                getPlayers(userId, namesToSearch)
             } else {
                 badRequest()
             }
@@ -52,11 +52,11 @@ class PlayerInWaiverEntrypoint(private val getPlayersInWaiver: GetPlayersInWaive
         playersQuery.split(",").filter { it.isNotBlank() }
             .map { it.trim() }
 
-    private suspend fun getPlayers(
-        username: String,
+    private fun getPlayers(
+        userId: String,
         namesToSearch: List<String>
     ): HttpResponse<List<PlayersWaiverResponse>> {
-        val playersInWaiver = doGetPlayersInWaiver(username, namesToSearch)
+        val playersInWaiver = doGetPlayersInWaiver(userId, namesToSearch)
         return if (playersInWaiver.isNotEmpty()) {
             ok(playersInWaiver)
         } else {
@@ -64,10 +64,10 @@ class PlayerInWaiverEntrypoint(private val getPlayersInWaiver: GetPlayersInWaive
         }
     }
 
-    private suspend fun doGetPlayersInWaiver(
-        username: String,
+    private fun doGetPlayersInWaiver(
+        userId: String,
         namesToSearch: List<String>
-    ) = getPlayersInWaiver.get(username, namesToSearch)
+    ) = getPlayersInWaiver.checkIfPlayersAreInWaiver(userId, namesToSearch)
         .map { (player, leagues) ->
             PlayersWaiverResponse(player, leagues)
         }

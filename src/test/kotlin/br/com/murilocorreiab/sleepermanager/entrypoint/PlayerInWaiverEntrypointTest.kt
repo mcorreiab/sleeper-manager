@@ -25,7 +25,7 @@ class PlayerInWaiverEntrypointTest {
     @Inject
     private lateinit var playerInWaiverClient: PlayerInWaiverClient
 
-    private val userName = "username"
+    private val userId = "303333123121229824"
 
     @Test
     fun `should get players in waiver with success`() {
@@ -76,14 +76,7 @@ class PlayerInWaiverEntrypointTest {
         )
 
         stubFor(
-            get(urlEqualTo("/user/$userName")).willReturn(
-                aResponse().withHeader("content-type", MediaType.APPLICATION_JSON)
-                    .withBodyFile("user_response_murilocorreia.json")
-            )
-        )
-
-        stubFor(
-            get(urlEqualTo("/user/303333123121229824/leagues/nfl/2021"))
+            get(urlEqualTo("/user/$userId/leagues/nfl/2021"))
                 .willReturn(
                     aResponse().withHeader("content-type", MediaType.APPLICATION_JSON)
                         .withBodyFile("league_response.json")
@@ -98,14 +91,14 @@ class PlayerInWaiverEntrypointTest {
                 )
         )
 
-        return playerInWaiverClient.getPlayersInWaiverByLeague(userName, playersToSearch)
+        return playerInWaiverClient.getPlayersInWaiverByLeague(userId, playersToSearch)
     }
 
     @Test
     fun `if no player is passed as param return 400`() {
         // When
         try {
-            playerInWaiverClient.getPlayersInWaiverByLeague(userName, null)
+            playerInWaiverClient.getPlayersInWaiverByLeague(userId, null)
             throw Exception("Should had throw an error")
         } catch (ex: HttpClientResponseException) {
             assertEquals(BAD_REQUEST, ex.status)
@@ -116,7 +109,7 @@ class PlayerInWaiverEntrypointTest {
     fun `if player list is empty return 400`() {
         // When
         try {
-            playerInWaiverClient.getPlayersInWaiverByLeague(userName, "")
+            playerInWaiverClient.getPlayersInWaiverByLeague(userId, "")
             throw Exception("Should had throw an error")
         } catch (ex: HttpClientResponseException) {
             assertEquals(BAD_REQUEST, ex.status)
