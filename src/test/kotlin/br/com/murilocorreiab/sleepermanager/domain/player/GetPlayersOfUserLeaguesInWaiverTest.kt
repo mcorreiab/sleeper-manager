@@ -1,10 +1,10 @@
 package br.com.murilocorreiab.sleepermanager.domain.player
 
-import br.com.murilocorreiab.sleepermanager.domain.league.entity.LeagueProducer
+import br.com.murilocorreiab.sleepermanager.domain.league.entity.LeagueFactory
 import br.com.murilocorreiab.sleepermanager.domain.league.gateway.LeagueGateway
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.LeaguesForPlayer
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
+import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerFactory
 import br.com.murilocorreiab.sleepermanager.domain.player.gateway.PlayerGateway
 import br.com.murilocorreiab.sleepermanager.domain.player.usecase.PlayersInWaiverUseCase
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Roster2
@@ -38,10 +38,10 @@ class GetPlayersOfUserLeaguesInWaiverTest {
     @Test
     fun `should list 2 players in waiver with success filtering out rostered players and bestball leagues`() {
         // Arrange
-        val playerFullMatch = PlayerProducer.build(id = "1", name = "aaron donald")
-        val playerPartialMatch = PlayerProducer.build(id = "2", name = "Russell")
-        val playerAlwaysRostered = PlayerProducer.build(id = "3", name = "Aaron Jones")
-        val playerNameDoNotMatch = PlayerProducer.build(id = "4", name = "Jared")
+        val playerFullMatch = PlayerFactory.build(id = "1", name = "aaron donald")
+        val playerPartialMatch = PlayerFactory.build(id = "2", name = "Russell")
+        val playerAlwaysRostered = PlayerFactory.build(id = "3", name = "Aaron Jones")
+        val playerNameDoNotMatch = PlayerFactory.build(id = "4", name = "Jared")
 
         val leagueBothPlayersAvailable = createLeagueWithBothPlayersAvailable(playerAlwaysRostered)
         val leagueOnlyFullMatchAvailable =
@@ -103,8 +103,8 @@ class GetPlayersOfUserLeaguesInWaiverTest {
     @Test
     fun `should return an empty list if can't find players to list`() {
         // Arrange
-        val rosteredPlayerInAllLeagues = PlayerProducer.build(id = "1", name = "bobby wagner")
-        val playerDifferentName = PlayerProducer.build(id = "2", name = "Von")
+        val rosteredPlayerInAllLeagues = PlayerFactory.build(id = "1", name = "bobby wagner")
+        val playerDifferentName = PlayerFactory.build(id = "2", name = "Von")
 
         val league = LeagueBuilder("1").withRoster("1").thatHavePlayer(rosteredPlayerInAllLeagues.id).buildRoster()
 
@@ -122,7 +122,7 @@ class GetPlayersOfUserLeaguesInWaiverTest {
     fun `if user doesn't have leagues should return empty list`() {
         // Arrange
         createMockForLeagues(emptyList())
-        createMockGetAllPlayers(listOf(PlayerProducer.build()))
+        createMockGetAllPlayers(listOf(PlayerFactory.build()))
 
         // Act
         val actual = sut.checkIfPlayersAreInWaiver(userId, listOf("bobby wagner"))
@@ -181,7 +181,7 @@ class GetPlayersOfUserLeaguesInWaiverTest {
 
         fun and() = this
 
-        fun build() = LeagueProducer.build(id = id, isBestBall = isBestBall)
+        fun build() = LeagueFactory.build(id = id, isBestBall = isBestBall)
     }
 
     private data class RosterBuilder(val id: String) {

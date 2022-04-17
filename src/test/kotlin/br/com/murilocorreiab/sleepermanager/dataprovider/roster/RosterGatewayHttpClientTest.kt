@@ -6,7 +6,7 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.User
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.GetPlayers
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity.RosterResponseFactory
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponse
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
+import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerFactory
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Roster
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -44,15 +44,15 @@ class RosterGatewayHttpClientTest {
         val rosterResponse = RosterResponseFactory.build(
             starters = listOf(starterPlayerId),
             players = listOf(starterPlayerId, benchPlayerId, playerNonexistentId),
-            ownerId = userResponse.userId
+            ownerId = userResponse.userId,
         )
 
         // When
         every { getRostersInUserLeagues.getUserRosters(username) } returns listOf(
             Pair(
                 leagueResponse,
-                listOf(rosterResponse)
-            )
+                listOf(rosterResponse),
+            ),
         )
         createAllTypesPlayerRepositoryMock()
 
@@ -70,15 +70,15 @@ class RosterGatewayHttpClientTest {
         val rosterResponse = RosterResponseFactory.build(
             starters = listOf(starterPlayerId),
             players = listOf(starterPlayerId, benchPlayerId, playerNonexistentId),
-            ownerId = userId
+            ownerId = userId,
         )
 
         // When
         every { getRostersInUserLeagues.getUserRostersById(userId) } returns listOf(
             Pair(
                 leagueResponse,
-                listOf(rosterResponse)
-            )
+                listOf(rosterResponse),
+            ),
         )
         createAllTypesPlayerRepositoryMock()
 
@@ -94,7 +94,7 @@ class RosterGatewayHttpClientTest {
     }
 
     private fun createPlayerRepositoryMock(playerId: String) {
-        every { getPlayers.getPlayerById(playerId) } returns PlayerProducer.build(id = playerId, name = playerId)
+        every { getPlayers.getPlayerById(playerId) } returns PlayerFactory.build(id = playerId, name = playerId)
     }
 
     private fun assertThatFoundPlayersForUserRoster(
@@ -124,8 +124,8 @@ class RosterGatewayHttpClientTest {
         every { getRostersInUserLeagues.getUserRosters(username) } returns listOf(
             Pair(
                 leagueResponse,
-                listOf(rosterResponse)
-            )
+                listOf(rosterResponse),
+            ),
         )
         every { getPlayers.getPlayerById(playerNonexistentId) } returns null
 
@@ -145,8 +145,8 @@ class RosterGatewayHttpClientTest {
         every { getRostersInUserLeagues.getUserRosters(username) } returns listOf(
             Pair(
                 leagueResponse,
-                listOf(rosterResponse)
-            )
+                listOf(rosterResponse),
+            ),
         )
 
         val actual = target.findUserRostersByUsernameInLeagues(username)

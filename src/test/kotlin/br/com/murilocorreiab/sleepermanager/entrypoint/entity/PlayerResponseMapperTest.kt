@@ -1,6 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.entrypoint.entity
 
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
+import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerFactory
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -31,7 +31,7 @@ class PlayerResponseMapperTest {
         injuryStatus: PlayerStatus,
         expectedInjuryStatus: PlayerStatus
     ) {
-        val player = PlayerProducer.build(injuryStatus = injuryStatus)
+        val player = PlayerFactory.build(injuryStatus = injuryStatus)
 
         val expected = PlayerResponse(
             id = player.id,

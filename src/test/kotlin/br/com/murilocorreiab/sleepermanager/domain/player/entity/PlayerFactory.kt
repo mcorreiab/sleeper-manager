@@ -1,6 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.domain.player.entity
 
-object PlayerProducer {
+object PlayerFactory {
     fun build(
         id: String = "playerId",
         name: String = "playerName",

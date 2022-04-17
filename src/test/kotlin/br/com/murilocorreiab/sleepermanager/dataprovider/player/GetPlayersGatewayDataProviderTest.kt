@@ -1,7 +1,7 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.player
 
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.GetPlayers
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
+import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerFactory
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
@@ -23,7 +23,7 @@ class GetPlayersGatewayDataProviderTest {
     @Test
     fun `should get all players with success`() {
         // Given
-        val player = PlayerProducer.build()
+        val player = PlayerFactory.build()
 
         // When
         every { getPlayers.getAllPlayers() } returns listOf(player)

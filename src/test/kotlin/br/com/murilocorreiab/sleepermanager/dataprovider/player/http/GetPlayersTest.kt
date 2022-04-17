@@ -2,7 +2,7 @@ package br.com.murilocorreiab.sleepermanager.dataprovider.player.http
 
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.PlayerRepositoryImpl
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.entity.PlayerResponseProducer
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
+import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerFactory
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Team
 import io.mockk.every
@@ -30,7 +30,7 @@ class GetPlayersTest {
     fun `should get all players from remote api`() {
         // Given
         val playerResponse = PlayerResponseProducer.build(team = Team.GB.name, injuryStatus = PlayerStatus.OUT.status)
-        val player = PlayerProducer.build(
+        val player = PlayerFactory.build(
             id = playerResponse.playerId,
             name = playerResponse.fullName!!,
             injuryStatus = PlayerStatus.OUT,
@@ -54,7 +54,7 @@ class GetPlayersTest {
     @Test
     fun `should get all players from database`() {
         // Given
-        val player = PlayerProducer.build()
+        val player = PlayerFactory.build()
 
         // When
         every { playerRepository.getAll() } returns listOf(player)
@@ -81,7 +81,7 @@ class GetPlayersTest {
     @Test
     fun `should find player by id in database`() {
         // Given
-        val player = PlayerProducer.build()
+        val player = PlayerFactory.build()
 
         // When
         every { playerRepository.getById(player.id) } returns player
@@ -95,7 +95,7 @@ class GetPlayersTest {
     fun `if cant find player a by id in database should find in external api`() {
         // Given
         val playerResponse = PlayerResponseProducer.build(team = Team.GB.name, injuryStatus = PlayerStatus.OUT.status)
-        val player = PlayerProducer.build(
+        val player = PlayerFactory.build(
             id = playerResponse.playerId,
             name = playerResponse.fullName!!,
             injuryStatus = PlayerStatus.OUT,

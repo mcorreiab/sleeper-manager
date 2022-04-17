@@ -1,6 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.domain.roster.usecase
 
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
+import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerFactory
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.RosterProducer
 import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway
@@ -22,11 +22,11 @@ class GetRostersWithUnavailablePlayersUseCaseTest {
     private lateinit var rosterGateway: RosterGateway
 
     private val expectedRosterId = "roster1"
-    private val availablePlayer = PlayerProducer.build(id = "player1", name = "available", PlayerStatus.ACTIVE)
-    private val outPlayer = PlayerProducer.build(id = "player2", name = "out", PlayerStatus.OUT)
-    private val irPlayer = PlayerProducer.build(id = "player3", name = "ir", PlayerStatus.OUT)
+    private val availablePlayer = PlayerFactory.build(id = "player1", name = "available", PlayerStatus.ACTIVE)
+    private val outPlayer = PlayerFactory.build(id = "player2", name = "out", PlayerStatus.OUT)
+    private val irPlayer = PlayerFactory.build(id = "player3", name = "ir", PlayerStatus.OUT)
     private val outPlayerInBench =
-        PlayerProducer.build(id = "player4", name = "out", PlayerStatus.OUT, starter = false)
+        PlayerFactory.build(id = "player4", name = "out", PlayerStatus.OUT, starter = false)
     private val roster =
         RosterProducer.build(
             id = expectedRosterId,

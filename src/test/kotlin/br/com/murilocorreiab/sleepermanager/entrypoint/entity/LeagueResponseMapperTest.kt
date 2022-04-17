@@ -1,6 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.entrypoint.entity
 
-import br.com.murilocorreiab.sleepermanager.domain.league.entity.LeagueProducer
+import br.com.murilocorreiab.sleepermanager.domain.league.entity.LeagueFactory
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -13,7 +13,7 @@ class LeagueResponseMapperTest {
 
     @Test
     fun `should map from domain with success`() {
-        val league = LeagueProducer.build()
+        val league = LeagueFactory.build()
 
         val expected = LeagueResponse(
             name = league.name,

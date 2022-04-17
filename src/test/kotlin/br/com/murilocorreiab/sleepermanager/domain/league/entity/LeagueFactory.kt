@@ -1,6 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.domain.league.entity
 
-object LeagueProducer {
+object LeagueFactory {
     fun build(
         name: String = "league",
         id: String = "120",

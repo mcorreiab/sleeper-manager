@@ -5,7 +5,7 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.Scor
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponseMapper
 import br.com.murilocorreiab.sleepermanager.domain.league.entity.League
 import br.com.murilocorreiab.sleepermanager.domain.league.entity.PointsByReception
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerProducer
+import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerFactory
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Roster
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -20,7 +20,7 @@ class RosterResponseMapperTest {
     @Test
     fun `should map roster response with success`() {
         val pointsByReception = 0.0
-        val players = listOf(PlayerProducer.build())
+        val players = listOf(PlayerFactory.build())
         val rosterResponse = RosterResponseFactory.build()
         val leagueResponse =
             LeagueResponseProducer.build(scoringSettingsResponse = ScoringSettingsResponse(pointsByReception))
