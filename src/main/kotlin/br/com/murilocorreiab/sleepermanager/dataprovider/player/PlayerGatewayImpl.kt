@@ -18,4 +18,7 @@ class PlayerGatewayImpl(
         playerClient.getAllPlayers().values.map { playerResponseMapper.toDomain(it) }
             .also { playerRepository.create(it) }
     }
+
+    override fun getById(playerId: String) =
+        playerRepository.getById(playerId) ?: getAllPlayers().find { it.id == playerId }
 }

@@ -5,16 +5,18 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerClien
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.entity.PlayerResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.entity.PlayerResponseProducer.toDomain
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
+import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerFactory
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Team
 import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import jakarta.inject.Inject
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 
 @MicronautTest
 class FindPlayersOnExternalResourceTest {
@@ -78,20 +80,7 @@ class FindPlayersOnExternalResourceTest {
         val actual = sut.getAllPlayers()
 
         // Assert
-        assertThatFoundAllPlayersAndSavedThem(actual)
-    }
-
-    private fun assertThatFoundAllPlayersAndSavedThem(actual: List<Player>) {
         assertThatFoundAllPlayers(actual)
-        verify {
-            playerRepository.create(
-                listOf(
-                    playerFieldsFilledDomain,
-                    playerOptionalFieldsMissingDomain,
-                    playerEmptyInjuryStatusDomain,
-                ),
-            )
-        }
     }
 
     @Test
@@ -113,6 +102,51 @@ class FindPlayersOnExternalResourceTest {
     private fun assertThatFoundAllPlayers(actual: List<Player>) {
         Assertions.assertThat(actual)
             .containsExactly(playerFieldsFilledDomain, playerOptionalFieldsMissingDomain, playerEmptyInjuryStatusDomain)
+    }
+
+    @Test
+    fun `should get a player by his ID directly from repository with success`() {
+        // Arrange
+        every { playerRepository.getById(playerFieldsFilled.playerId) } returns playerFieldsFilledDomain
+
+        // Act
+        val actual = sut.getById(playerFieldsFilled.playerId)
+
+        // Assert
+        Assertions.assertThat(actual).isEqualTo(playerFieldsFilledDomain)
+    }
+
+    @Test
+    fun `should get a player by his ID from api when not in repository with success`() {
+        // Arrange
+        every { playerRepository.getById(playerFieldsFilled.playerId) } returns null
+        every { playerRepository.getAll() } returns listOf(playerFieldsFilledDomain)
+
+        // Act
+        val actual = sut.getById(playerFieldsFilled.playerId)
+
+        // Assert
+        Assertions.assertThat(actual).isEqualTo(playerFieldsFilledDomain)
+    }
+
+    @ParameterizedTest
+    @MethodSource("playerByIdMissingProvider")
+    fun `if can't find a player neither on repository or api should return null`(players: List<Player>) {
+        // Arrange
+        every { playerRepository.getById(playerFieldsFilled.playerId) } returns null
+        every { playerRepository.getAll() } returns players
+        every { playerClient.getAllPlayers() } returns emptyMap()
+
+        // Act
+        val actual = sut.getById(playerFieldsFilled.playerId)
+
+        // Assert
+        Assertions.assertThat(actual).isNull()
+    }
+
+    companion object {
+        @JvmStatic
+        fun playerByIdMissingProvider() = listOf(emptyList(), listOf(PlayerFactory.build()))
     }
 
     @MockBean(PlayerClient::class)
