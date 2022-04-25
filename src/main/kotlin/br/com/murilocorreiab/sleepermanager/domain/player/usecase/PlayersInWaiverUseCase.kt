@@ -3,6 +3,7 @@ package br.com.murilocorreiab.sleepermanager.domain.player.usecase
 import br.com.murilocorreiab.sleepermanager.domain.league.entity.League
 import br.com.murilocorreiab.sleepermanager.domain.league.gateway.LeagueGateway
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.LeaguesForPlayer
+import br.com.murilocorreiab.sleepermanager.domain.player.entity.Play
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
 import br.com.murilocorreiab.sleepermanager.domain.player.gateway.PlayerGateway
 import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway2
@@ -34,7 +35,9 @@ class PlayersInWaiverUseCase(
         leagueGateway.findAllUserLeagues(userId).filter { !it.isBestBall }.map { it.collectLeaguePlayers() }
 
     private fun League.collectLeaguePlayers() =
-        rosterGateway.findRostersOfLeague(this.id).flatMap { it.players }.let { LeagueWithPlayers(this, it) }
+        rosterGateway.findRostersOfLeague(this.id).flatMap { it.players }.let { LeagueWithPlayers(this, mapPlayer(it)) }
+
+    private fun mapPlayer(player: List<Play>) = player.map { it.id }
 
     private fun List<Player>.filterWithNameMatching(filter: List<String>) =
         this.filter { playerNameMatches(filter, it.name) }
@@ -48,7 +51,7 @@ class PlayersInWaiverUseCase(
 
     private fun isPlayerRostered(
         rosteredPlayers: List<String>,
-        player: Player
+        player: Player,
     ) = !rosteredPlayers.any { it == player.id }
 
     private data class LeagueWithPlayers(val league: League, val players: List<String>)

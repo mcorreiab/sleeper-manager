@@ -1,6 +1,7 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity
 
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponse
+import br.com.murilocorreiab.sleepermanager.domain.player.entity.RawPlayer
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Roster2
 
 object RosterResponseFactory {
@@ -14,6 +15,7 @@ object RosterResponseFactory {
     fun RosterResponse.toDomain() = Roster2(
         rosterId,
         ownerId,
-        players ?: emptyList(),
+        players?.map { RawPlayer(it) } ?: emptyList(),
+        starters.map { RawPlayer(it) },
     )
 }

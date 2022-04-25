@@ -5,6 +5,7 @@ import br.com.murilocorreiab.sleepermanager.domain.league.gateway.LeagueGateway
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.LeaguesForPlayer
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerFactory
+import br.com.murilocorreiab.sleepermanager.domain.player.entity.RawPlayer
 import br.com.murilocorreiab.sleepermanager.domain.player.gateway.PlayerGateway
 import br.com.murilocorreiab.sleepermanager.domain.player.usecase.PlayersInWaiverUseCase
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Roster2
@@ -189,7 +190,7 @@ class GetPlayersOfUserLeaguesInWaiverTest {
 
         fun withPlayer(id: String) = players.add(id)
 
-        fun build() = RosterFactory2.build(id = id, players = players)
+        fun build() = RosterFactory2.build(id = id, players = players.map { RawPlayer(it) })
     }
 
     @MockBean(LeagueGateway::class)
