@@ -1,4 +1,4 @@
-package br.com.murilocorreiab.sleepermanager.dataprovider.league.http
+package br.com.murilocorreiab.sleepermanager.framework
 
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponse
 import io.micronaut.http.annotation.Get

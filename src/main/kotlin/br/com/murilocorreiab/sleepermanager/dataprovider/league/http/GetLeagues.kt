@@ -1,6 +1,7 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.league.http
 
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponse
+import br.com.murilocorreiab.sleepermanager.framework.LeagueClient
 import jakarta.inject.Singleton
 
 @Singleton

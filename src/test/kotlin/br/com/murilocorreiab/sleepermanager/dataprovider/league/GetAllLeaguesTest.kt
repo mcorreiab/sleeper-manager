@@ -1,11 +1,11 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.league
 
-import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.LeagueClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponseProducer.toDomain
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.ScoringSettingsResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.SettingsResponseProducer
-import br.com.murilocorreiab.sleepermanager.domain.league.entity.PointsByReception
+import br.com.murilocorreiab.sleepermanager.entities.league.PointsByReception
+import br.com.murilocorreiab.sleepermanager.framework.LeagueClient
 import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.every

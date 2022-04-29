@@ -1,8 +1,8 @@
 package br.com.murilocorreiab.sleepermanager.entrypoint.entity
 
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.Team
+import br.com.murilocorreiab.sleepermanager.entities.player.Player
+import br.com.murilocorreiab.sleepermanager.entities.player.PlayerStatus
+import br.com.murilocorreiab.sleepermanager.entities.player.Team
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
 import org.mapstruct.Named

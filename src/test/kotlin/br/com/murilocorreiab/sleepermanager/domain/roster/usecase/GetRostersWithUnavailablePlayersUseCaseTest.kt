@@ -1,9 +1,9 @@
 package br.com.murilocorreiab.sleepermanager.domain.roster.usecase
 
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerFactory
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.RosterProducer
 import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway
+import br.com.murilocorreiab.sleepermanager.entities.player.PlayerStatus
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK

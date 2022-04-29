@@ -1,5 +1,9 @@
 package br.com.murilocorreiab.sleepermanager.domain.player.entity
 
+import br.com.murilocorreiab.sleepermanager.entities.player.Player
+import br.com.murilocorreiab.sleepermanager.entities.player.PlayerStatus
+import br.com.murilocorreiab.sleepermanager.entities.player.Team
+
 object PlayerFactory {
     fun build(
         id: String = "playerId",

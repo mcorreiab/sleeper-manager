@@ -1,12 +1,12 @@
 package br.com.murilocorreiab.sleepermanager.domain.roster
 
-import br.com.murilocorreiab.sleepermanager.domain.league.entity.League
-import br.com.murilocorreiab.sleepermanager.domain.league.gateway.LeagueGateway
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
-import br.com.murilocorreiab.sleepermanager.domain.player.gateway.PlayerGateway
-import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Roster2
-import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway2
+import br.com.murilocorreiab.sleepermanager.entities.league.League
+import br.com.murilocorreiab.sleepermanager.entities.league.Roster2
+import br.com.murilocorreiab.sleepermanager.entities.player.Player
+import br.com.murilocorreiab.sleepermanager.entities.player.PlayerStatus
+import br.com.murilocorreiab.sleepermanager.usecase.LeagueGateway
+import br.com.murilocorreiab.sleepermanager.usecase.PlayerGateway
+import br.com.murilocorreiab.sleepermanager.usecase.RosterGateway2
 import jakarta.inject.Singleton
 
 @Singleton

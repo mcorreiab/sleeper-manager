@@ -2,6 +2,7 @@ package br.com.murilocorreiab.sleepermanager.dataprovider.league.http
 
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.SettingsResponseProducer
+import br.com.murilocorreiab.sleepermanager.framework.LeagueClient
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK

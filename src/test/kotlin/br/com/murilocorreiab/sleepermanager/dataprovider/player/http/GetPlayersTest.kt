@@ -3,8 +3,8 @@ package br.com.murilocorreiab.sleepermanager.dataprovider.player.http
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.PlayerRepositoryImpl
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.entity.PlayerResponseProducer
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerFactory
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.Team
+import br.com.murilocorreiab.sleepermanager.entities.player.PlayerStatus
+import br.com.murilocorreiab.sleepermanager.entities.player.Team
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK

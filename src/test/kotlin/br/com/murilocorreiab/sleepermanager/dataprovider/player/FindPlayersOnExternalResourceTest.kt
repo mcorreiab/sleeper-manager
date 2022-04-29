@@ -4,10 +4,10 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.PlayerReposit
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.entity.PlayerResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.entity.PlayerResponseProducer.toDomain
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerFactory
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.Team
+import br.com.murilocorreiab.sleepermanager.entities.player.Player
+import br.com.murilocorreiab.sleepermanager.entities.player.PlayerStatus
+import br.com.murilocorreiab.sleepermanager.entities.player.Team
 import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.every

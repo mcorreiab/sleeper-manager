@@ -1,6 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.player.db
 
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
+import br.com.murilocorreiab.sleepermanager.entities.player.Player
 
 interface PlayerRepository {
     fun getAll(): List<Player>

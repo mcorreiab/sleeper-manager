@@ -1,6 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.entrypoint.client
 
-import br.com.murilocorreiab.sleepermanager.entrypoint.entity.PlayersWaiverResponse
+import br.com.murilocorreiab.sleepermanager.adapters.PlayersWaiverResponse
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.PathVariable

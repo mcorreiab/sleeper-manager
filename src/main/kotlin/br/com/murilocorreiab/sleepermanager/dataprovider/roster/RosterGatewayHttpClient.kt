@@ -5,9 +5,9 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.Leag
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.GetPlayers
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponse
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponseMapper
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Roster
 import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway
+import br.com.murilocorreiab.sleepermanager.entities.player.Player
 import jakarta.inject.Singleton
 import org.mapstruct.factory.Mappers
 

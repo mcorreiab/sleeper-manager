@@ -1,7 +1,7 @@
 package br.com.murilocorreiab.sleepermanager.entrypoint.entity
 
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerFactory
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
+import br.com.murilocorreiab.sleepermanager.entities.player.PlayerStatus
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

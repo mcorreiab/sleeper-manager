@@ -1,6 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.config
 
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
+import br.com.murilocorreiab.sleepermanager.entities.player.Player
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.lettuce.core.codec.RedisCodec
 import java.nio.ByteBuffer

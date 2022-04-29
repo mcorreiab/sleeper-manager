@@ -1,8 +1,8 @@
 package br.com.murilocorreiab.sleepermanager.entrypoint
 
+import br.com.murilocorreiab.sleepermanager.adapters.PlayersWaiverResponse
 import br.com.murilocorreiab.sleepermanager.config.WireMockTest
 import br.com.murilocorreiab.sleepermanager.entrypoint.client.PlayerInWaiverClient
-import br.com.murilocorreiab.sleepermanager.entrypoint.entity.PlayersWaiverResponse
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.stubFor
@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test
 
 @MicronautTest
 @WireMockTest
-class PlayerInWaiverEntrypointTest {
+class PlayerInWaiverControllerTest {
 
     @Inject
     private lateinit var playerInWaiverClient: PlayerInWaiverClient

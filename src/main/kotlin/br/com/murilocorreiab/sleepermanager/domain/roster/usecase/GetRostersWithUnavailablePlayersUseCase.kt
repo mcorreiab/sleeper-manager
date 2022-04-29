@@ -1,8 +1,8 @@
 package br.com.murilocorreiab.sleepermanager.domain.roster.usecase
 
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Roster
 import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway
+import br.com.murilocorreiab.sleepermanager.entities.player.PlayerStatus
 import jakarta.inject.Singleton
 
 @Singleton

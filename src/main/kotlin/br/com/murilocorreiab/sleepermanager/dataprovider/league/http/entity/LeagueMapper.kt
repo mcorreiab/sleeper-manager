@@ -1,7 +1,7 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity
 
-import br.com.murilocorreiab.sleepermanager.domain.league.entity.League
-import br.com.murilocorreiab.sleepermanager.domain.league.entity.PointsByReception
+import br.com.murilocorreiab.sleepermanager.entities.league.League
+import br.com.murilocorreiab.sleepermanager.entities.league.PointsByReception
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
 import org.mapstruct.Mappings

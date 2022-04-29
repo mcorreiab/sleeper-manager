@@ -1,7 +1,8 @@
 package br.com.murilocorreiab.sleepermanager.domain.roster.entity
 
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.Play
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.RawPlayer
+import br.com.murilocorreiab.sleepermanager.entities.league.Roster2
+import br.com.murilocorreiab.sleepermanager.entities.player.Play
+import br.com.murilocorreiab.sleepermanager.entities.player.RawPlayer
 
 object RosterFactory2 {
     fun build(

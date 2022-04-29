@@ -1,6 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.player.db
 
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
+import br.com.murilocorreiab.sleepermanager.entities.player.Player
 import io.lettuce.core.SetArgs
 import io.lettuce.core.api.StatefulRedisConnection
 import jakarta.inject.Singleton

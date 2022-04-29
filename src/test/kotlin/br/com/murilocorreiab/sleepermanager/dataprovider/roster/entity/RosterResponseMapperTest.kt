@@ -3,10 +3,10 @@ package br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.ScoringSettingsResponse
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponseMapper
-import br.com.murilocorreiab.sleepermanager.domain.league.entity.League
-import br.com.murilocorreiab.sleepermanager.domain.league.entity.PointsByReception
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerFactory
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Roster
+import br.com.murilocorreiab.sleepermanager.entities.league.League
+import br.com.murilocorreiab.sleepermanager.entities.league.PointsByReception
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

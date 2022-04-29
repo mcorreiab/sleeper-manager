@@ -1,4 +1,4 @@
-package br.com.murilocorreiab.sleepermanager.domain.player.entity
+package br.com.murilocorreiab.sleepermanager.entities.player
 
 data class Player(
     override val id: String,

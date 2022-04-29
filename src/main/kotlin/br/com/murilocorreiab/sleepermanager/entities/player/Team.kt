@@ -1,4 +1,4 @@
-package br.com.murilocorreiab.sleepermanager.domain.player.entity
+package br.com.murilocorreiab.sleepermanager.entities.player
 
 enum class Team(val teamName: String) {
     ARI("Arizona Cardinals"), ATL("Atlanta Falcons"), BAL("Baltimore Ravens"),

@@ -2,8 +2,8 @@ package br.com.murilocorreiab.sleepermanager.dataprovider.roster
 
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.RosterClient
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponseMapper2
-import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Roster2
-import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway2
+import br.com.murilocorreiab.sleepermanager.entities.league.Roster2
+import br.com.murilocorreiab.sleepermanager.usecase.RosterGateway2
 import jakarta.inject.Singleton
 import org.mapstruct.factory.Mappers
 

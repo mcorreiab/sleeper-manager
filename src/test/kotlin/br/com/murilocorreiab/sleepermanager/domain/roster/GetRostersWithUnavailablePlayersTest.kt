@@ -1,9 +1,9 @@
 package br.com.murilocorreiab.sleepermanager.domain.roster
 
-import br.com.murilocorreiab.sleepermanager.domain.league.gateway.LeagueGateway
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerStatus
-import br.com.murilocorreiab.sleepermanager.domain.player.gateway.PlayerGateway
-import br.com.murilocorreiab.sleepermanager.domain.roster.gateway.RosterGateway2
+import br.com.murilocorreiab.sleepermanager.entities.player.PlayerStatus
+import br.com.murilocorreiab.sleepermanager.usecase.LeagueGateway
+import br.com.murilocorreiab.sleepermanager.usecase.PlayerGateway
+import br.com.murilocorreiab.sleepermanager.usecase.RosterGateway2
 import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.every

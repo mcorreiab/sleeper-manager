@@ -1,7 +1,7 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.player.http
 
 import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.PlayerRepositoryImpl
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
+import br.com.murilocorreiab.sleepermanager.entities.player.Player
 import jakarta.inject.Singleton
 import org.mapstruct.factory.Mappers
 

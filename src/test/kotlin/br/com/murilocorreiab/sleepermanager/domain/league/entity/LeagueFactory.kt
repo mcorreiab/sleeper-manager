@@ -1,5 +1,8 @@
 package br.com.murilocorreiab.sleepermanager.domain.league.entity
 
+import br.com.murilocorreiab.sleepermanager.entities.league.League
+import br.com.murilocorreiab.sleepermanager.entities.league.PointsByReception
+
 object LeagueFactory {
     fun build(
         name: String = "league",

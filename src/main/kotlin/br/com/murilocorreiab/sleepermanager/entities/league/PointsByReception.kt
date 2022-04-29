@@ -1,4 +1,4 @@
-package br.com.murilocorreiab.sleepermanager.domain.league.entity
+package br.com.murilocorreiab.sleepermanager.entities.league
 
 enum class PointsByReception(val points: Double, val text: String) {
     STANDARD(0.0, "Standard"), HALF_PPR(0.5, "Half PPR"), PPR(1.0, "PPR");

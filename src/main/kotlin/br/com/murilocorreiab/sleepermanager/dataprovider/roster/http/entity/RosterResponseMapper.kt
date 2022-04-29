@@ -2,8 +2,8 @@ package br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity
 
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueMapper
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponse
-import br.com.murilocorreiab.sleepermanager.domain.player.entity.Player
 import br.com.murilocorreiab.sleepermanager.domain.roster.entity.Roster
+import br.com.murilocorreiab.sleepermanager.entities.player.Player
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
 import org.mapstruct.Mappings
