@@ -1,6 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.domain.roster.entity
 
-import br.com.murilocorreiab.sleepermanager.entities.league.Roster2
+import br.com.murilocorreiab.sleepermanager.entities.league.model.Roster2
 import br.com.murilocorreiab.sleepermanager.entities.player.Play
 import br.com.murilocorreiab.sleepermanager.entities.player.RawPlayer
 

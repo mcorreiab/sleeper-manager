@@ -1,5 +1,5 @@
 package br.com.murilocorreiab.sleepermanager.entities.league
 
-class Leagues(private val leagues: List<League>) {
-    fun filterOutBestBallLeagues(): List<League> = leagues.filterNot { it.isBestBall }
-}
+import br.com.murilocorreiab.sleepermanager.entities.league.model.League
+
+fun List<League>.filterOutBestBallLeagues() = this.filterNot { it.isBestBall }

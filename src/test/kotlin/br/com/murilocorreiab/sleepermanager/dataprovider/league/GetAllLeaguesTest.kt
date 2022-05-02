@@ -4,7 +4,7 @@ import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.Leag
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponseProducer.toDomain
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.ScoringSettingsResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.SettingsResponseProducer
-import br.com.murilocorreiab.sleepermanager.entities.league.PointsByReception
+import br.com.murilocorreiab.sleepermanager.entities.league.model.PointsByReception
 import br.com.murilocorreiab.sleepermanager.framework.LeagueClient
 import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest

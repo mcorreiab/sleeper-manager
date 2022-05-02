@@ -2,7 +2,7 @@ package br.com.murilocorreiab.sleepermanager.domain.roster.entity
 
 import br.com.murilocorreiab.sleepermanager.domain.league.entity.LeagueFactory
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerFactory
-import br.com.murilocorreiab.sleepermanager.entities.league.League
+import br.com.murilocorreiab.sleepermanager.entities.league.model.League
 import br.com.murilocorreiab.sleepermanager.entities.player.Player
 
 object RosterProducer {

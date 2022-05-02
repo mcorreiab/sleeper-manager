@@ -1,7 +1,7 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity
 
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.entity.RosterResponse
-import br.com.murilocorreiab.sleepermanager.entities.league.Roster2
+import br.com.murilocorreiab.sleepermanager.entities.league.model.Roster2
 import br.com.murilocorreiab.sleepermanager.entities.player.RawPlayer
 
 object RosterResponseFactory {

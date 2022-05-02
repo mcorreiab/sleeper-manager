@@ -1,6 +1,7 @@
 package br.com.murilocorreiab.sleepermanager.entities.league
 
 import br.com.murilocorreiab.sleepermanager.domain.league.entity.LeagueFactory
+import br.com.murilocorreiab.sleepermanager.entities.league.model.League
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -16,7 +17,7 @@ class RemoveBestBallLeaguesTest {
         val bestBallLeague = LeagueFactory.build(id = "3", isBestBall = true)
 
         // Act
-        val actual = Leagues(listOf(league1, league2, bestBallLeague)).filterOutBestBallLeagues()
+        val actual = listOf(league1, league2, bestBallLeague).filterOutBestBallLeagues()
 
         // Assert
         Assertions.assertThat(actual).containsExactly(league1, league2)
@@ -25,10 +26,8 @@ class RemoveBestBallLeaguesTest {
     @ParameterizedTest
     @MethodSource("noStandardLeagues")
     fun `if there's no standard leagues should return empty list`(leagues: List<League>) {
-        // Arrange
         // Act
-        val sut = Leagues(leagues)
-        val actual = sut.filterOutBestBallLeagues()
+        val actual = leagues.filterOutBestBallLeagues()
 
         // Assert
         Assertions.assertThat(actual).isEmpty()

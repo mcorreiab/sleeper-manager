@@ -1,4 +1,4 @@
-package br.com.murilocorreiab.sleepermanager.entities.league
+package br.com.murilocorreiab.sleepermanager.entities.league.model
 
 data class League(
     val name: String,

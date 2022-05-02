@@ -1,8 +1,8 @@
 package br.com.murilocorreiab.sleepermanager.usecase
 
 import br.com.murilocorreiab.sleepermanager.entities.league.LeagueWithRosters
-import br.com.murilocorreiab.sleepermanager.entities.league.Leagues
-import br.com.murilocorreiab.sleepermanager.entities.league.LeaguesForPlayer
+import br.com.murilocorreiab.sleepermanager.entities.league.getOutOfRosters
+import br.com.murilocorreiab.sleepermanager.entities.league.model.LeaguesForPlayer
 import br.com.murilocorreiab.sleepermanager.entities.player.Players
 import jakarta.inject.Singleton
 
@@ -14,15 +14,13 @@ class GetPlayersOutOfRoster(
 ) {
 
     fun get(userId: String, nameFilters: List<String>): List<LeaguesForPlayer> {
-        val userLeagues = leagueGateway.findAllUserLeagues(userId)
-        val notBestBallLeagues = Leagues(userLeagues).filterOutBestBallLeagues()
+        val notBestBallLeagues = GetOnlyStandardLeagues(leagueGateway).get(userId)
         val leaguesWithRosters = notBestBallLeagues.map {
             LeagueWithRosters(it, rosterGateway.findRostersOfLeague(it.id))
         }
 
         val players = playerGateway.getAllPlayers()
-
-        val playersMatchFilter = Players(players).filterByName(nameFilters)
-        return Players(playersMatchFilter).getOutOfRosters(leaguesWithRosters)
+        // TODO: Put everything in only one function
+        return Players(players).filterByName(nameFilters).getOutOfRosters(leaguesWithRosters)
     }
 }

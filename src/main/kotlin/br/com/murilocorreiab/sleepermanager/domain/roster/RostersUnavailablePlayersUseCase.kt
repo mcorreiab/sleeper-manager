@@ -1,7 +1,7 @@
 package br.com.murilocorreiab.sleepermanager.domain.roster
 
-import br.com.murilocorreiab.sleepermanager.entities.league.League
-import br.com.murilocorreiab.sleepermanager.entities.league.Roster2
+import br.com.murilocorreiab.sleepermanager.entities.league.model.League
+import br.com.murilocorreiab.sleepermanager.entities.league.model.Roster2
 import br.com.murilocorreiab.sleepermanager.entities.player.Player
 import br.com.murilocorreiab.sleepermanager.entities.player.PlayerStatus
 import br.com.murilocorreiab.sleepermanager.usecase.LeagueGateway
