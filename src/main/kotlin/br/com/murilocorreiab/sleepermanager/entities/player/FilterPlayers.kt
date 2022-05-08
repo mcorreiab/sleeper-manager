@@ -43,5 +43,5 @@ class FilterPlayers(private val players: List<Player>, private val nameFilters: 
     }
 
     private fun LeagueWithRosters.isPlayerOutOfAllRosters(player: Player) =
-        !this.rosters.flatMap { it.players }.contains(RawPlayer(player.id))
+        !this.rosters.flatMap { it.players }.contains(player.id)
 }

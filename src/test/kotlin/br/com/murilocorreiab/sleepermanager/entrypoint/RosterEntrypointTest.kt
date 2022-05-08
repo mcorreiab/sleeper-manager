@@ -25,20 +25,6 @@ class RosterEntrypointTest {
     private lateinit var rosterClient: RosterClient
 
     @Test
-    fun `should recover unavailable players for a user using username`() {
-        // Given
-        val username = "murilocorreia"
-        val userId = "303333123121229824"
-
-        // When
-        arrangeToRecoverRosterOfAUserByUsername(username, userId)
-        val actual = rosterClient.recoverRosterOfAUserByUsername(username)
-
-        // Then
-        assertThatFoundUnavailablePlayer(actual)
-    }
-
-    @Test
     fun `if user don't have unavailable player when searching for username return 404`() {
         // Given
         val username = "fernandocorreia"

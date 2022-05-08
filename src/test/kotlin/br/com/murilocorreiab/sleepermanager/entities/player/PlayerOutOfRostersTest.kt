@@ -2,9 +2,9 @@ package br.com.murilocorreiab.sleepermanager.entities.player
 
 import br.com.murilocorreiab.sleepermanager.domain.league.entity.LeagueFactory
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerFactory
-import br.com.murilocorreiab.sleepermanager.domain.roster.entity.RosterFactory2
 import br.com.murilocorreiab.sleepermanager.entities.league.LeagueWithRosters
 import br.com.murilocorreiab.sleepermanager.entities.league.model.LeaguesForPlayer
+import br.com.murilocorreiab.sleepermanager.entities.league.model.RosterFactory2
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -59,7 +59,7 @@ class PlayerOutOfRostersTest {
     companion object {
         private fun buildRoster(id: String, players: List<Player>) = RosterFactory2.build(
             id = id,
-            players = players.map { RawPlayer(id = it.id) },
+            players = players.map { it.id },
         )
 
         @JvmStatic
