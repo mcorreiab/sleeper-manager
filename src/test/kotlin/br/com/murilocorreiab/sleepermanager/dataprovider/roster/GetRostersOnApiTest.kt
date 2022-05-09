@@ -1,8 +1,9 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.roster
 
+import br.com.murilocorreiab.sleepermanager.adapters.roster.RosterClient
+import br.com.murilocorreiab.sleepermanager.adapters.roster.RosterGatewayImpl
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity.RosterResponseFactory
 import br.com.murilocorreiab.sleepermanager.dataprovider.roster.entity.RosterResponseFactory.toDomain
-import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.RosterClient
 import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.mockk.every

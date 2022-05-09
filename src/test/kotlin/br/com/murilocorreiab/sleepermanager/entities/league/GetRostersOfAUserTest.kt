@@ -1,6 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.entities.league
 
-import br.com.murilocorreiab.sleepermanager.entities.league.model.Roster2
+import br.com.murilocorreiab.sleepermanager.entities.league.model.Roster
 import br.com.murilocorreiab.sleepermanager.entities.league.model.RosterFactory2
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
@@ -31,7 +31,7 @@ class GetRostersOfAUserTest {
 
     @ParameterizedTest
     @MethodSource("noUserRostersInputData")
-    fun `when all theres no user rosters should return empty list`(rosters: List<Roster2>) {
+    fun `when all theres no user rosters should return empty list`(rosters: List<Roster>) {
         // Act
         val actual = rosters.getOfUser(userId)
 
@@ -41,7 +41,7 @@ class GetRostersOfAUserTest {
 
     companion object {
         @JvmStatic
-        fun noUserRostersInputData(): List<List<Roster2>> = listOf(
+        fun noUserRostersInputData(): List<List<Roster>> = listOf(
             emptyList(),
             listOf(
                 RosterFactory2.build(id = "1", ownerId = "otherUserId"),

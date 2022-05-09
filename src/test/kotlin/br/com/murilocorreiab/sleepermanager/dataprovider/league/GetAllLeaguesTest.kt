@@ -1,5 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.league
 
+import br.com.murilocorreiab.sleepermanager.adapters.league.LeagueGatewayImpl
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponseProducer
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.LeagueResponseProducer.toDomain
 import br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity.ScoringSettingsResponseProducer

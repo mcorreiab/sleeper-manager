@@ -1,6 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.entrypoint
 
-import br.com.murilocorreiab.sleepermanager.adapters.PlayersWaiverResponse
+import br.com.murilocorreiab.sleepermanager.adapters.player.PlayersWaiverResponse
 import br.com.murilocorreiab.sleepermanager.config.WireMockTest
 import br.com.murilocorreiab.sleepermanager.entrypoint.client.PlayerInWaiverClient
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse

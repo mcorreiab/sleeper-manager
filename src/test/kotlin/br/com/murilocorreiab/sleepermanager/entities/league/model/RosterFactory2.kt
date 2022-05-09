@@ -7,5 +7,5 @@ object RosterFactory2 {
         id: String = "id",
         starters: List<String> = arrayListOf("1"),
         leagueId: String = "1",
-    ) = Roster2(id = id, ownerId = ownerId, players = players, starters = starters, leagueId = leagueId)
+    ) = Roster(id = id, ownerId = ownerId, players = players, starters = starters, leagueId = leagueId)
 }

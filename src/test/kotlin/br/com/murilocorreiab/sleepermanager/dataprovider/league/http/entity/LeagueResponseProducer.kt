@@ -1,5 +1,8 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.league.http.entity
 
+import br.com.murilocorreiab.sleepermanager.adapters.league.LeagueExternalResponse
+import br.com.murilocorreiab.sleepermanager.adapters.league.ScoringSettingsResponse
+import br.com.murilocorreiab.sleepermanager.adapters.league.SettingsResponse
 import br.com.murilocorreiab.sleepermanager.entities.league.model.League
 import br.com.murilocorreiab.sleepermanager.entities.league.model.PointsByReception
 
@@ -11,14 +14,14 @@ object LeagueResponseProducer {
         avatar: String = "avatar",
         scoringSettingsResponse: ScoringSettingsResponse = ScoringSettingsResponseProducer.build(),
         settings: SettingsResponse = SettingsResponseProducer.build()
-    ) = LeagueResponse(name, leagueId, totalRosters, avatar, scoringSettingsResponse, settings)
+    ) = LeagueExternalResponse(name, leagueId, totalRosters, avatar, scoringSettingsResponse, settings)
 
-    fun LeagueResponse.toDomain(pointsByReception: PointsByReception) = League(
+    fun LeagueExternalResponse.toDomain(pointsByReception: PointsByReception) = League(
         name,
         leagueId,
         totalRosters,
         avatar,
         pointsByReception,
-        settings.bestBall == 1
+        settings.bestBall == 1,
     )
 }

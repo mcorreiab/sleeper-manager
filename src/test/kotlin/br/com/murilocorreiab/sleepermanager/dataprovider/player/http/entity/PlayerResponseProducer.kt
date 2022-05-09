@@ -1,6 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.dataprovider.player.http.entity
 
-import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerResponse
+import br.com.murilocorreiab.sleepermanager.adapters.player.PlayerExternalResponse
 import br.com.murilocorreiab.sleepermanager.entities.player.Player
 import br.com.murilocorreiab.sleepermanager.entities.player.PlayerStatus
 import br.com.murilocorreiab.sleepermanager.entities.player.Team
@@ -14,7 +14,7 @@ object PlayerResponseProducer {
         injuryStatus: String? = PlayerStatus.IR.status,
         position: String? = "position",
         team: String? = "GB"
-    ) = PlayerResponse(
+    ) = PlayerExternalResponse(
         playerId = playerId,
         fullName = fullName,
         firstName = firstName,
@@ -24,7 +24,7 @@ object PlayerResponseProducer {
         team = team,
     )
 
-    fun PlayerResponse.toDomain(
+    fun PlayerExternalResponse.toDomain(
         injuryStatus: PlayerStatus,
         team: Team,
         starter: Boolean,

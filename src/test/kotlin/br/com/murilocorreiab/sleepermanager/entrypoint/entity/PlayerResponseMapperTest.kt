@@ -1,5 +1,7 @@
 package br.com.murilocorreiab.sleepermanager.entrypoint.entity
 
+import br.com.murilocorreiab.sleepermanager.adapters.player.PlayerResponse
+import br.com.murilocorreiab.sleepermanager.adapters.player.PlayerResponseMapper
 import br.com.murilocorreiab.sleepermanager.domain.player.entity.PlayerFactory
 import br.com.murilocorreiab.sleepermanager.entities.player.PlayerStatus
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest

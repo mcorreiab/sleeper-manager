@@ -2,14 +2,14 @@ package br.com.murilocorreiab.sleepermanager.framework
 
 import br.com.murilocorreiab.sleepermanager.adapters.BadRequestException
 import br.com.murilocorreiab.sleepermanager.adapters.NotFoundException
-import br.com.murilocorreiab.sleepermanager.adapters.PlayerInWaiverController
-import br.com.murilocorreiab.sleepermanager.adapters.PlayersWaiverResponse
-import br.com.murilocorreiab.sleepermanager.dataprovider.league.LeagueGatewayImpl
-import br.com.murilocorreiab.sleepermanager.dataprovider.player.PlayerGatewayImpl
-import br.com.murilocorreiab.sleepermanager.dataprovider.player.db.PlayerRepository
-import br.com.murilocorreiab.sleepermanager.dataprovider.player.http.PlayerClient
-import br.com.murilocorreiab.sleepermanager.dataprovider.roster.RosterGatewayImpl
-import br.com.murilocorreiab.sleepermanager.dataprovider.roster.http.RosterClient
+import br.com.murilocorreiab.sleepermanager.adapters.league.LeagueGatewayImpl
+import br.com.murilocorreiab.sleepermanager.adapters.player.PlayerClient
+import br.com.murilocorreiab.sleepermanager.adapters.player.PlayerGatewayImpl
+import br.com.murilocorreiab.sleepermanager.adapters.player.PlayerInWaiverController
+import br.com.murilocorreiab.sleepermanager.adapters.player.PlayerRepository
+import br.com.murilocorreiab.sleepermanager.adapters.player.PlayersWaiverResponse
+import br.com.murilocorreiab.sleepermanager.adapters.roster.RosterClient
+import br.com.murilocorreiab.sleepermanager.adapters.roster.RosterGatewayImpl
 import br.com.murilocorreiab.sleepermanager.usecase.GetPlayersOutOfRoster
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Controller
