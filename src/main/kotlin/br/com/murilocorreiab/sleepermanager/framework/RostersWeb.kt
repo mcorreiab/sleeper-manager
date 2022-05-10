@@ -2,12 +2,16 @@ package br.com.murilocorreiab.sleepermanager.framework
 
 import br.com.murilocorreiab.sleepermanager.adapters.NotFoundException
 import br.com.murilocorreiab.sleepermanager.adapters.UnavailableStarterPlayersController
+import br.com.murilocorreiab.sleepermanager.adapters.league.LeagueClient
+import br.com.murilocorreiab.sleepermanager.adapters.league.LeagueGatewayImpl
+import br.com.murilocorreiab.sleepermanager.adapters.player.PlayerClient
+import br.com.murilocorreiab.sleepermanager.adapters.player.PlayerGatewayImpl
+import br.com.murilocorreiab.sleepermanager.adapters.player.PlayerRepository
+import br.com.murilocorreiab.sleepermanager.adapters.roster.RosterClient
+import br.com.murilocorreiab.sleepermanager.adapters.roster.RosterGatewayImpl
 import br.com.murilocorreiab.sleepermanager.adapters.roster.RosterResponse
 import br.com.murilocorreiab.sleepermanager.adapters.roster.RosterResponseMapper
 import br.com.murilocorreiab.sleepermanager.usecase.GetUnavailableStarterPlayers
-import br.com.murilocorreiab.sleepermanager.usecase.LeagueGateway
-import br.com.murilocorreiab.sleepermanager.usecase.PlayerGateway
-import br.com.murilocorreiab.sleepermanager.usecase.RosterGateway2
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpResponse.notFound
 import io.micronaut.http.HttpResponse.ok
@@ -24,15 +28,19 @@ import org.mapstruct.factory.Mappers
 
 @Controller("/rosters")
 class RostersWeb(
-    leagueGateway: LeagueGateway,
-    rosterGateway: RosterGateway2,
-    playerGateway: PlayerGateway,
+    leagueClient: LeagueClient,
+    playerClient: PlayerClient,
+    playerRepository: PlayerRepository,
+    rosterClient: RosterClient,
 ) {
     private val rosterResponseMapper = Mappers.getMapper(RosterResponseMapper::class.java)
 
     private val unavailableStarterPlayersController: UnavailableStarterPlayersController
 
     init {
+        val leagueGateway = LeagueGatewayImpl(leagueClient)
+        val playerGateway = PlayerGatewayImpl(playerClient, playerRepository)
+        val rosterGateway = RosterGatewayImpl(rosterClient)
         val getUnavailableStarterPlayers = GetUnavailableStarterPlayers(leagueGateway, rosterGateway, playerGateway)
         unavailableStarterPlayersController = UnavailableStarterPlayersController(getUnavailableStarterPlayers)
     }

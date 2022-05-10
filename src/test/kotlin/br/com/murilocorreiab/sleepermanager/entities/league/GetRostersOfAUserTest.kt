@@ -1,7 +1,7 @@
 package br.com.murilocorreiab.sleepermanager.entities.league
 
 import br.com.murilocorreiab.sleepermanager.entities.league.model.Roster
-import br.com.murilocorreiab.sleepermanager.entities.league.model.RosterFactory2
+import br.com.murilocorreiab.sleepermanager.entities.league.model.RosterFactory
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -14,15 +14,15 @@ class GetRostersOfAUserTest {
     @Test
     fun `should get the rosters of a user with success`() {
         // Arrange
-        val userRoster1 = RosterFactory2.build(id = "1", ownerId = userId)
-        val userRoster2 = RosterFactory2.build(id = "2", ownerId = userId)
+        val userRoster1 = RosterFactory.build(id = "1", ownerId = userId)
+        val userRoster2 = RosterFactory.build(id = "2", ownerId = userId)
 
         // Act
         val actual =
             listOf(
                 userRoster1,
                 userRoster2,
-                RosterFactory2.build(id = "3", ownerId = "otherUserId"),
+                RosterFactory.build(id = "3", ownerId = "otherUserId"),
             ).getOfUser(userId)
 
         // Assert
@@ -44,8 +44,8 @@ class GetRostersOfAUserTest {
         fun noUserRostersInputData(): List<List<Roster>> = listOf(
             emptyList(),
             listOf(
-                RosterFactory2.build(id = "1", ownerId = "otherUserId"),
-                RosterFactory2.build(id = "2", ownerId = "otherUserId"),
+                RosterFactory.build(id = "1", ownerId = "otherUserId"),
+                RosterFactory.build(id = "2", ownerId = "otherUserId"),
             ),
         )
     }

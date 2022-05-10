@@ -9,7 +9,7 @@ import jakarta.inject.Singleton
 class GetPlayersOutOfRoster(
     private val leagueGateway: LeagueGateway,
     private val playerGateway: PlayerGateway,
-    private val rosterGateway: RosterGateway2,
+    private val rosterGateway: RosterGateway,
 ) {
 
     fun get(userId: String, nameFilters: List<String>): List<LeaguesForPlayer> {

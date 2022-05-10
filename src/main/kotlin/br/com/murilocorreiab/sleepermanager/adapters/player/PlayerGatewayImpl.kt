@@ -1,10 +1,8 @@
 package br.com.murilocorreiab.sleepermanager.adapters.player
 
 import br.com.murilocorreiab.sleepermanager.usecase.PlayerGateway
-import jakarta.inject.Singleton
 import org.mapstruct.factory.Mappers
 
-@Singleton
 class PlayerGatewayImpl(
     private val playerClient: PlayerClient,
     private val playerRepository: PlayerRepository,

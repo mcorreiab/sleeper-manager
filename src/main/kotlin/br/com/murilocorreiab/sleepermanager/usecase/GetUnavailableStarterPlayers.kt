@@ -5,7 +5,7 @@ import br.com.murilocorreiab.sleepermanager.entities.league.model.RosterUnavaila
 
 class GetUnavailableStarterPlayers(
     private val leagueGateway: LeagueGateway,
-    private val rosterGateway: RosterGateway2,
+    private val rosterGateway: RosterGateway,
     private val playerGateway: PlayerGateway,
 ) {
 

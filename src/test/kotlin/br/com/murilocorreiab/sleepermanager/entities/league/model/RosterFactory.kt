@@ -1,6 +1,6 @@
 package br.com.murilocorreiab.sleepermanager.entities.league.model
 
-object RosterFactory2 {
+object RosterFactory {
     fun build(
         players: List<String> = arrayListOf("1"),
         ownerId: String = "ownerId",

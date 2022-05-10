@@ -2,6 +2,7 @@ package br.com.murilocorreiab.sleepermanager.framework
 
 import br.com.murilocorreiab.sleepermanager.adapters.BadRequestException
 import br.com.murilocorreiab.sleepermanager.adapters.NotFoundException
+import br.com.murilocorreiab.sleepermanager.adapters.league.LeagueClient
 import br.com.murilocorreiab.sleepermanager.adapters.league.LeagueGatewayImpl
 import br.com.murilocorreiab.sleepermanager.adapters.player.PlayerClient
 import br.com.murilocorreiab.sleepermanager.adapters.player.PlayerGatewayImpl

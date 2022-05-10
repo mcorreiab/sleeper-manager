@@ -1,12 +1,10 @@
 package br.com.murilocorreiab.sleepermanager.adapters.roster
 
 import br.com.murilocorreiab.sleepermanager.entities.league.model.Roster
-import br.com.murilocorreiab.sleepermanager.usecase.RosterGateway2
-import jakarta.inject.Singleton
+import br.com.murilocorreiab.sleepermanager.usecase.RosterGateway
 import org.mapstruct.factory.Mappers
 
-@Singleton
-class RosterGatewayImpl(private val rosterClient: RosterClient) : RosterGateway2 {
+class RosterGatewayImpl(private val rosterClient: RosterClient) : RosterGateway {
 
     private val rosterResponseMapper = Mappers.getMapper(RosterExternalResponseMapper::class.java)
 

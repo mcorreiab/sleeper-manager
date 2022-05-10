@@ -1,7 +1,4 @@
-package br.com.murilocorreiab.sleepermanager.domain.league.entity
-
-import br.com.murilocorreiab.sleepermanager.entities.league.model.League
-import br.com.murilocorreiab.sleepermanager.entities.league.model.PointsByReception
+package br.com.murilocorreiab.sleepermanager.entities.league.model
 
 object LeagueFactory {
     fun build(

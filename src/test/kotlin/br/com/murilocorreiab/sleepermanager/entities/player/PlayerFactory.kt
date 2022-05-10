@@ -1,8 +1,4 @@
-package br.com.murilocorreiab.sleepermanager.domain.player.entity
-
-import br.com.murilocorreiab.sleepermanager.entities.player.Player
-import br.com.murilocorreiab.sleepermanager.entities.player.PlayerStatus
-import br.com.murilocorreiab.sleepermanager.entities.player.Team
+package br.com.murilocorreiab.sleepermanager.entities.player
 
 object PlayerFactory {
     fun build(

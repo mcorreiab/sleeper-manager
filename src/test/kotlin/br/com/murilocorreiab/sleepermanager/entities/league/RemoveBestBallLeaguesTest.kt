@@ -1,7 +1,7 @@
 package br.com.murilocorreiab.sleepermanager.entities.league
 
-import br.com.murilocorreiab.sleepermanager.domain.league.entity.LeagueFactory
 import br.com.murilocorreiab.sleepermanager.entities.league.model.League
+import br.com.murilocorreiab.sleepermanager.entities.league.model.LeagueFactory
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
