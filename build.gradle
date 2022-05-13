@@ -143,4 +143,5 @@ task installLocalGitHook(type: Copy) {
     fileMode 0775
 }
 
-build.dependsOn installLocalGitHook
+task stage(dependsOn: ["clean", "build"])
+build.dependsOn installLocalGitHook, clean
