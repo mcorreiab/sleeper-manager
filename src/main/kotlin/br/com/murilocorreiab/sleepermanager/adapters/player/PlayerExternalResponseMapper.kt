@@ -17,7 +17,6 @@ abstract class PlayerExternalResponseMapper {
                 expression = "java(mapName(playerResponse.getFullName()," + " playerResponse.getFirstName()," +
                     " playerResponse.getLastName()))"
             ),
-            Mapping(target = "starter", constant = "false"),
             Mapping(target = "id", source = "playerId"),
             Mapping(
                 target = "injuryStatus",

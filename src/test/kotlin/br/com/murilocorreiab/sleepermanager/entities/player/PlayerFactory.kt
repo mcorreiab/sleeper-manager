@@ -5,8 +5,7 @@ object PlayerFactory {
         id: String = "playerId",
         name: String = "playerName",
         injuryStatus: PlayerStatus = PlayerStatus.OUT,
-        starter: Boolean = true,
         position: String = "position",
         team: Team = Team.GB,
-    ) = Player(id, name, injuryStatus.status, starter, position, team)
+    ) = Player(id, name, injuryStatus.status, position, team)
 }
