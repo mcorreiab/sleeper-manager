@@ -145,3 +145,4 @@ task installLocalGitHook(type: Copy) {
 
 task stage(dependsOn: ["clean", "build"])
 build.dependsOn installLocalGitHook, clean
+build.mustRunAfter clean
