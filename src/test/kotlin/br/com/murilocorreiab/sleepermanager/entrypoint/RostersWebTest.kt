@@ -83,7 +83,7 @@ class RostersWebTest {
         )
 
         stubFor(
-            get(urlEqualTo("/user/$userId/leagues/nfl/2021"))
+            get(urlEqualTo("/user/$userId/leagues/nfl/2022"))
                 .willReturn(
                     aResponse().withHeader("content-type", MediaType.APPLICATION_JSON)
                         .withBodyFile("league_response.json"),
