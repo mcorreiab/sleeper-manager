@@ -26,7 +26,7 @@ external :
       user :
         root : ${external.api.sleeper.base}/user
         getByUsername : /{username}
-        getLeagues : /{userId}/leagues/nfl/2021
+        getLeagues : /{userId}/leagues/nfl/2022
       roster : ${external.api.sleeper.base}/league/{leagueId}/rosters
       player : ${external.api.sleeper.base}/players/nfl
 
