@@ -4,9 +4,19 @@ import br.com.murilocorreiab.sleepermanager.adapters.league.LeagueExternalRespon
 import br.com.murilocorreiab.sleepermanager.entities.league.model.Roster
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
+import org.mapstruct.Mappings
 
 @Mapper(uses = [LeagueExternalResponseMapper::class])
 interface RosterExternalResponseMapper {
-    @Mapping(source = "rosterId", target = "id")
+    @Mappings(
+        value = [
+            Mapping(source = "rosterId", target = "id"),
+            Mapping(
+                target = "players",
+                source = "players",
+                defaultExpression = "java(new ArrayList<String>())",
+            ),
+        ],
+    )
     fun toDomain(rosterResponse: RosterExternalResponse): Roster
 }
