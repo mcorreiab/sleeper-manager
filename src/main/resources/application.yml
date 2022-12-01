@@ -34,4 +34,4 @@ jackson :
   property-naming-strategy : SNAKE_CASE
 
 redis :
-  uri : ${REDISCLOUD_URL}
+  uri : ${REDIS_URL}
