@@ -1,4 +1,4 @@
-FROM openjdk:17 as build
+FROM eclipse-temurin:17-jdk-jammy as build
 ENV APP_HOME=/root/dev/sleepermanager/
 ENV http_proxy "http://127.0.0.1:3001"
 ENV https_proxy "http://127.0.0.1:3001"

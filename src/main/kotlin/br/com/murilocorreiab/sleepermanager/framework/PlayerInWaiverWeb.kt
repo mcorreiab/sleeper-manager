@@ -3,13 +3,16 @@ package br.com.murilocorreiab.sleepermanager.framework
 import br.com.murilocorreiab.sleepermanager.adapters.BadRequestException
 import br.com.murilocorreiab.sleepermanager.adapters.NotFoundException
 import br.com.murilocorreiab.sleepermanager.adapters.league.LeagueClient
+import br.com.murilocorreiab.sleepermanager.adapters.league.LeagueExternalResponseMapper
 import br.com.murilocorreiab.sleepermanager.adapters.league.LeagueGatewayImpl
 import br.com.murilocorreiab.sleepermanager.adapters.player.PlayerClient
+import br.com.murilocorreiab.sleepermanager.adapters.player.PlayerExternalResponseMapper
 import br.com.murilocorreiab.sleepermanager.adapters.player.PlayerGatewayImpl
 import br.com.murilocorreiab.sleepermanager.adapters.player.PlayerInWaiverController
 import br.com.murilocorreiab.sleepermanager.adapters.player.PlayerRepository
 import br.com.murilocorreiab.sleepermanager.adapters.player.PlayersWaiverResponse
 import br.com.murilocorreiab.sleepermanager.adapters.roster.RosterClient
+import br.com.murilocorreiab.sleepermanager.adapters.roster.RosterExternalResponseMapper
 import br.com.murilocorreiab.sleepermanager.adapters.roster.RosterGatewayImpl
 import br.com.murilocorreiab.sleepermanager.usecase.GetPlayersOutOfRoster
 import io.micronaut.http.HttpResponse
@@ -28,14 +31,17 @@ class PlayerInWaiverWeb(
     playerClient: PlayerClient,
     playerRepository: PlayerRepository,
     rosterClient: RosterClient,
+    leagueMapper: LeagueExternalResponseMapper,
+    playerResponseMapper: PlayerExternalResponseMapper,
+    rosterExternalResponseMapper: RosterExternalResponseMapper,
 ) {
 
     private val playerInWaiverController: PlayerInWaiverController
 
     init {
-        val leagueGateway = LeagueGatewayImpl(leagueClient)
-        val playerGateway = PlayerGatewayImpl(playerClient, playerRepository)
-        val rosterGateway = RosterGatewayImpl(rosterClient)
+        val leagueGateway = LeagueGatewayImpl(leagueClient, leagueMapper)
+        val playerGateway = PlayerGatewayImpl(playerClient, playerRepository, playerResponseMapper)
+        val rosterGateway = RosterGatewayImpl(rosterClient, rosterExternalResponseMapper)
         val getPlayersOutOfRoster = GetPlayersOutOfRoster(leagueGateway, playerGateway, rosterGateway)
         playerInWaiverController = PlayerInWaiverController(getPlayersOutOfRoster)
     }
