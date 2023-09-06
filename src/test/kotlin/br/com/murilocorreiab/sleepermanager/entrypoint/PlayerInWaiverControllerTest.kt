@@ -76,7 +76,7 @@ class PlayerInWaiverControllerTest {
         )
 
         stubFor(
-            get(urlEqualTo("/user/$userId/leagues/nfl/2022"))
+            get(urlEqualTo("/user/$userId/leagues/nfl/2023"))
                 .willReturn(
                     aResponse().withHeader("content-type", MediaType.APPLICATION_JSON)
                         .withBodyFile("league_response.json")
